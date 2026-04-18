@@ -3,7 +3,7 @@ import ProductGrid from '../components/ProductGrid';
 import { motion, AnimatePresence } from 'motion/react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { productData } from '../data/products';
-import bannerImg from '../assets/产品中心banner.png';
+import bannerImg from '../assets/products-banner.png';
 
 export default function ProductsPage() {
   const { categoryId } = useParams<{ categoryId: string }>();

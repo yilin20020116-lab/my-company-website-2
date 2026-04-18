@@ -1,4 +1,4 @@
-import pipeImage1 from '../assets/多重增强钢塑复合压力管.png';
+import pipeImage1 from '../assets/pipe-product.png';
 
 export const productData = [
   {

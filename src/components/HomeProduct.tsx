@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Droplets, Waves, Factory, Flame, ArrowRight, ChevronRight, Settings, ThumbsUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import pipeImg from '../assets/多重增强钢塑复合压力管.png';
+import pipeImg from '../assets/pipe-product.png';
 
 const categories = [
   {
