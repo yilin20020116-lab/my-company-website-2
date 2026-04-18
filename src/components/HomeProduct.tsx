@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Droplets, Waves, Factory, Flame, ArrowRight, ChevronRight, Settings, ThumbsUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import pipeImg from '../assets/多重增强钢塑复合压力管.png';
 
 const categories = [
   {
@@ -15,7 +16,7 @@ const categories = [
         title: '多重增强钢塑复合压力管',
         description: '兴欣科技自主研发的高端给水管道。通过多层复合结构设计，完美融合了钢带的高环刚度与聚乙烯的卓越化学稳定性，在承受极高内压的同时保持优异的柔韧性。管材抗内外压能力兼优，长期强度稳定，电热熔焊接连接技术简便可靠，不会造成输送液体资源的浪费。抗内外腐蚀，使用寿命长，极强的耐磨性，安全无毒，柔性系统，良好地避免灾害，重量轻，施工安装费用低，原材料消耗成本低于纯塑或其他结构壁塑料压力管材，工程总体造价低，性价比高，具有很强的市场竞争力，管材结构稳定性好，节能环保。',
         features: ['多层复合增强结构', '承压能力显著提升', '卓越的抗蠕变性能', '卫生无毒，确保饮水安全'],
-        image: './多重增强钢塑复合压力管.png'
+        image: pipeImg
       },
       {
         title: 'PE给水管材',

@@ -3,6 +3,7 @@ import ProductGrid from '../components/ProductGrid';
 import { motion, AnimatePresence } from 'motion/react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { productData } from '../data/products';
+import bannerImg from '../assets/产品中心banner.png';
 
 export default function ProductsPage() {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -37,7 +38,7 @@ export default function ProductsPage() {
     <div className="pt-20">
       <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src="./产品中心banner.png" alt="产品中心" className="w-full h-full object-cover" />
+          <img src={bannerImg} alt="产品中心" className="w-full h-full object-cover" />
         </div>
       </section>
 
