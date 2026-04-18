@@ -8,7 +8,7 @@ export default function ContactPage() {
       {/* Hero Section */}
       <section className="relative h-[400px] md:h-[500px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src="/联系我们banner.png" alt="联系方式" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = 'https://picsum.photos/seed/contact/1920/600'; }} />
+          <img src="./联系我们banner.png" alt="联系方式" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = 'https://picsum.photos/seed/contact/1920/600'; }} />
           <div className="absolute inset-0 bg-brand-blue/60 mix-blend-multiply"></div>
         </div>
         <div className="relative z-10 text-center text-white px-6">

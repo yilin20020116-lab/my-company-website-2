@@ -37,7 +37,7 @@ export default function ProductsPage() {
     <div className="pt-20">
       <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src="/产品中心banner.png" alt="产品中心" className="w-full h-full object-cover" />
+          <img src="./产品中心banner.png" alt="产品中心" className="w-full h-full object-cover" />
         </div>
       </section>
 

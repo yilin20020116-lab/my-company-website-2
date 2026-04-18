@@ -19,7 +19,7 @@ export default function MessagePage() {
       {/* Hero Section */}
       <section className="relative h-[300px] md:h-[400px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src="/在线留言banner.png" alt="在线留言" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = 'https://picsum.photos/seed/message/1920/400'; }} />
+          <img src="./在线留言banner.png" alt="在线留言" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = 'https://picsum.photos/seed/message/1920/400'; }} />
           <div className="absolute inset-0 bg-[#0f4e8b]/70 mix-blend-multiply"></div>
         </div>
         <div className="relative z-10 text-center text-white px-6">
