@@ -1,25 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+const HERO_SLIDES = [
+  "https://picsum.photos/seed/industrial-hero/1920/1080",
+  "https://picsum.photos/seed/pipeline-hero/1920/1080",
+  "https://picsum.photos/seed/construction-hero/1920/1080"
+];
+
 export default function Hero() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <section className="relative h-screen min-h-[750px] flex items-center overflow-hidden">
       {/* Background with Video-like feel or high-quality image */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="https://picsum.photos/seed/industrial-hero/1920/1080"
-          alt="Xingxin Technology Industrial Park"
-          className="w-full h-full object-cover animate-slow-zoom"
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 bg-slate-900/40" />
+      <div className="absolute inset-0 z-0 bg-slate-900">
+        {HERO_SLIDES.map((src, index) => (
+          <img
+            key={src}
+            src={src}
+            alt={`湖北兴欣科技展示 ${index + 1}`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+              currentSlide === index ? 'opacity-100 animate-slow-zoom z-10' : 'opacity-0 z-0'
+            }`}
+            referrerPolicy="no-referrer"
+          />
+        ))}
+        <div className="absolute inset-0 bg-slate-900/40 z-20" />
         {/* Pattern Overlay */}
         <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 lg:px-24 w-full">
+      <div className="relative z-10 max-w-[1600px] mx-auto px-6 md:px-12 lg:px-16 w-full">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -35,8 +55,8 @@ export default function Hero() {
             </div>
             
             <h1 className="text-6xl md:text-8xl font-display font-bold text-white leading-tight mb-8">
-              健行天下 <br />
-              <span className="text-brand-orange">独占鳌头</span>
+              精益求精 <br />
+              <span className="text-brand-orange">滴水不漏</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-2xl leading-relaxed font-light">
@@ -91,12 +111,19 @@ export default function Hero() {
       </div>
 
       {/* Bottom Navigation / Indicators */}
-      <div className="absolute bottom-12 left-0 right-0 z-10 px-6 md:px-12 lg:px-24">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <div className="absolute bottom-12 left-0 right-0 z-10 w-full">
+        <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-16 flex items-center justify-between">
           <div className="flex gap-4">
-            <div className="w-12 h-1 bg-brand-orange rounded-full" />
-            <div className="w-12 h-1 bg-white/20 rounded-full" />
-            <div className="w-12 h-1 bg-white/20 rounded-full" />
+            {HERO_SLIDES.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className={`w-12 h-1.5 -translate-y-0.5 rounded-full transition-all cursor-pointer ${
+                  currentSlide === index ? 'bg-brand-orange scale-y-100' : 'bg-white/20 hover:bg-white/40 opacity-50 scale-y-75'
+                }`}
+                aria-label={`Switch to slide ${index + 1}`}
+              />
+            ))}
           </div>
           <div className="text-white/50 text-xs font-mono tracking-widest">
             SCROLL TO EXPLORE

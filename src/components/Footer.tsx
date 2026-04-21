@@ -68,10 +68,12 @@ export default function Footer() {
           {/* Left Column (Contact & Social & Search) */}
           <div className="lg:w-[35%]">
             {/* Brand Logo */}
-            <div className="flex items-center gap-4 mb-10">
-              <div className="w-[54px] h-[54px] bg-[#e58a44] rounded-full flex items-center justify-center text-white font-bold text-3xl shadow-lg border-2 border-white/20">
-                兴
-              </div>
+            <div className="flex items-center gap-6 mb-10">
+              <img 
+                src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E5%85%B4%E6%AC%A3logo%E6%A0%87.png?t=1" 
+                alt="兴欣科技" 
+                className="h-[200px] w-auto object-contain drop-shadow-lg" 
+              />
               <div className="flex flex-col">
                 <span className="font-display font-bold text-[32px] leading-none tracking-wider">兴欣科技</span>
                 <span className="text-[12px] uppercase tracking-[0.1em] opacity-80 mt-1 font-medium">Xingxin Pipes</span>

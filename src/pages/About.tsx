@@ -11,7 +11,7 @@ export default function AboutPage() {
   return (
     <div className="pt-20">
       {/* Corporate Video Header Section */}
-      <section className="relative min-h-[60vh] flex items-center overflow-hidden">
+      <section className="relative min-h-[60vh] flex items-center overflow-hidden px-6 md:px-12 lg:px-24">
         {/* Background Video/Image */}
         <div className="absolute inset-0 z-0">
           <img 
@@ -23,7 +23,7 @@ export default function AboutPage() {
           <div className="absolute inset-0 bg-slate-900/75 backdrop-blur-[1px]" />
         </div>
         
-        <div className="max-w-7xl ml-0 px-6 md:px-12 lg:px-24 relative z-10 py-24 md:py-32 text-left">
+        <div className="max-w-[1440px] mx-auto w-full relative z-10 py-24 md:py-32 text-left">
           <div className="max-w-4xl text-left">
             <motion.div
               initial={{ opacity: 0, y: 30 }}

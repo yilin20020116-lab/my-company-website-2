@@ -81,28 +81,30 @@ export default function Navbar() {
   return (
     <nav
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 md:px-12 py-4',
-        isScrolled || location.pathname !== '/' ? 'glass py-3 shadow-sm' : 'bg-transparent'
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 pt-0 pb-2',
+        isScrolled || location.pathname !== '/' ? 'glass pt-0 pb-1 shadow-sm' : 'bg-transparent'
       )}
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-16 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-brand-blue rounded-lg flex items-center justify-center text-white font-bold text-xl">
-            兴
-          </div>
-          <div className="flex flex-col">
+        <Link to="/" className="flex items-center gap-4">
+          <img 
+            src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E5%85%B4%E6%AC%A3logo%E6%A0%872.png" 
+            alt="湖北兴欣科技" 
+            className="h-[130px] w-auto object-contain" 
+          />
+          <div className="flex flex-col mt-2.5">
             <span className={cn(
               "font-display font-bold text-xl leading-none transition-colors", 
               isScrolled || location.pathname !== '/' ? "text-brand-blue" : "text-white"
             )}>
-              湖北兴欣科技
+              湖北兴欣科技股份有限公司
             </span>
             <span className={cn(
-              "text-[10px] uppercase tracking-widest opacity-70 transition-colors",
+              "text-[10px] tracking-widest opacity-70 transition-colors mt-0.5",
               isScrolled || location.pathname !== '/' ? "text-slate-500" : "text-white/70"
             )}>
-              Hubei Xingxin Technology
+              HUBEI XINGXIN TECHNOLOGY CO.,LTD
             </span>
           </div>
         </Link>
