@@ -19,10 +19,10 @@ const categories = [
         image: pipeImg
       },
       {
-        title: 'PE给水管材',
-        description: '采用优质聚乙烯原料，严格执行国家标准。具有良好的柔韧性、耐冲击性和优异的焊接性能，是城镇供水管网的首选。',
-        features: ['卫生安全性好', '耐腐蚀寿命长', '施工连接方便'],
-        image: 'https://picsum.photos/seed/water-2/1200/800'
+        title: '内定径钢骨架增强聚乙烯复合管',
+        description: '抗蠕变性能好，持久机械强度高，耐冲击性能好、轴向具有适当柔性，管壁不结垢、不结蜡，无毒性、不分解、无微生物累积，耐温性能好，内壁光滑、流阻低，容易定位跟踪，环向具有足够刚度，热膨胀系数小、重量轻，抗候性、抗紫外线性能好，内表面耐高腐蚀性介质、外表面适应强腐蚀使用环境，系列化管材、管件与连接结构构成完善安全的管道系统。',
+        features: ['抗蠕变高机械强度', '卫生无毒防结垢', '耐温耐高腐蚀', '环形刚度高自重轻'],
+        image: 'https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E5%86%85%E5%AE%9A%E5%BE%84%E9%92%A2%E9%AA%A8%E6%9E%B6%E5%A2%9E%E5%BC%BA%E8%81%9A%E4%B9%99%E7%83%AF%E5%A4%8D%E5%90%88%E7%AE%A1.png'
       },
       {
         title: '孔网钢带聚乙烯复合管',
@@ -100,7 +100,7 @@ export default function HomeProduct() {
   const currentItem = activeTab.items[activePage];
 
   return (
-    <section className="pt-8 pb-16 bg-white overflow-hidden relative">
+    <section className="pt-8 pb-8 bg-white overflow-hidden relative">
       <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-16 relative z-10">
         {/* Section Title Block */}
         <div className="mb-16">
@@ -208,10 +208,12 @@ export default function HomeProduct() {
             </div>
 
             {/* Brand Logo Placeholder moved to bottom of text area */}
-            <div className="mt-10 hidden sm:flex flex-col items-start opacity-30">
-              <div className="text-brand-blue font-display font-bold text-xl tracking-tighter">XINGXIN</div>
-              <div className="h-[1px] w-24 bg-brand-blue" />
-              <div className="text-[9px] tracking-[0.3em] text-brand-blue font-bold">兴欣科技</div>
+            <div className="mt-10 hidden sm:flex flex-col items-start opacity-70">
+              <img 
+                src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E5%A4%A9%E5%81%A5%E6%A0%87.png" 
+                alt="天健标" 
+                className="h-20 w-auto object-contain"
+              />
             </div>
           </div>
 

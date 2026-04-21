@@ -13,13 +13,13 @@ export const productData = [
         richHTML: `
           <h3>产品简介</h3>
           <div class="flex flex-col gap-6 mb-8">
-            <div class="flex gap-4">
+            <div class="flex flex-col sm:flex-row gap-4">
               <figure class="m-0 flex-1">
-                <img src="https://picsum.photos/seed/structure1/400/300" alt="带材结构" class="w-full rounded-xl shadow-md border border-slate-100" />
+                <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E5%A4%9A%E9%87%8D%E5%A2%9E%E5%BC%BA%E9%92%A2%E5%A1%91%E5%A4%8D%E5%90%88%E5%8E%8B%E5%8A%9B%E7%AE%A1%EF%BC%88%E5%B8%A6%E6%9D%90%E7%BB%93%E6%9E%84%EF%BC%89.jpg" alt="带材结构" class="w-full h-56 md:h-72 rounded-xl shadow-md border border-slate-100 object-contain bg-white p-4" />
                 <figcaption class="text-center text-sm text-slate-500 mt-2">（带材结构）</figcaption>
               </figure>
               <figure class="m-0 flex-1">
-                <img src="https://picsum.photos/seed/structure2/400/300" alt="管材结构" class="w-full rounded-xl shadow-md border border-slate-100" />
+                <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E5%A4%9A%E9%87%8D%E5%A2%9E%E5%BC%BA%E9%92%A2%E5%A1%91%E5%A4%8D%E5%90%88%E5%8E%8B%E5%8A%9B%E7%AE%A1%EF%BC%88%E7%AE%A1%E6%9D%90%E7%BB%93%E6%9E%84%EF%BC%89.jpg" alt="管材结构" class="w-full h-56 md:h-72 rounded-xl shadow-md border border-slate-100 object-contain bg-white p-4" />
                 <figcaption class="text-center text-sm text-slate-500 mt-2">（管材结构）</figcaption>
               </figure>
             </div>
@@ -119,7 +119,92 @@ export const productData = [
         title: '内定径钢骨架增强聚乙烯复合管',
         advantages: '抗蠕变性能好，持久机械强度高，耐冲击性能好、轴向具有适当柔性，管壁不结垢、不结蜡，无毒性、不分解、无微生物累积，耐温性能好，内壁光滑、流阻低，容易定位跟踪，环向具有足够刚度，热膨胀系数小、重量轻，抗候性、抗紫外线性能好，内表面耐高腐蚀性介质、外表面适应强腐蚀使用环境，系列化管材、管件与连接结构构成完善安全的管道系统。',
         applications: '化工、油田、市政建设、船舶、矿山、农业、海水输送。',
-        image: 'https://picsum.photos/seed/pipe2/800/600',
+        image: 'https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E5%86%85%E5%AE%9A%E5%BE%84%E9%92%A2%E9%AA%A8%E6%9E%B6%E5%A2%9E%E5%BC%BA%E8%81%9A%E4%B9%99%E7%83%AF%E5%A4%8D%E5%90%88%E7%AE%A1.png',
+        richHTML: `
+          <h3>产品简介</h3>
+          <div class="flex flex-col md:flex-row gap-10 items-stretch mb-12">
+            <div class="flex-1 text-slate-600 bg-slate-50/50 p-6 md:p-8 rounded-2xl border border-slate-100 flex flex-col justify-center">
+              <p class="text-base md:text-lg leading-[2] text-justify indent-8 tracking-wide font-medium text-slate-700">
+                钢骨架塑料复合管是一种以缠绕并焊接成型的<span class="text-brand-blue font-bold">钢丝网作为加强骨架</span>，以聚乙烯等热塑性塑料为基体，并将两者均匀地复合在一起，在生产线上连续生产的复合结构管道。
+              </p>
+              <div class="mt-8 flex gap-4 pt-6 border-t border-slate-200/60">
+                <div class="flex-1">
+                  <div class="text-xs text-slate-400 uppercase tracking-widest mb-1">核心相质</div>
+                  <div class="font-bold text-slate-800">热塑性塑料基体</div>
+                </div>
+                <div class="w-px bg-slate-200"></div>
+                <div class="flex-1">
+                  <div class="text-xs text-slate-400 uppercase tracking-widest mb-1">关键骨架</div>
+                  <div class="font-bold text-slate-800">缠绕焊接钢丝网</div>
+                </div>
+              </div>
+            </div>
+            <div class="w-full md:w-[45%] lg:w-[40%] flex items-center justify-center">
+              <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E5%86%85%E5%AE%9A%E5%BE%84%E9%92%A2%E9%AA%A8%E6%9E%B6%E5%A2%9E%E5%BC%BA%E8%81%9A%E4%B9%99%E7%83%AF%E5%A4%8D%E5%90%88%E7%AE%A1.png" alt="内定径钢骨架复合管结构图" class="w-full max-h-[360px] rounded-2xl shadow-lg border border-slate-100 object-contain bg-white p-8 hover:scale-[1.02] transition-transform duration-500" />
+            </div>
+          </div>
+          
+          <h3>产品特点</h3>
+          <ul>
+            <li><strong>抗蠕变性能好，持久机械强度高：</strong>具有很好的抗蠕变特性，机械强度非常持久稳固。</li>
+            <li><strong>不会发生快速开裂：</strong>结构兼具刚性与柔性，防止管材开裂。</li>
+            <li><strong>耐冲击性能好：</strong>可以承受高强度的冲击和碰撞。</li>
+            <li><strong>轴向具有适当柔性：</strong>面对不规则地质有很好的适应能力。</li>
+            <li><strong>管壁不结垢、不结蜡：</strong>流体运行畅通，大幅减少维护需求。</li>
+            <li><strong>无毒性、不分解、无微生物累积：</strong>环保且保证水质安全。</li>
+            <li><strong>耐温性能好：</strong>适应各类冷热环境，稳定性高。</li>
+            <li><strong>内壁光滑、流阻低：</strong>提升水力输送效率，节约能耗。</li>
+            <li><strong>容易定位跟踪：</strong>内部含有钢丝网骨架，可用磁性探测器进行定位寻踪。</li>
+            <li><strong>环向具有足够刚度：</strong>有效抵抗巨大的外部压力。</li>
+            <li><strong>热膨胀系数小：</strong>温度变化依然保持尺寸的稳定。</li>
+            <li><strong>重量轻：</strong>便于施工、安装以及长途运输。</li>
+            <li><strong>抗候性、抗紫外线性能好：</strong>不受外部恶劣条件影响。</li>
+            <li><strong>双重防腐防侵蚀：</strong>内表面耐高腐蚀性介质、外表面适应强腐蚀使用环境。</li>
+            <li><strong>系统完善：</strong>系列化管材、管件与连接结构构成完善安全的管道系统。</li>
+          </ul>
+
+          <h3>产品应用范围</h3>
+          <div class="overflow-x-auto my-6">
+            <table class="w-full text-left border-collapse border border-slate-200">
+              <thead>
+                <tr class="bg-brand-blue/5">
+                  <th class="border border-slate-200 p-3 text-brand-blue font-bold min-w-[120px]">应用领域</th>
+                  <th class="border border-slate-200 p-3 text-brand-blue font-bold">具体用途细分</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="border border-slate-200 p-3 text-slate-800 font-medium">化工</td>
+                  <td class="border border-slate-200 p-3 text-slate-600">用于酸碱盐制造业、石油化工、化肥、农药、制药等行业中腐蚀性介质输送的工业配管和排放管道。</td>
+                </tr>
+                <tr class="bg-slate-50/50">
+                  <td class="border border-slate-200 p-3 text-slate-800 font-medium">油田</td>
+                  <td class="border border-slate-200 p-3 text-slate-600">油田集输管、污水管，原油、成品油输送管，油井注入聚合物管道，卤水处理管等。特别适用于含硫的油、气、水等介质输送。</td>
+                </tr>
+                <tr>
+                  <td class="border border-slate-200 p-3 text-slate-800 font-medium">市政建设</td>
+                  <td class="border border-slate-200 p-3 text-slate-600">城市给排水，天然气和煤气输送。</td>
+                </tr>
+                <tr class="bg-slate-50/50">
+                  <td class="border border-slate-200 p-3 text-slate-800 font-medium">船舶</td>
+                  <td class="border border-slate-200 p-3 text-slate-600">船上污水管、给排水管、压舱水管等生活管系和结构管系。</td>
+                </tr>
+                <tr>
+                  <td class="border border-slate-200 p-3 text-slate-800 font-medium">矿山</td>
+                  <td class="border border-slate-200 p-3 text-slate-600">矿浆输送管、工程用井管、泵送用管。</td>
+                </tr>
+                <tr class="bg-slate-50/50">
+                  <td class="border border-slate-200 p-3 text-slate-800 font-medium">农业</td>
+                  <td class="border border-slate-200 p-3 text-slate-600">用于深井管、滤水管、旱地灌溉用管、暗渠排水管等。</td>
+                </tr>
+                <tr>
+                  <td class="border border-slate-200 p-3 text-slate-800 font-medium">海水输送</td>
+                  <td class="border border-slate-200 p-3 text-slate-600">用于海水淡化厂、海边电厂、海港城市的海水输送。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `
       },
       {
         title: '外定径钢骨架增强聚乙烯复合管',

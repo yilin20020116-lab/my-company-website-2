@@ -4,9 +4,9 @@ import { ArrowRight, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const HERO_SLIDES = [
-  "https://picsum.photos/seed/industrial-hero/1920/1080",
-  "https://picsum.photos/seed/pipeline-hero/1920/1080",
-  "https://picsum.photos/seed/construction-hero/1920/1080"
+  "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E9%A6%96%E9%A1%B5%E5%9B%BE/%E5%85%B4%E6%AC%A3%E9%97%A8%E5%A4%B4%E8%B6%85%E9%AB%98%E6%B8%85%E4%BF%AE%E5%A4%8D.png",
+  "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E9%A6%96%E9%A1%B5%E5%9B%BE/1920x1080%E5%9B%BE%E7%89%87.png",
+  "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E9%A6%96%E9%A1%B5%E5%9B%BE/1920x1080%E5%9B%BE%E7%89%87%20(1).png"
 ];
 
 export default function Hero() {
@@ -39,13 +39,13 @@ export default function Hero() {
         <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
       </div>
 
-      <div className="relative z-10 max-w-[1600px] mx-auto px-6 md:px-12 lg:px-16 w-full">
-        <div className="grid lg:grid-cols-12 gap-12 items-center">
+      <div className="relative z-10 max-w-[1600px] mx-auto px-6 md:px-12 lg:px-16 w-full mt-20 lg:mt-32">
+        <div className="grid lg:grid-cols-12 gap-12 items-end">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="lg:col-span-8"
+            className="lg:col-span-6"
           >
             <div className="flex items-center gap-4 mb-8">
               <div className="h-[2px] w-12 bg-brand-orange" />
@@ -81,29 +81,29 @@ export default function Hero() {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="lg:col-span-4 hidden lg:block"
+            className="lg:col-span-6 hidden lg:block"
           >
-            <div className="glass p-10 rounded-xl space-y-10">
-              <div className="flex items-start gap-4">
-                <div className="text-brand-orange font-display font-bold text-4xl">30+</div>
-                <div>
-                  <div className="text-white font-bold mb-1">行业经验</div>
-                  <div className="text-white/60 text-xs">深耕管道行业三十载</div>
-                </div>
+            <div className="glass p-8 rounded-xl flex items-center justify-between gap-6 shadow-xl shadow-black/5">
+              <div className="flex flex-col">
+                <div className="text-brand-orange font-display font-bold text-4xl md:text-5xl mb-2">30+</div>
+                <div className="text-slate-900 font-bold mb-1">行业经验</div>
+                <div className="text-slate-600 text-xs line-clamp-1">深耕管道行业三十载</div>
               </div>
-              <div className="flex items-start gap-4">
-                <div className="text-brand-orange font-display font-bold text-4xl">5w</div>
-                <div>
-                  <div className="text-white font-bold mb-1">年产能</div>
-                  <div className="text-white/60 text-xs">年产能可达5万吨以上</div>
-                </div>
+              
+              <div className="w-px h-16 bg-slate-200 hidden md:block" />
+              
+              <div className="flex flex-col">
+                <div className="text-brand-orange font-display font-bold text-4xl md:text-5xl mb-2">5w</div>
+                <div className="text-slate-900 font-bold mb-1">年产能</div>
+                <div className="text-slate-600 text-xs line-clamp-1">可达5万吨以上</div>
               </div>
-              <div className="flex items-start gap-4">
-                <div className="text-brand-orange font-display font-bold text-4xl">4</div>
-                <div>
-                  <div className="text-white font-bold mb-1">研发平台</div>
-                  <div className="text-white/60 text-xs">拥有四个省级研发平台</div>
-                </div>
+              
+              <div className="w-px h-16 bg-slate-200 hidden md:block" />
+              
+              <div className="flex flex-col">
+                <div className="text-brand-orange font-display font-bold text-4xl md:text-5xl mb-2">4</div>
+                <div className="text-slate-900 font-bold mb-1">研发平台</div>
+                <div className="text-slate-600 text-xs line-clamp-1">省级特新研发中心</div>
               </div>
             </div>
           </motion.div>
