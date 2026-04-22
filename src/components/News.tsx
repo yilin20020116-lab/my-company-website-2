@@ -43,7 +43,7 @@ export default function News() {
         LATEST
       </div>
       
-      <div className="max-w-7xl mx-auto relative z-10 px-6">
+      <div className="max-w-[1600px] mx-auto relative z-10 px-6 md:px-12 lg:px-16">
         <div className="grid lg:grid-cols-3 gap-6 items-stretch">
           {/* Company News (Main) */}
           <div className="lg:col-span-2 flex flex-col">

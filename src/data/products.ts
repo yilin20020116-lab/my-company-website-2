@@ -139,8 +139,8 @@ export const productData = [
                 </div>
               </div>
             </div>
-            <div class="w-full md:w-[45%] lg:w-[40%] flex items-center justify-center">
-              <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E5%86%85%E5%AE%9A%E5%BE%84%E9%92%A2%E9%AA%A8%E6%9E%B6%E5%A2%9E%E5%BC%BA%E8%81%9A%E4%B9%99%E7%83%AF%E5%A4%8D%E5%90%88%E7%AE%A1.png" alt="内定径钢骨架复合管结构图" class="w-full max-h-[360px] rounded-2xl shadow-lg border border-slate-100 object-contain bg-white p-8 hover:scale-[1.02] transition-transform duration-500" />
+            <div class="flex-1 flex items-center justify-center">
+              <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E5%86%85%E5%AE%9A%E5%BE%84%E9%92%A2%E9%AA%A8%E6%9E%B6%E5%A2%9E%E5%BC%BA%E8%81%9A%E4%B9%99%E7%83%AF%E5%A4%8D%E5%90%88%E7%AE%A1%E8%AF%A6%E6%83%85%E9%A1%B5%E5%9B%BE%E7%89%87.jpg" alt="内定径钢骨架复合管结构图" class="w-full h-full min-h-[300px] object-cover rounded-2xl shadow-lg border border-slate-100 bg-white p-8 hover:scale-[1.02] transition-transform duration-500" />
             </div>
           </div>
           

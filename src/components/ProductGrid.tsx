@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { Link } from 'react-router-dom';
 import { CheckCircle2, Layers } from 'lucide-react';
 
 interface ProductItem {
@@ -47,7 +48,7 @@ export default function ProductGrid({ data }: ProductGridProps) {
                     transition={{ duration: 0.6 }}
                     className={`w-full md:w-[600px] mb-10 md:mb-0 md:absolute md:top-0 md:bottom-0 md:my-auto md:h-[460px] z-0 ${isEven ? 'md:left-[-110px]' : 'md:right-[-119px]'}`}
                   >
-                    <a href={`/product/${encodeURIComponent(product.title)}`} className="block relative group overflow-hidden rounded-xl shadow-2xl h-full cursor-pointer">
+                    <Link to={`/product/${encodeURIComponent(product.title)}`} state={{ fromProducts: true }} className="block relative group overflow-hidden rounded-xl shadow-2xl h-full cursor-pointer">
                       <img 
                         src={product.image} 
                         alt={product.title} 
@@ -58,7 +59,7 @@ export default function ProductGrid({ data }: ProductGridProps) {
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-brand-blue/20 backdrop-blur-[2px]">
                         <span className="bg-brand-orange text-white px-6 py-3 rounded-full font-bold tracking-widest shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">查看详情</span>
                       </div>
-                    </a>
+                    </Link>
                   </motion.div>
 
                   {/* Text Content */}
@@ -69,9 +70,9 @@ export default function ProductGrid({ data }: ProductGridProps) {
                       viewport={{ once: true }}
                       transition={{ duration: 0.6, delay: 0.1 }}
                     >
-                      <a href={`/product/${encodeURIComponent(product.title)}`} className={`block text-[24px] md:text-[28px] font-bold mb-[16px] ${isEven ? 'text-white' : 'text-slate-800'} whitespace-nowrap tracking-tight hover:text-brand-orange transition-colors`}>
+                      <Link to={`/product/${encodeURIComponent(product.title)}`} state={{ fromProducts: true }} className={`block text-[24px] md:text-[28px] font-bold mb-[16px] ${isEven ? 'text-white' : 'text-slate-800'} whitespace-nowrap tracking-tight hover:text-brand-orange transition-colors`}>
                         {product.title}
-                      </a>
+                      </Link>
                       <div className={`w-12 h-1 mb-8 ${isEven ? 'bg-white/50' : 'bg-[#e58a44]'}`}></div>
                     </motion.h3>
                     
@@ -113,8 +114,9 @@ export default function ProductGrid({ data }: ProductGridProps) {
                         </p>
                       </div>
                       
-                      <a 
-                        href={`/product/${encodeURIComponent(product.title)}`} 
+                      <Link 
+                        to={`/product/${encodeURIComponent(product.title)}`} 
+                        state={{ fromProducts: true }}
                         className={`inline-flex items-center justify-center mt-[30px] px-[32px] py-[12px] rounded-full text-[15px] font-medium transition-all duration-300 ${
                           isEven 
                             ? 'bg-white text-[#559bd9] hover:bg-transparent hover:text-white border-2 border-white' 
@@ -123,7 +125,7 @@ export default function ProductGrid({ data }: ProductGridProps) {
                       >
                         产品详情
                         <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-                      </a>
+                      </Link>
                     </motion.div>
                   </div>
                   

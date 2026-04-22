@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ChevronRight, Home, ArrowLeft, CheckCircle2, Layers, ShieldCheck, Box, Settings } from 'lucide-react';
 import { productData } from '../data/products';
@@ -7,8 +7,13 @@ import { productData } from '../data/products';
 export default function ProductDetailPage() {
   const { productTitle } = useParams<{ productTitle: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const [product, setProduct] = useState<any>(null);
   const [category, setCategory] = useState<any>(null);
+
+  // Determine where the user came from
+  const isFromHome = location.state?.fromHome;
+  const isFromProducts = location.state?.fromProducts;
 
   useEffect(() => {
     if (!productTitle) {
@@ -41,7 +46,7 @@ export default function ProductDetailPage() {
   if (!product || !category) return <div className="min-h-screen pt-20 flex items-center justify-center">Loading...</div>;
 
   return (
-    <div className="pt-[72px] bg-slate-50 min-h-screen pb-20">
+    <div className="pt-[140px] bg-slate-50 min-h-screen pb-20">
       
       {/* Breadcrumb Navigation */}
       <div className="bg-white border-b border-slate-200">
@@ -50,20 +55,50 @@ export default function ProductDetailPage() {
             <Home size={16} /> 首页
           </Link>
           <ChevronRight size={16} className="text-slate-400 mx-2" />
-          <Link to="/products" className="text-slate-500 hover:text-brand-blue transition-colors">
-            产品中心
-          </Link>
-          <ChevronRight size={16} className="text-slate-400 mx-2" />
-          <Link to={`/products/${category.id}`} className="text-slate-500 hover:text-brand-blue transition-colors">
-            {category.category}
-          </Link>
-          <ChevronRight size={16} className="text-slate-400 mx-2" />
+          
+          {isFromHome ? (
+            <>
+              <span className="text-slate-500">
+                产品详情
+              </span>
+              <ChevronRight size={16} className="text-slate-400 mx-2" />
+            </>
+          ) : (
+            <>
+              <Link to="/products" className="text-slate-500 hover:text-brand-blue transition-colors">
+                产品中心
+              </Link>
+              <ChevronRight size={16} className="text-slate-400 mx-2" />
+              <Link to={`/products/${category.id}`} className="text-slate-500 hover:text-brand-blue transition-colors">
+                {category.category}
+              </Link>
+              <ChevronRight size={16} className="text-slate-400 mx-2" />
+            </>
+          )}
+
           <span className="text-brand-blue font-medium">{product.title}</span>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 mt-10 text-slate-800">
+      <div className="max-w-7xl mx-auto px-6 mt-6 md:mt-10 text-slate-800">
         
+        {/* Back Button */}
+        <button 
+          onClick={() => {
+            if (isFromHome) {
+              navigate('/');
+            } else if (isFromProducts) {
+              navigate(-1); // or /products
+            } else {
+              navigate(-1);
+            }
+          }} 
+          className="flex items-center gap-2 text-slate-500 hover:text-brand-blue transition-colors mb-6 group w-fit"
+        >
+          <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
+          返回上一步
+        </button>
+
         {/* Top Section: Image & Basic Info */}
         <div className="bg-white rounded-3xl p-6 md:p-10 shadow-xl shadow-brand-blue/5 overflow-hidden flex flex-col md:flex-row gap-10 lg:gap-16 border border-slate-100">
           

@@ -109,34 +109,14 @@ export default function NewsPage() {
   if (activeTab === 'technical') currentNews = technicalKnowledge;
 
   return (
-    <div className="pt-20 bg-[#f8f9fa] min-h-screen">
+    <div className="pt-[140px] bg-[#f8f9fa] min-h-screen">
       {/* Banner */}
-      <section className="relative h-[400px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <img src="https://picsum.photos/seed/newsbanner/1920/600" alt="新闻中心" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-          <div className="absolute inset-0 bg-[#559bd9]/80 mix-blend-multiply"></div>
-        </div>
-        <div className="relative z-10 text-center text-white">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-5xl font-bold mb-4 tracking-wider"
-          >
-            新闻中心
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-lg text-white/90 uppercase tracking-[0.2em]"
-          >
-            News Center
-          </motion.p>
-        </div>
+      <section className="w-full relative line-height-0 block">
+        <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81banner.jpg" alt="新闻中心" className="w-full h-auto block" referrerPolicy="no-referrer" />
       </section>
 
       {/* Navigation Tabs */}
-      <div className="bg-white shadow-sm sticky top-20 z-30">
+      <div className="bg-white shadow-sm sticky top-[72px] z-30">
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="flex justify-center">
             <button

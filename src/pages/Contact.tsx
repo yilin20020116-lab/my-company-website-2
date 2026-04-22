@@ -4,12 +4,12 @@ import { MapPin, Phone, Mail, Clock, ShieldCheck, HeadphonesIcon, Globe } from '
 
 export default function ContactPage() {
   return (
-    <div className="pt-20 bg-slate-50 min-h-screen">
+    <div className="pt-[140px] bg-slate-50 min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[400px] md:h-[500px] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[300px] md:h-[400px] lg:h-[450px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src="./联系我们banner.png" alt="联系方式" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-brand-blue/60 mix-blend-multiply"></div>
+          <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E5%85%AC%E5%8F%B8%E5%A4%A7%E9%97%A8%E5%8F%A3%E5%A4%A7%E6%99%AF.png" alt="联系方式" className="w-full h-full object-cover object-center" referrerPolicy="no-referrer" />
+          <div className="absolute inset-0 bg-slate-900/40"></div>
         </div>
         <div className="relative z-10 text-center text-white px-6">
           <motion.h1 
@@ -29,7 +29,7 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto"
+            className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto drop-shadow-md"
           >
             感谢您对兴欣科技的信任与支持，我们随时为您提供专业、高效的服务。
           </motion.p>

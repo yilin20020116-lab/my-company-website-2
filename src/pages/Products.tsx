@@ -34,11 +34,9 @@ export default function ProductsPage() {
   }, [categoryId, location.hash, navigate]);
 
   return (
-    <div className="pt-20">
-      <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/Snipaste_2026-04-16_16-53-03.png" alt="产品中心" className="w-full h-full object-cover" />
-        </div>
+    <div className="pt-[140px]">
+      <section className="w-full relative line-height-0 block">
+        <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E4%BA%A7%E5%93%81%E4%B8%AD%E5%BF%83banner.jpg" alt="产品中心" className="w-full h-auto block" referrerPolicy="no-referrer" />
       </section>
 
       {/* Secondary Navigation */}

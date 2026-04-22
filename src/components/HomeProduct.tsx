@@ -185,7 +185,7 @@ export default function HomeProduct() {
               <div className="space-y-5">
                 <div className="h-1.5 w-16 bg-brand-blue rounded-full" />
                 <h3 className="text-2xl font-bold text-slate-800 leading-tight hover:text-brand-orange transition-colors">
-                  <Link to={`/product/${encodeURIComponent(currentItem.title)}`}>
+                  <Link to={`/product/${encodeURIComponent(currentItem.title)}`} state={{ fromHome: true }}>
                     {currentItem.title}
                   </Link>
                 </h3>
@@ -201,7 +201,7 @@ export default function HomeProduct() {
                   ))}
                 </div>
                 
-                <Link to={`/product/${encodeURIComponent(currentItem.title)}`} className="inline-flex mt-4 text-brand-orange font-bold text-[15px] items-center gap-2 hover:gap-3 transition-all duration-300">
+                <Link to={`/product/${encodeURIComponent(currentItem.title)}`} state={{ fromHome: true }} className="inline-flex mt-4 text-brand-orange font-bold text-[15px] items-center gap-2 hover:gap-3 transition-all duration-300">
                   产品详情 <ArrowRight size={16} />
                 </Link>
               </div>
@@ -231,7 +231,7 @@ export default function HomeProduct() {
             </div>
 
             {/* Product Image - Large */}
-            <Link to={`/product/${encodeURIComponent(currentItem.title)}`} className="relative z-20 w-full h-full flex items-center justify-center p-8 group cursor-pointer block">
+            <Link to={`/product/${encodeURIComponent(currentItem.title)}`} state={{ fromHome: true }} className="relative z-20 w-full h-full flex items-center justify-center p-8 group cursor-pointer block">
               <img 
                 key={currentItem.image}
                 src={currentItem.image} 
