@@ -78,9 +78,15 @@ export default function Qualifications() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ duration: 0.3 }}
-                    className="group bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all"
+                    className={cn(
+                      "group bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all",
+                      item.orientation === 'landscape' ? "col-span-1 md:col-span-2 lg:col-span-2" : "col-span-1"
+                    )}
                   >
-                    <div className="aspect-[3/4] overflow-hidden rounded-xl bg-slate-50 mb-4 relative">
+                    <div className={cn(
+                      "overflow-hidden rounded-xl bg-slate-50 mb-4 relative",
+                      item.orientation === 'landscape' ? "aspect-video" : "aspect-[3/4]"
+                    )}>
                       <img
                         src={item.imageUrl}
                         alt={item.title}

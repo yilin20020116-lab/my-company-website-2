@@ -12,7 +12,8 @@ import {
   Plus, 
   Trash2, 
   Save, 
-  Image as ImageIcon 
+  Image as ImageIcon,
+  Pencil
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
@@ -249,13 +250,51 @@ export default function AdminPage() {
               )}
 
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">图片</label>
+                <label className="block text-sm font-bold text-slate-700 mb-2">图片 (上传或粘贴链接)</label>
+                <div className="flex gap-4 mb-4">
+                  <input 
+                    type="text" 
+                    placeholder="可在此直接粘贴图片 URL 链接" 
+                    value={formData.imageUrl || ''} 
+                    onChange={e => setFormData({...formData, imageUrl: e.target.value})} 
+                    className="flex-grow px-4 py-2 border rounded-lg text-sm"
+                  />
+                </div>
                 {formData.imageUrl && (
-                  <div className="mb-4 aspect-video rounded-lg overflow-hidden border">
-                    <img src={formData.imageUrl} className="w-full h-full object-cover" alt="preview" />
+                  <div className="mb-4 aspect-video rounded-lg overflow-hidden border bg-slate-50 relative group">
+                    <img src={formData.imageUrl} className="w-full h-full object-cover" alt="preview" onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/600x400?text=Invalid+Image+URL'; }} />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                       <span className="text-white text-xs">当前预览</span>
+                    </div>
                   </div>
                 )}
-                <ImageUploader onUpload={(url) => setFormData({...formData, imageUrl: url})} folder={activeTab} />
+                <ImageUploader 
+                  onUpload={(url, orientation) => setFormData({...formData, imageUrl: url, orientation: orientation})} 
+                  folder={activeTab} 
+                />
+                <div className="mt-4 flex gap-4">
+                  <button 
+                    type="button" 
+                    onClick={() => setFormData({...formData, orientation: 'landscape'})}
+                    className={cn(
+                      "px-4 py-2 border rounded-lg text-xs font-bold transition-all",
+                      formData.orientation === 'landscape' ? "bg-brand-blue text-white" : "bg-white text-slate-600"
+                    )}
+                  >
+                    横版布局
+                  </button>
+                  <button 
+                    type="button" 
+                    onClick={() => setFormData({...formData, orientation: 'portrait'})}
+                    className={cn(
+                      "px-4 py-2 border rounded-lg text-xs font-bold transition-all",
+                      formData.orientation === 'portrait' ? "bg-brand-blue text-white" : "bg-white text-slate-600"
+                    )}
+                  >
+                    竖版布局
+                  </button>
+                </div>
+                <p className="text-[10px] text-slate-400 mt-2">提示：上传图片会自动检测版式，您也可以手动切换。</p>
               </div>
 
               <button 
@@ -277,9 +316,15 @@ export default function AdminPage() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
-                  className="bg-white rounded-2xl border p-4 shadow-sm group hover:shadow-md transition-all"
+                  className={cn(
+                    "bg-white rounded-2xl border p-4 shadow-sm group hover:shadow-md transition-all",
+                    item.orientation === 'landscape' ? "md:col-span-2" : "col-span-1"
+                  )}
                 >
-                  <div className="aspect-video rounded-xl overflow-hidden mb-4 bg-slate-50 border relative">
+                  <div className={cn(
+                    "rounded-xl overflow-hidden mb-4 bg-slate-50 border relative",
+                    item.orientation === 'landscape' ? "aspect-video" : "aspect-[3/4]"
+                  )}>
                     {item.imageUrl ? (
                       <img src={item.imageUrl} className="w-full h-full object-cover" alt="" />
                     ) : (
@@ -290,11 +335,19 @@ export default function AdminPage() {
                   </div>
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="font-bold text-lg text-slate-900 line-clamp-1">{item.title || item.name}</h3>
-                    <div className="flex gap-2">
-                      <button onClick={() => { setIsEditing(item.id); setFormData(item); }} className="p-2 text-slate-400 hover:text-brand-blue transition-colors">
-                        <ImageIcon size={18} />
+                    <div className="flex gap-1">
+                      <button 
+                        onClick={() => { setIsEditing(item.id); setFormData(item); }} 
+                        className="p-2 text-slate-400 hover:text-brand-blue hover:bg-brand-blue/5 rounded-lg transition-all"
+                        title="编辑"
+                      >
+                        <Pencil size={18} />
                       </button>
-                      <button onClick={() => handleDelete(item.id)} className="p-2 text-slate-400 hover:text-red-500 transition-colors">
+                      <button 
+                        onClick={() => handleDelete(item.id)} 
+                        className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                        title="删除"
+                      >
                         <Trash2 size={18} />
                       </button>
                     </div>

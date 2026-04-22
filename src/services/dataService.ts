@@ -1,115 +1,39 @@
-import { 
-  collection, 
-  getDocs, 
-  query, 
-  where, 
-  orderBy, 
-  addDoc, 
-  updateDoc, 
-  deleteDoc, 
-  doc,
-  Timestamp
-} from 'firebase/firestore';
-import { db } from '../lib/firebase';
+import axios from 'axios';
 
-export interface NewsItem {
-  id: string;
-  title: string;
-  content: string;
-  date: string;
-  category: string;
-  imageUrl?: string;
-  summary?: string;
-  createdAt?: any;
-}
-
-export interface ProductItem {
-  id: string;
-  name: string;
-  category: string;
-  description: string;
-  specifications?: string;
-  imageUrl?: string;
-  features?: string[];
-}
-
-export interface ProjectCase {
-  id: string;
-  title: string;
-  location?: string;
-  date?: string;
-  description?: string;
-  imageUrl: string;
-  category?: string;
-}
-
-export interface QualificationItem {
-  id: string;
-  title: string;
-  category: string;
-  year: string;
-  imageUrl: string;
-}
-
-export interface BannerConfig {
-  id: string;
-  pageId: string;
-  imageUrl: string;
-  title: string;
-  subtitle: string;
-  alignment: 'top' | 'center' | 'bottom';
-}
-
-// Generic fetcher
-async function fetchCollection<T>(collectionName: string): Promise<T[]> {
-  const colRef = collection(db, collectionName);
-  const snapshot = await getDocs(colRef);
-  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as T[];
-}
+// Interfaces remain same for compatibility
+export interface NewsItem { id: string; title: string; content: string; date: string; category: string; imageUrl?: string; summary?: string; orientation?: 'landscape' | 'portrait'; }
+export interface ProductItem { id: string; name: string; category: string; description: string; specifications?: string; imageUrl?: string; features?: string[]; orientation?: 'landscape' | 'portrait'; }
+export interface ProjectCase { id: string; title: string; location?: string; date?: string; description?: string; imageUrl: string; category?: string; orientation?: 'landscape' | 'portrait'; }
+export interface QualificationItem { id: string; title: string; category: string; year: string; imageUrl: string; orientation?: 'landscape' | 'portrait'; }
 
 export const DataService = {
-  // News
   async getNews(): Promise<NewsItem[]> {
-    const q = query(collection(db, 'news'), orderBy('date', 'desc'));
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as NewsItem[];
+    const res = await axios.get('/api/data/news');
+    return res.data;
   },
-
-  // Products
   async getProducts(): Promise<ProductItem[]> {
-    return fetchCollection<ProductItem>('products');
+    const res = await axios.get('/api/data/products');
+    return res.data;
   },
-
-  // Project Cases
   async getProjectCases(): Promise<ProjectCase[]> {
-    return fetchCollection<ProjectCase>('projectCases');
+    const res = await axios.get('/api/data/cases');
+    return res.data;
   },
-
-  // Qualifications
   async getQualifications(): Promise<QualificationItem[]> {
-    return fetchCollection<QualificationItem>('qualifications');
+    const res = await axios.get('/api/data/qualifications');
+    return res.data;
   },
-
-  // Banners
-  async getBanner(pageId: string): Promise<BannerConfig | null> {
-    const q = query(collection(db, 'banners'), where('pageId', '==', pageId));
-    const snapshot = await getDocs(q);
-    if (snapshot.empty) return null;
-    return { id: snapshot.docs[0].id, ...snapshot.docs[0].data() } as BannerConfig;
-  },
-
-  // Admin Write Operations (Self-explanatory)
   async addItem(col: string, data: any) {
-    return addDoc(collection(db, col), { ...data, createdAt: Timestamp.now() });
+    const collection = col === 'projectCases' ? 'cases' : col;
+    const res = await axios.post(`/api/data/${collection}`, data);
+    return res.data;
   },
-  
   async updateItem(col: string, id: string, data: any) {
-    const docRef = doc(db, col, id);
-    return updateDoc(docRef, data);
+    const collection = col === 'projectCases' ? 'cases' : col;
+    return axios.put(`/api/data/${collection}/${id}`, data); 
   },
-  
   async deleteItem(col: string, id: string) {
-    const docRef = doc(db, col, id);
-    return deleteDoc(docRef);
+    const collection = col === 'projectCases' ? 'cases' : col;
+    return axios.delete(`/api/data/${collection}/${id}`);
   }
 };

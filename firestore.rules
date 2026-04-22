@@ -19,10 +19,10 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
-    // Admins collection - only existing admins can add new ones
+    // Admins collection - allow the owner to bootstrap themselves
     match /admins/{userId} {
       allow read: if isSignedIn();
-      allow write: if isAdmin();
+      allow write: if isAdmin() || (request.auth.uid == userId && request.auth.token.email == 'yilin20020116@gmail.com');
     }
 
     // News rules
