@@ -238,6 +238,12 @@ export default function HomeProduct() {
                 alt={currentItem.title} 
                 className="max-w-[110%] max-h-[110%] object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.3)] transition-transform duration-700 group-hover:scale-105"
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  if (!target.src.includes('raw.githubusercontent')) {
+                    target.src = 'https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E9%A6%96%E9%A1%B5%E5%9B%BE/%E5%A4%9A%E9%87%8D%E5%A2%9E%E5%BC%BA%E9%92%A2%E5%A1%91%E5%A4%8D%E5%90%88%E5%8E%8B%E5%8A%9B%E7%AE%A1.png';
+                  }
+                }}
               />
             </Link>
           </div>
