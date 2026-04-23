@@ -39,12 +39,31 @@ const upload = multer({ storage: multer.memoryStorage() });
 // Cloudflare R2 Client (S3 Compatible)
 const s3 = new S3Client({
   region: "auto",
-  endpoint: process.env.CLOUDFLARE_R2_ENDPOINT || "https://788e4a5662f133de6df2ddddfa3c13fe.r2.cloudflarestorage.com",
+  endpoint: process.env.CLOUDFLARE_R2_ENDPOINT,
   credentials: {
-    accessKeyId: process.env.CLOUDFLARE_R2_ACCESS_KEY_ID || "b5839c93c5e0f1df0f5b7c8de50b472c",
-    secretAccessKey: process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY || "4a8eeac21672864e7f7d7cb2e75241b20a05847a7ab243ffdfde92445ef85a1e",
+    accessKeyId: process.env.CLOUDFLARE_R2_ACCESS_KEY_ID || "",
+    secretAccessKey: process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY || "",
   },
 });
+
+// Safe diagnostic for R2 config (only shows first/last chars)
+console.log("--- R2 Environment Check ---");
+const checkKey = (name: string, val: string | undefined) => {
+  if (!val) {
+    console.error(`❌ ${name} is MISSING!`);
+  } else {
+    const masked = val.length > 8 
+      ? `${val.substring(0, 4)}...${val.substring(val.length - 4)}`
+      : "****";
+    console.log(`✅ ${name} detected: ${masked} (Length: ${val.length})`);
+  }
+};
+
+checkKey("ENDPOINT", process.env.CLOUDFLARE_R2_ENDPOINT);
+checkKey("ACCESS_KEY_ID", process.env.CLOUDFLARE_R2_ACCESS_KEY_ID);
+checkKey("SECRET_ACCESS_KEY", process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY);
+checkKey("BUCKET_NAME", process.env.CLOUDFLARE_R2_BUCKET_NAME);
+console.log("----------------------------");
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
@@ -71,9 +90,18 @@ app.post("/api/upload", upload.single("image"), async (req: any, res: any) => {
 
     const imageUrl = `${PUBLIC_URL}/${fileName}`;
     res.json({ url: imageUrl });
-  } catch (error) {
+  } catch (error: any) {
     console.error("R2 Upload Error:", error);
-    res.status(500).json({ error: "Upload failed" });
+    
+    // Check for specific AWS SDK authentication errors
+    if (error.name === "Unauthorized" || error.name === "InvalidAccessKeyId" || error.name === "SignatureDoesNotMatch") {
+      return res.status(500).json({ 
+        error: "R2 Authentication Failed", 
+        details: "Please check your R2 Credentials (Access Key and Secret Key) in environment variables." 
+      });
+    }
+    
+    res.status(500).json({ error: "Upload failed", details: error.message });
   }
 });
 
