@@ -89,10 +89,9 @@ export default function Navbar() {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-4">
           <img 
-            src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E5%85%B4%E6%AC%A3logo%E6%A0%872.png" 
+            src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E5%85%B4%E6%AC%A3logo%E6%A0%872.png" 
             alt="湖北兴欣科技" 
             className="h-[130px] w-auto object-contain" 
-            referrerPolicy="no-referrer"
           />
           <div className="flex flex-col mt-2.5">
             <span className={cn(

@@ -27,7 +27,7 @@ service cloud.firestore {
 
     // News rules
     match /news/{newsId} {
-      allow read: if true;
+      allow read: if true; // Publicly readable
       allow write: if isAdmin();
     }
 
@@ -37,8 +37,8 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // Cases rules (Match server.ts 'cases' name)
-    match /cases/{caseId} {
+    // Project Cases rules
+    match /projectCases/{caseId} {
       allow read: if true;
       allow write: if isAdmin();
     }
@@ -49,16 +49,10 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // Settings rules
-    match /settings/{settingId} {
+    // Banners rules
+    match /banners/{bannerId} {
       allow read: if true;
       allow write: if isAdmin();
-    }
-
-    // Messages rules
-    match /messages/{messageId} {
-      allow create: if true; // Allow anyone to send a message
-      allow read, delete: if isAdmin(); // Only admins can see/delete messages
     }
   }
 }

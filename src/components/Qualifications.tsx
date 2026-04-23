@@ -68,49 +68,44 @@ export default function Qualifications() {
             </div>
           ) : (
             <AnimatePresence mode="wait">
-              {Array.isArray(items) && items.length > 0 ? (
-                items
-                  .filter((item) => item.category === activeTab)
-                  .sort((a, b) => {
-                    if (a.orientation === 'landscape' && b.orientation !== 'landscape') return -1;
-                    if (a.orientation !== 'landscape' && b.orientation === 'landscape') return 1;
-                    const yearA = parseInt(a.year || '0') || 0;
-                    const yearB = parseInt(b.year || '0') || 0;
-                    return yearB - yearA;
-                  })
-                  .map((item) => (
-                    <motion.div
-                      key={item.id}
-                      layout
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      transition={{ duration: 0.3 }}
-                      className="group bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all col-span-1"
-                    >
-                      <div className={cn(
-                        "overflow-hidden rounded-xl bg-slate-50 mb-4 relative",
-                        item.orientation === 'landscape' ? "aspect-video" : "aspect-[3/4]"
-                      )}>
-                        <img
-                          src={item.imageUrl}
-                          alt={item.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          referrerPolicy="no-referrer"
-                          onError={(e) => {
-                            console.error('资质图片加载失败:', item.imageUrl);
-                            (e.target as HTMLImageElement).src = 'https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E8%8D%A3%E8%AA%89%E8%B5%84%E8%B4%A8banner.png';
-                          }}
-                        />
-                        <div className="absolute inset-0 bg-brand-blue/0 group-hover:bg-brand-blue/10 transition-colors" />
-                      </div>
-                      <h4 className="text-sm font-bold text-slate-900 mb-1 line-clamp-1">{item.title}</h4>
-                      <p className="text-[10px] text-slate-400 font-mono uppercase tracking-widest">{item.year} EDITION</p>
-                    </motion.div>
-                  ))
-              ) : !loading ? (
-                <div className="col-span-full py-10 text-center text-slate-400">暂无资质荣誉数据</div>
-              ) : null}
+              {items
+                .filter((item) => item.category === activeTab)
+                .sort((a, b) => {
+                  // Primary sort: orientation (landscape first, then portrait)
+                  if (a.orientation === 'landscape' && b.orientation !== 'landscape') return -1;
+                  if (a.orientation !== 'landscape' && b.orientation === 'landscape') return 1;
+                  
+                  // Secondary sort: year (descending)
+                  const yearA = parseInt(a.year || '0') || 0;
+                  const yearB = parseInt(b.year || '0') || 0;
+                  return yearB - yearA;
+                })
+                .map((item) => (
+                  <motion.div
+                    key={item.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.3 }}
+                    className="group bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all col-span-1"
+                  >
+                    <div className={cn(
+                      "overflow-hidden rounded-xl bg-slate-50 mb-4 relative",
+                      item.orientation === 'landscape' ? "aspect-video" : "aspect-[3/4]"
+                    )}>
+                      <img
+                        src={item.imageUrl}
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute inset-0 bg-brand-blue/0 group-hover:bg-brand-blue/10 transition-colors" />
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 mb-1 line-clamp-1">{item.title}</h4>
+                    <p className="text-[10px] text-slate-400 font-mono uppercase tracking-widest">{item.year} EDITION</p>
+                  </motion.div>
+                ))}
             </AnimatePresence>
           )}
         </div>

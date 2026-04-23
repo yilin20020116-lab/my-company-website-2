@@ -35,68 +35,36 @@ export interface SiteSettings {
 
 export const DataService = {
   async getSettings(): Promise<SiteSettings> {
-    try {
-      const res = await axios.get('/api/settings');
-      if (typeof res.data === 'string' || !res.data) throw new Error('Invalid response');
-      return res.data;
-    } catch (e) {
-      console.warn('Using default settings due to error:', e);
-      return {
-        heroBanners: [
-          "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E9%A6%96%E9%A1%B5%E5%9B%BE/%E5%85%B4%E6%AC%A3%E9%97%A8%E5%A4%B4%E8%B6%85%E9%AB%98%E6%B8%85%E4%BF%AE%E5%A4%8D.png",
-          "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E9%A6%96%E9%A1%B5%E5%9B%BE/1920x1080%E5%9B%BE%E7%89%87.png",
-          "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E9%A6%96%E9%A1%B5%E5%9B%BE/1920x1080%E5%9B%BE%E7%89%87%20(1).png"
-        ],
-        heroTitle: "精益求精 \n滴水不漏",
-        heroSubtitle: "湖北兴欣科技股份有限公司，致力于成为全球领先的管道系统解决方案服务商。以科技创新驱动，筑就城市生命线。",
-        pageBanners: {
-          products: "",
-          cases: "",
-          qualifications: "",
-          news: ""
-        }
-      } as SiteSettings;
-    }
+    const res = await axios.get('/api/settings');
+    return res.data;
   },
   async updateSettings(data: any): Promise<SiteSettings> {
     const res = await axios.put('/api/settings', data);
     return res.data;
   },
   async getProductCategories(): Promise<any[]> {
-    try {
-      const res = await axios.get('/api/data/productCategories');
-      return Array.isArray(res.data) ? res.data : [];
-    } catch (e) { return []; }
+    const res = await axios.get('/api/data/productCategories');
+    return res.data;
   },
   async getNews(): Promise<NewsItem[]> {
-    try {
-      const res = await axios.get('/api/data/news');
-      return Array.isArray(res.data) ? res.data : [];
-    } catch (e) { return []; }
+    const res = await axios.get('/api/data/news');
+    return res.data;
   },
   async getProducts(): Promise<ProductItem[]> {
-    try {
-      const res = await axios.get('/api/data/products');
-      return Array.isArray(res.data) ? res.data : [];
-    } catch (e) { return []; }
+    const res = await axios.get('/api/data/products');
+    return res.data;
   },
   async getProjectCases(): Promise<ProjectCase[]> {
-    try {
-      const res = await axios.get('/api/data/cases');
-      return Array.isArray(res.data) ? res.data : [];
-    } catch (e) { return []; }
+    const res = await axios.get('/api/data/cases');
+    return res.data;
   },
   async getQualifications(): Promise<QualificationItem[]> {
-    try {
-      const res = await axios.get('/api/data/qualifications');
-      return Array.isArray(res.data) ? res.data : [];
-    } catch (e) { return []; }
+    const res = await axios.get('/api/data/qualifications');
+    return res.data;
   },
   async getMessages(): Promise<any[]> {
-    try {
-      const res = await axios.get('/api/data/messages');
-      return Array.isArray(res.data) ? res.data : [];
-    } catch (e) { return []; }
+    const res = await axios.get('/api/data/messages');
+    return res.data;
   },
   async addItem(col: string, data: any) {
     const collection = col === 'projectCases' ? 'cases' : col;
