@@ -218,16 +218,15 @@ async function startServer() {
       }
     });
   }
-
-  // Export app for Vercel, but also listen locally
-  if (process.env.VITE_DEV_SERVER !== 'true') {
-    app.listen(PORT, "0.0.0.0", () => {
-      console.log(`Server running on http://localhost:${PORT}`);
-    });
-  }
 }
 
 startServer();
 
-// Export for Vercel
+// Export app for Vercel, but also listen locally
+if (!process.env.VERCEL) {
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
 export default app;
