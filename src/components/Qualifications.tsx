@@ -97,6 +97,10 @@ export default function Qualifications() {
                           alt={item.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           referrerPolicy="no-referrer"
+                          onError={(e) => {
+                            console.error('资质图片加载失败:', item.imageUrl);
+                            (e.target as HTMLImageElement).src = 'https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E8%8D%A3%E8%AA%89%E8%B5%84%E8%B4%A8banner.png';
+                          }}
                         />
                         <div className="absolute inset-0 bg-brand-blue/0 group-hover:bg-brand-blue/10 transition-colors" />
                       </div>

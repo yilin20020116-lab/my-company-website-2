@@ -61,7 +61,7 @@ export default function About() {
           >
             <div className="relative z-10 rounded-xl overflow-hidden shadow-2xl">
               <img
-                src={settings?.about?.image || "https://github.com/yilin20020116-lab/companyweb-images/blob/main/%E5%85%B4%E6%AC%A3%E9%97%A8%E5%A4%B4%E8%B6%85%E9%AB%98%E6%B8%85%E4%BF%AE%E5%A4%8D.png?raw=true"}
+                src={settings?.about?.image || "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E9%A6%96%E9%A1%B5%E5%9B%BE/%E5%85%B4%E6%AC%A3%E9%97%A8%E5%A4%B4%E8%B6%85%E9%AB%98%E6%B8%85%E4%BF%AE%E5%A4%8D.png"}
                 alt="兴欣科技门头"
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
