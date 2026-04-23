@@ -9,7 +9,7 @@ export const productData = [
         title: '多重增强钢塑复合压力管',
         advantages: '管材抗内外压能力兼优，长期强度稳定，电热熔焊连接技术简便可靠，不会造成输送液体资源的浪费，抗内外腐蚀，使用寿命长，极强的耐磨性，安全无毒性，柔性系统，良好地避免灾害，重量轻，施工安装费用低，原材料消耗成本低于纯塑或其他结构壁塑料压力管材，工程总体造价低，性价比高，具有很强的市场竞争力，管材结构稳定性好，节能环保。',
         applications: '市政管网、农业水利管网、乡镇、工厂、矿山供水、压力排污、海水淡化、城镇水源饮水、水利资源调配、大型工业项目引水工程、综合管廊。',
-        image: pipeImage1,
+        image: 'https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E5%A4%9A%E9%87%8D%E5%A2%9E%E5%BC%BA%E9%92%A2%E5%A1%91%E5%A4%8D%E5%90%88%E7%AE%A1%EF%BC%88%E5%B8%A6%E6%9D%90%E7%BB%93%E6%9E%84%EF%BC%89.jpg',
         richHTML: `
           <h3>产品简介</h3>
           <div class="flex flex-col gap-6 mb-8">

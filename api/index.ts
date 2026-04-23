@@ -89,7 +89,19 @@ app.post("/api/upload", upload.single("image"), async (req: any, res: any) => {
     res.json({ url: imageUrl });
   } catch (error: any) {
     console.error("R2 Upload Error:", error);
-    res.status(500).json({ error: "Upload failed", details: error.message });
+    let message = error.message;
+    if (message.includes("Unauthorized") || error.name === "Unauthorized") {
+      message = "Unauthorized: Please check your R2 ACCESS_KEY_ID and SECRET_ACCESS_KEY. (Current KEY: " + (process.env.CLOUDFLARE_R2_ACCESS_KEY_ID ? "PRESENT" : "MISSING") + ")";
+    } else if (error.name === "InvalidAccessKeyId") {
+      message = "InvalidAccessKeyId: The provided R2 Access Key ID is incorrect.";
+    } else if (error.name === "SignatureDoesNotMatch") {
+      message = "SignatureDoesNotMatch: The R2 Secret Access Key is likely incorrect.";
+    }
+    res.status(error.$metadata?.httpStatusCode || 500).json({ 
+      error: "Upload failed", 
+      details: message,
+      code: error.name
+    });
   }
 });
 
