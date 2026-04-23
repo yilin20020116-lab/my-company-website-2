@@ -1,23 +1,29 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import Qualifications from '../components/Qualifications';
+import { DataService, SiteSettings } from '../services/dataService';
 
 export default function QualificationsPage() {
+  const [settings, setSettings] = useState<SiteSettings | null>(null);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    DataService.getSettings().then(setSettings);
   }, []);
 
   return (
     <div className="">
       {/* Hero Section */}
-      <section className="relative h-[600px] flex items-center pt-32 overflow-hidden">
+      <section className="relative h-[600px] flex items-center pt-32 overflow-hidden bg-slate-900">
         <div className="absolute inset-0">
-          <img 
-            src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E8%8D%A3%E8%AA%89%E8%B5%84%E8%B4%A8banner.png?v=7" 
-            alt="荣誉资质" 
-            className="w-full h-full object-cover object-bottom"
-            referrerPolicy="no-referrer"
-          />
+          {settings?.pageBanners?.qualifications && (
+            <img 
+              src={settings.pageBanners.qualifications} 
+              alt="荣誉资质" 
+              className="w-full h-full object-cover object-bottom"
+              referrerPolicy="no-referrer"
+            />
+          )}
         </div>
         
         <div className="relative z-10 max-w-[1600px] mx-auto w-full px-6 md:px-12 lg:px-16">

@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { MapPin, Phone, Mail, Clock, ShieldCheck, HeadphonesIcon, Globe } from 'lucide-react';
+import { DataService, SiteSettings } from '../services/dataService';
 
 export default function ContactPage() {
+  const [settings, setSettings] = useState<SiteSettings | null>(null);
+
+  useEffect(() => {
+    DataService.getSettings().then(setSettings).catch(console.error);
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="pt-[140px] bg-slate-50 min-h-screen">
       {/* Hero Section */}
@@ -55,8 +62,8 @@ export default function ContactPage() {
             <h3 className="text-xl font-bold text-slate-800 mb-6">商务中心</h3>
             <div className="space-y-4">
                <div className="flex justify-between items-center border-b border-slate-100 pb-3">
-                 <span className="text-slate-500 font-medium">服务热线 1</span>
-                 <span className="text-brand-blue font-bold text-lg font-display tracking-wider">027-53018822</span>
+                 <span className="text-slate-500 font-medium">全局服务热线</span>
+                 <span className="text-brand-blue font-bold text-lg font-display tracking-wider">{settings?.global?.phone || '027-53018822'}</span>
                </div>
                <div className="flex justify-between items-center border-b border-slate-100 pb-3">
                  <span className="text-slate-500 font-medium">服务热线 2</span>
@@ -119,7 +126,7 @@ export default function ContactPage() {
                 <MapPin className="text-[#559bd9] shrink-0 mt-1" size={20} />
                 <div>
                   <span className="block text-xs font-bold text-slate-400 mb-1 tracking-widest uppercase">地址</span>
-                  <span className="font-medium text-[15px] text-slate-700">湖北省鄂州市四海大道58号</span>
+                  <span className="font-medium text-[15px] text-slate-700">{settings?.global?.address || '湖北省鄂州市四海大道58号'}</span>
                 </div>
               </div>
               <div className="flex items-start gap-4">
@@ -127,7 +134,7 @@ export default function ContactPage() {
                 <div>
                   <span className="block text-xs font-bold text-slate-400 mb-1 tracking-widest uppercase">邮编 & 邮箱</span>
                   <span className="font-medium block text-[15px] text-slate-700">436001</span>
-                  <span className="font-medium block mt-1 hover:text-brand-blue cursor-pointer text-[15px] text-slate-700 transition-colors">ezxxjc@163.com</span>
+                  <span className="font-medium block mt-1 hover:text-brand-blue cursor-pointer text-[15px] text-slate-700 transition-colors">{settings?.global?.email || 'ezxxjc@163.com'}</span>
                 </div>
               </div>
               <div className="flex items-start gap-4">

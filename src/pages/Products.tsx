@@ -1,22 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import ProductGrid from '../components/ProductGrid';
 import { motion, AnimatePresence } from 'motion/react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import { productData } from '../data/products';
+import { productData as staticProductData } from '../data/products';
+import { DataService, SiteSettings, ProductItem } from '../services/dataService';
 
 export default function ProductsPage() {
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
   const location = useLocation();
+  const [settings, setSettings] = useState<SiteSettings | null>(null);
+  const [remoteProducts, setRemoteProducts] = useState<ProductItem[]>([]);
 
-  const currentCategoryData = productData.find(c => c.id === categoryId) || productData[0];
+  useEffect(() => {
+    DataService.getSettings().then(setSettings);
+    DataService.getProducts().then(setRemoteProducts);
+  }, []);
+
+  const mergedProductData = useMemo(() => {
+    const data = JSON.parse(JSON.stringify(staticProductData)); // deep clone
+    remoteProducts.forEach(rp => {
+      const cat = data.find((c: any) => c.id === rp.category);
+      if (cat) {
+        // Check if item with same title exists, if so replace it, else push
+        const existingIdx = cat.items.findIndex((item: any) => item.title === rp.name);
+        const newItem = {
+          title: rp.name,
+          advantages: rp.description,
+          applications: (rp as any).applications || '', // Support applications field from DB
+          image: rp.imageUrl || 'https://picsum.photos/600/400',
+          richHTML: (rp as any).richHTML,
+          detailImageUrl: (rp as any).detailImageUrl
+        };
+
+        if (existingIdx !== -1) {
+          cat.items[existingIdx] = { ...cat.items[existingIdx], ...newItem };
+        } else {
+          cat.items.push(newItem);
+        }
+      }
+    });
+    return data;
+  }, [remoteProducts]);
+
+  const currentCategoryData = mergedProductData.find((c: any) => c.id === categoryId) || mergedProductData[0];
   
   const [activeHoverCategory, setActiveHoverCategory] = useState<string | null>(null);
 
   useEffect(() => {
     // If we land on /products without a category, handle it quietly or scroll to top
-    if (!categoryId) {
-      navigate(`/products/${productData[0].id}`, { replace: true });
+    if (!categoryId && mergedProductData.length > 0) {
+      navigate(`/products/${mergedProductData[0].id}`, { replace: true });
       return;
     }
 
@@ -31,19 +65,28 @@ export default function ProductsPage() {
     } else {
       window.scrollTo(0, 0);
     }
-  }, [categoryId, location.hash, navigate]);
+  }, [categoryId, location.hash, navigate, mergedProductData]);
+
+  if (!mergedProductData.length) return null;
 
   return (
     <div className="pt-[140px]">
-      <section className="w-full relative line-height-0 block">
-        <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E4%BA%A7%E5%93%81%E4%B8%AD%E5%BF%83banner.jpg" alt="产品中心" className="w-full h-auto block" referrerPolicy="no-referrer" />
-      </section>
+      {settings?.pageBanners?.products && (
+        <section className="w-full relative line-height-0 block">
+          <img src={settings.pageBanners.products} alt="产品中心" className="w-full h-auto block" referrerPolicy="no-referrer" />
+        </section>
+      )}
+      {!settings?.pageBanners?.products && (
+        <section className="w-full relative line-height-0 block">
+          <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E4%BA%A7%E5%93%81%E4%B8%AD%E5%BF%83banner.jpg" alt="产品中心" className="w-full h-auto block" referrerPolicy="no-referrer" />
+        </section>
+      )}
 
       {/* Secondary Navigation */}
       <div className="bg-[#559bd9] relative z-40 sticky top-[72px]" onMouseLeave={() => setActiveHoverCategory(null)}>
         <div className="max-w-[1200px] mx-auto overflow-x-auto no-scrollbar">
           <ul className="flex justify-center min-w-max md:min-w-0">
-            {productData.map((category, idx) => {
+            {mergedProductData.map((category: any, idx: number) => {
               const isActive = currentCategoryData.id === category.id;
               return (
                 <li 
@@ -83,7 +126,7 @@ export default function ProductsPage() {
             >
               <div className="max-w-[1400px] mx-auto px-6">
                 <ul className="flex flex-wrap justify-center items-center gap-x-6 lg:gap-x-8 gap-y-4 py-5">
-                  {productData.find(c => c.id === activeHoverCategory)?.items.map((item, itemIdx) => (
+                  {mergedProductData.find((c: any) => c.id === activeHoverCategory)?.items.map((item: any, itemIdx: number) => (
                     <li key={itemIdx}>
                       <button 
                         onClick={() => {

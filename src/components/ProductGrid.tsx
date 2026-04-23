@@ -34,7 +34,7 @@ export default function ProductGrid({ data }: ProductGridProps) {
             
             return (
               <li 
-                key={product.title} 
+                key={`${product.title}-${i}`} 
                 id={`product-${product.title}`}
                 className={`w-full h-auto py-16 md:py-24 overflow-hidden ${isEven ? 'bg-[#559bd9]' : 'bg-[#f8f9fa]'}`}
               >

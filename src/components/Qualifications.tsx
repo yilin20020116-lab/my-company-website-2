@@ -61,7 +61,7 @@ export default function Qualifications() {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
           {loading ? (
             <div className="col-span-full py-20 flex justify-center">
               <Loader2 className="w-8 h-8 text-brand-blue animate-spin" />
@@ -70,6 +70,16 @@ export default function Qualifications() {
             <AnimatePresence mode="wait">
               {items
                 .filter((item) => item.category === activeTab)
+                .sort((a, b) => {
+                  // Primary sort: orientation (landscape first, then portrait)
+                  if (a.orientation === 'landscape' && b.orientation !== 'landscape') return -1;
+                  if (a.orientation !== 'landscape' && b.orientation === 'landscape') return 1;
+                  
+                  // Secondary sort: year (descending)
+                  const yearA = parseInt(a.year || '0') || 0;
+                  const yearB = parseInt(b.year || '0') || 0;
+                  return yearB - yearA;
+                })
                 .map((item) => (
                   <motion.div
                     key={item.id}
@@ -78,10 +88,7 @@ export default function Qualifications() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ duration: 0.3 }}
-                    className={cn(
-                      "group bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all",
-                      item.orientation === 'landscape' ? "col-span-1 md:col-span-2 lg:col-span-2" : "col-span-1"
-                    )}
+                    className="group bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all col-span-1"
                   >
                     <div className={cn(
                       "overflow-hidden rounded-xl bg-slate-50 mb-4 relative",

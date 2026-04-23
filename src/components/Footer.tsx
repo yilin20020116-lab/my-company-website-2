@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowUp, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { DataService, SiteSettings } from '../services/dataService';
 
 export default function Footer() {
+  const [settings, setSettings] = useState<SiteSettings | null>(null);
+
+  useEffect(() => {
+    DataService.getSettings().then(setSettings);
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -70,9 +77,10 @@ export default function Footer() {
             {/* Brand Logo */}
             <div className="flex items-center gap-6 mb-10">
               <img 
-                src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E5%85%B4%E6%AC%A3logo%E6%A0%87.png?t=1" 
+                src={settings?.global?.logo || "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E5%85%B4%E6%AC%A3logo%E6%A0%87.png?t=1"}
                 alt="兴欣科技" 
                 className="h-[200px] w-auto object-contain drop-shadow-lg" 
+                referrerPolicy="no-referrer"
               />
               <div className="flex flex-col">
                 <span className="font-display font-bold text-[32px] leading-none tracking-wider">兴欣科技</span>
@@ -94,7 +102,7 @@ export default function Footer() {
                   </div>
                   {/* QR Popup */}
                   <div className="absolute top-[80%] left-[80%] opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300 w-[160px] bg-white p-2 shadow-2xl z-50 border-4 border-white pointer-events-none">
-                    <img src="https://picsum.photos/seed/qr-wechat/150/150" alt="微信视频号二维码" className="w-full h-auto border border-slate-100" />
+                    <img src={settings?.global?.qrCode1 || "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7.jpg"} alt="微信公众号二维码" className="w-full h-auto border border-slate-100" referrerPolicy="no-referrer" />
                   </div>
                 </div>
 
@@ -106,7 +114,7 @@ export default function Footer() {
                     </svg>
                   </div>
                   <div className="absolute top-[80%] left-[80%] opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300 w-[160px] bg-white p-2 shadow-2xl z-50 border-4 border-white pointer-events-none">
-                    <img src="https://picsum.photos/seed/qr-douyin/150/150" alt="官方抖音二维码" className="w-full h-auto border border-slate-100" />
+                    <img src={settings?.global?.qrCode2 || "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E6%8A%96%E9%9F%B3.png"} alt="官方抖音二维码" className="w-full h-auto border border-slate-100" referrerPolicy="no-referrer" />
                   </div>
                 </div>
               </div>
@@ -117,17 +125,17 @@ export default function Footer() {
               <div className="flex items-end gap-3 pb-2 pt-2">
                 <div className="flex justify-between w-[64px] opacity-90">服务热线</div>
                 <span>:</span>
-                <span className="text-[28px] font-bold font-display leading-[0.8]">027-53018822</span>
+                <span className="text-[28px] font-bold font-display leading-[0.8]">{settings?.global?.phone || '027-53018822'}</span>
               </div>
               <div className="flex items-start gap-3">
                 <div className="flex justify-between w-[64px] opacity-90 shrink-0"><span>地</span><span>址</span></div>
                 <span>:</span>
-                <span className="opacity-90 max-w-[280px]">湖北省鄂州市鄂城区四海大道58号</span>
+                <span className="opacity-90 max-w-[280px]">{settings?.global?.address || '湖北省鄂州市鄂城区四海大道58号'}</span>
               </div>
               <div className="flex items-start gap-3">
                 <div className="flex justify-between w-[64px] opacity-90 shrink-0"><span>邮</span><span>箱</span></div>
                 <span>:</span>
-                <span className="opacity-90">ezxxjc@163.com</span>
+                <span className="opacity-90">{settings?.global?.email || 'ezxxjc@163.com'}</span>
               </div>
             </div>
 
@@ -176,7 +184,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 relative">
           <p className="text-[12px] text-white/50 tracking-wider">
-            © {new Date().getFullYear()} 湖北兴欣科技股份有限公司 版权所有. 鄂ICP备XXXXXXXX号
+            © {new Date().getFullYear()} 湖北兴欣科技股份有限公司 版权所有. {settings?.global?.icp || '鄂ICP备XXXXXXXX号'}
           </p>
           <div className="flex items-center gap-8">
             <button 

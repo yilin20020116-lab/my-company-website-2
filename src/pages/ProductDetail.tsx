@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ChevronRight, Home, ArrowLeft, CheckCircle2, Layers, ShieldCheck, Box, Settings } from 'lucide-react';
-import { productData } from '../data/products';
+import { ChevronRight, Home, ArrowLeft, CheckCircle2, Layers, ShieldCheck, Box, Settings, Loader2 } from 'lucide-react';
+import { productData as staticProductData } from '../data/products';
+import { DataService, ProductItem } from '../services/dataService';
 
 export default function ProductDetailPage() {
   const { productTitle } = useParams<{ productTitle: string }>();
@@ -10,12 +11,48 @@ export default function ProductDetailPage() {
   const location = useLocation();
   const [product, setProduct] = useState<any>(null);
   const [category, setCategory] = useState<any>(null);
+  const [remoteProducts, setRemoteProducts] = useState<ProductItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Determine where the user came from
   const isFromHome = location.state?.fromHome;
   const isFromProducts = location.state?.fromProducts;
 
   useEffect(() => {
+    DataService.getProducts().then(rp => {
+      setRemoteProducts(rp);
+      setIsLoading(false);
+    });
+  }, []);
+
+  const mergedProductData = useMemo(() => {
+    const data = JSON.parse(JSON.stringify(staticProductData)); // deep clone
+    remoteProducts.forEach(rp => {
+      const cat = data.find((c: any) => c.id === rp.category);
+      if (cat) {
+        const existingIdx = cat.items.findIndex((item: any) => item.title === rp.name);
+        const newItem = {
+          title: rp.name,
+          advantages: rp.description,
+          applications: (rp as any).applications || '',
+          image: rp.imageUrl || 'https://picsum.photos/600/400',
+          richHTML: (rp as any).richHTML,
+          detailImageUrl: (rp as any).detailImageUrl
+        };
+
+        if (existingIdx !== -1) {
+          cat.items[existingIdx] = { ...cat.items[existingIdx], ...newItem };
+        } else {
+          cat.items.push(newItem);
+        }
+      }
+    });
+    return data;
+  }, [remoteProducts]);
+
+  useEffect(() => {
+    if (isLoading) return;
+    
     if (!productTitle) {
       navigate('/products', { replace: true });
       return;
@@ -24,8 +61,8 @@ export default function ProductDetailPage() {
     let foundProduct = null;
     let foundCategory = null;
 
-    for (const cat of productData) {
-      const p = cat.items.find(item => item.title === decodeURIComponent(productTitle));
+    for (const cat of mergedProductData) {
+      const p = cat.items.find((item: any) => item.title === decodeURIComponent(productTitle));
       if (p) {
         foundProduct = p;
         foundCategory = cat;
@@ -41,9 +78,9 @@ export default function ProductDetailPage() {
     }
     
     window.scrollTo(0, 0);
-  }, [productTitle, navigate]);
+  }, [productTitle, navigate, mergedProductData, isLoading]);
 
-  if (!product || !category) return <div className="min-h-screen pt-20 flex items-center justify-center">Loading...</div>;
+  if (!product || !category) return <div className="min-h-screen pt-20 flex items-center justify-center"><Loader2 className="w-8 h-8 text-brand-blue animate-spin" /></div>;
 
   return (
     <div className="pt-[140px] bg-slate-50 min-h-screen pb-20">
@@ -137,7 +174,7 @@ export default function ProductDetailPage() {
                 <Box className="text-[#559bd9] shrink-0 mt-1" size={22} />
                 <div>
                   <h3 className="font-bold text-slate-800 mb-1">产品特性简介</h3>
-                  <p className="text-sm leading-relaxed">{product.advantages.substring(0, 100)}...</p>
+                  <p className="text-sm leading-relaxed">{(product.advantages || '').substring(0, 100)}...</p>
                 </div>
               </div>
               
@@ -215,10 +252,10 @@ export default function ProductDetailPage() {
                 </div>
                 <div className="prose prose-slate max-w-none prose-p:leading-loose text-slate-600 bg-slate-50 p-6 rounded-2xl border border-slate-100">
                   <p>
-                    {product.applications}
+                    {product.applications || ''}
                   </p>
                   <div className="mt-6 flex flex-wrap gap-2">
-                    {product.applications.split('、').map((app: string, idx: number) => (
+                    {(product.applications || '').split('、').filter(Boolean).map((app: string, idx: number) => (
                       <span key={idx} className="bg-brand-blue/5 text-brand-blue px-3 py-1 rounded-full text-sm font-medium border border-brand-blue/10">
                         {app.trim()}
                       </span>
@@ -228,7 +265,19 @@ export default function ProductDetailPage() {
               </motion.div>
             </div>
           )}
-          
+
+          {/* detail image */}
+          {product.detailImageUrl && (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mt-8 border-t border-slate-100 pt-8"
+            >
+              <img src={product.detailImageUrl} alt="产品详情图" className="w-full h-auto rounded-xl shadow-sm" />
+            </motion.div>
+          )}
+
           <div className="mt-12 text-center pt-8 border-t border-slate-100">
              <button onClick={() => navigate(-1)} className="inline-flex items-center gap-2 text-brand-blue font-bold px-6 py-3 rounded-full hover:bg-brand-blue/5 transition-colors">
                <ArrowLeft size={18} /> 返回产品列表

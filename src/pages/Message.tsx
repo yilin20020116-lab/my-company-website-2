@@ -1,17 +1,36 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MessageSquarePlus, Send, CheckCircle2 } from 'lucide-react';
+import { DataService } from '../services/dataService';
 
 export default function MessagePage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    productName: '',
+    name: '',
+    phone: '',
+    email: '',
+    address: '',
+    message: ''
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate API call
-    setTimeout(() => {
+    setLoading(true);
+    try {
+      await DataService.addItem('messages', {
+        ...formData,
+        date: new Date().toISOString()
+      });
       setIsSubmitted(true);
+      setFormData({ productName: '', name: '', phone: '', email: '', address: '', message: '' });
       setTimeout(() => setIsSubmitted(false), 5000);
-    }, 800);
+    } catch (err) {
+      alert("提交失败，请稍后再试");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -72,6 +91,8 @@ export default function MessagePage() {
                 <input 
                   type="text" 
                   id="productName" 
+                  value={formData.productName}
+                  onChange={e => setFormData({...formData, productName: e.target.value})}
                   placeholder="如果您对特定产品感兴趣，请填写产品名称"
                   className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none"
                 />
@@ -84,6 +105,8 @@ export default function MessagePage() {
                     type="text" 
                     id="name" 
                     required 
+                    value={formData.name}
+                    onChange={e => setFormData({...formData, name: e.target.value})}
                     placeholder="请输入您的尊姓大名"
                     className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none"
                   />
@@ -94,6 +117,8 @@ export default function MessagePage() {
                     type="tel" 
                     id="phone" 
                     required 
+                    value={formData.phone}
+                    onChange={e => setFormData({...formData, phone: e.target.value})}
                     placeholder="请输入您的手机号码"
                     className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none"
                   />
@@ -106,6 +131,8 @@ export default function MessagePage() {
                   <input 
                     type="email" 
                     id="email" 
+                    value={formData.email}
+                    onChange={e => setFormData({...formData, email: e.target.value})}
                     placeholder="请输入您的常用邮箱 (选填)"
                     className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none"
                   />
@@ -115,6 +142,8 @@ export default function MessagePage() {
                   <input 
                     type="text" 
                     id="address" 
+                    value={formData.address}
+                    onChange={e => setFormData({...formData, address: e.target.value})}
                     placeholder="请输入您的联系地址 (选填)"
                     className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none"
                   />
@@ -127,6 +156,8 @@ export default function MessagePage() {
                   id="message" 
                   rows={5} 
                   required
+                  value={formData.message}
+                  onChange={e => setFormData({...formData, message: e.target.value})}
                   placeholder="为了更快地帮助到您，请详细描述您的需求..."
                   className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none resize-none"
                 ></textarea>
@@ -135,10 +166,11 @@ export default function MessagePage() {
               <div className="pt-4">
                 <button 
                   type="submit" 
-                  className="w-full md:w-auto md:px-16 py-4 bg-brand-blue hover:bg-[#0c4075] text-white rounded-xl font-medium text-lg flex items-center justify-center gap-2 transition-all shadow-xl shadow-brand-blue/20 group"
+                  disabled={loading}
+                  className="w-full md:w-auto md:px-16 py-4 bg-brand-blue hover:bg-[#0c4075] text-white rounded-xl font-medium text-lg flex items-center justify-center gap-2 transition-all shadow-xl shadow-brand-blue/20 group disabled:opacity-50"
                 >
                   <Send size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                  提交留言
+                  {loading ? '提交中...' : '提交留言'}
                 </button>
               </div>
             </form>

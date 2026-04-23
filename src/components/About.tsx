@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { MapPin, Award, TrendingUp, Users, ChevronRight } from 'lucide-react';
+import { DataService, SiteSettings } from '../services/dataService';
 
 const stats = [
   { icon: Award, label: '行业地位', value: '国内前五', detail: '复合管道领军企业' },
@@ -10,6 +11,12 @@ const stats = [
 ];
 
 export default function About() {
+  const [settings, setSettings] = useState<SiteSettings | null>(null);
+
+  useEffect(() => {
+    DataService.getSettings().then(setSettings);
+  }, []);
+
   return (
     <section id="about" className="pt-12 pb-20 px-6 md:px-12 lg:px-24 bg-white overflow-hidden">
       <div className="max-w-[1440px] mx-auto">
@@ -34,7 +41,11 @@ export default function About() {
               transition={{ delay: 0.1 }}
               className="text-5xl md:text-7xl font-display font-bold text-slate-900 leading-tight"
             >
-              立足湖北鄂州，<br />打造全球领先的管道系统。
+              {settings?.about?.title ? (
+                <span dangerouslySetInnerHTML={{ __html: settings.about.title }} />
+              ) : (
+                <>立足湖北鄂州，<br />打造全球领先的管道系统。</>
+              )}
             </motion.h2>
           </div>
         </div>
@@ -50,7 +61,7 @@ export default function About() {
           >
             <div className="relative z-10 rounded-xl overflow-hidden shadow-2xl">
               <img
-                src="https://github.com/yilin20020116-lab/companyweb-images/blob/main/%E5%85%B4%E6%AC%A3%E9%97%A8%E5%A4%B4%E8%B6%85%E9%AB%98%E6%B8%85%E4%BF%AE%E5%A4%8D.png?raw=true"
+                src={settings?.about?.image || "https://github.com/yilin20020116-lab/companyweb-images/blob/main/%E5%85%B4%E6%AC%A3%E9%97%A8%E5%A4%B4%E8%B6%85%E9%AB%98%E6%B8%85%E4%BF%AE%E5%A4%8D.png?raw=true"}
                 alt="兴欣科技门头"
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
@@ -80,11 +91,11 @@ export default function About() {
             className="space-y-10 lg:pl-8 lg:pt-12"
           >
             <div className="space-y-6">
-              <p className="text-lg text-slate-600 leading-relaxed border-l-4 border-brand-blue pl-6">
-                湖北兴欣科技股份有限公司（股票代码：839675）是一家专注于高端复合管道研发、制造、安装设计、销售的高新技术企业。
+              <p className="text-lg text-slate-600 leading-relaxed border-l-4 border-brand-blue pl-6 line-break-anywhere">
+                {settings?.about?.content1 || '湖北兴欣科技股份有限公司（股票代码：839675）是一家专注于高端复合管道研发、制造、安装设计、销售的高新技术企业。'}
               </p>
-              <p className="text-lg text-slate-600 leading-relaxed pl-7">
-                作为国家级高新技术企业，我们不仅提供高品质的管材及管件，更致力于为市政给排水、石油、化工等领域提供“产品+服务”的全生命周期解决方案。
+              <p className="text-lg text-slate-600 leading-relaxed pl-7 line-break-anywhere">
+                {settings?.about?.content2 || '作为国家级高新技术企业，我们不仅提供高品质的管材及管件，更致力于为市政给排水、石油、化工等领域提供“产品+服务”的全生命周期解决方案。'}
               </p>
             </div>
 

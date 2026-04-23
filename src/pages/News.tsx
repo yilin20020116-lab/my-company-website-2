@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const companyNews = [
   {
@@ -103,16 +104,51 @@ const technicalKnowledge = [
 
 export default function NewsPage() {
   const [activeTab, setActiveTab] = useState<'company' | 'industry' | 'technical'>('company');
-  
-  let currentNews = companyNews;
-  if (activeTab === 'industry') currentNews = industryNews;
-  if (activeTab === 'technical') currentNews = technicalKnowledge;
+  const [settings, setSettings] = React.useState<any>(null);
+  const [allNews, setAllNews] = React.useState<any[]>([]);
+
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+    import('../services/dataService').then((m) => {
+      m.DataService.getSettings().then(setSettings);
+      m.DataService.getNews().then(setAllNews);
+    });
+  }, []);
+
+  const formattedNews = allNews.map(item => {
+    const d = item.date ? new Date(item.date) : new Date();
+    const day = (isNaN(d.getTime()) ? new Date() : d).getDate().toString().padStart(2, '0');
+    const yearMonth = `${(isNaN(d.getTime()) ? new Date() : d).getFullYear()}-${((isNaN(d.getTime()) ? new Date() : d).getMonth() + 1).toString().padStart(2, '0')}`;
+    return {
+      id: item.id,
+      title: item.title,
+      date: item.date,
+      day,
+      yearMonth,
+      desc: item.summary || item.content?.substring(0, 100) + '...',
+      image: item.imageUrl || 'https://picsum.photos/seed/placeholder/800/600',
+      category: item.category
+    };
+  });
+
+  const dynamicCompany = formattedNews.filter(n => n.category === '公司新闻');
+  const dynamicIndustry = formattedNews.filter(n => n.category === '行业动态');
+  const dynamicTech = formattedNews.filter(n => n.category === '技术专栏');
+
+  let currentNews = dynamicCompany.length ? dynamicCompany : companyNews;
+  if (activeTab === 'industry') currentNews = dynamicIndustry.length ? dynamicIndustry : industryNews;
+  if (activeTab === 'technical') currentNews = dynamicTech.length ? dynamicTech : technicalKnowledge;
 
   return (
     <div className="pt-[140px] bg-[#f8f9fa] min-h-screen">
       {/* Banner */}
       <section className="w-full relative line-height-0 block">
-        <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81banner.jpg" alt="新闻中心" className="w-full h-auto block" referrerPolicy="no-referrer" />
+        <img 
+          src={settings?.pageBanners?.news || "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81banner.jpg"} 
+          alt="新闻中心" 
+          className="w-full h-auto block" 
+          referrerPolicy="no-referrer" 
+        />
       </section>
 
       {/* Navigation Tabs */}
@@ -201,13 +237,13 @@ export default function NewsPage() {
                   </p>
                   
                   <div className="mt-auto">
-                    <a 
-                      href="#" 
+                    <Link 
+                      to={`/news/${news.id}`} 
                       className="inline-flex items-center gap-2 text-[13px] font-bold text-[#559bd9] group-hover:text-[#e58a44] transition-colors"
                     >
                       查看详情
                       <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </motion.div>

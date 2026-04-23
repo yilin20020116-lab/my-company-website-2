@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { DataService, NewsItem, ProductItem, ProjectCase, QualificationItem } from '../services/dataService';
 import ImageUploader from '../components/admin/ImageUploader';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 import { 
   LayoutDashboard, 
   Newspaper, 
@@ -13,12 +15,15 @@ import {
   Trash2, 
   Save, 
   Image as ImageIcon,
-  Pencil
+  Pencil,
+  Settings,
+  MessageSquare
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
+import { productData } from '../data/products';
 
-type AdminTab = 'news' | 'products' | 'cases' | 'qualifications' | 'banners';
+type AdminTab = 'news' | 'products' | 'cases' | 'qualifications' | 'settings' | 'messages';
 
 export default function AdminPage() {
   const { user, isAdmin, loading, login, logout } = useAuth();
@@ -34,32 +39,66 @@ export default function AdminPage() {
   }, [activeTab, isAdmin]);
 
   const loadData = async () => {
-    let data = [];
+    let data: any = [];
     switch (activeTab) {
       case 'news': data = await DataService.getNews(); break;
-      case 'products': data = await DataService.getProducts(); break;
+      case 'products': 
+        const remoteProducts = await DataService.getProducts();
+        const staticProducts = productData.flatMap(cat => 
+          cat.items.map((item, idx) => ({
+            ...item,
+            category: cat.id,
+            isStatic: true,
+            id: `static-${cat.id}-${item.title}-${idx}`
+          }))
+        );
+        data = [...remoteProducts, ...staticProducts]; 
+        break;
       case 'cases': data = await DataService.getProjectCases(); break;
       case 'qualifications': data = await DataService.getQualifications(); break;
+      case 'messages': data = await DataService.getMessages(); break;
+      case 'settings': 
+        const settings = await DataService.getSettings();
+        setFormData(settings);
+        data = [settings]; 
+        break;
       default: data = [];
     }
-    setItems(data);
+    setItems(data.reverse ? data.reverse() : data);
   };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      if (isEditing === 'new') {
+      if (activeTab === 'settings') {
+        await DataService.updateSettings(formData);
+        alert('网站设置保存成功！');
+      } else {
         const col = activeTab === 'cases' ? 'projectCases' : activeTab;
-        await DataService.addItem(col, formData);
-      } else if (isEditing) {
-        const col = activeTab === 'cases' ? 'projectCases' : activeTab;
-        await DataService.updateItem(col, isEditing, formData);
+        
+        // If it's a static item, we treat it as a new item to be saved to DB
+        if (isEditing && isEditing.toString().startsWith('static-')) {
+          const { id, isStatic, ...saveData } = formData;
+          // Ensure we use 'name' instead of 'title' for products in DB
+          if (!saveData.name && saveData.title) saveData.name = saveData.title;
+          await DataService.addItem(col, saveData);
+          alert('已成功将内置模板保存至后台数据库！现在您可以随时修改它。');
+        } else if (isEditing === 'new') {
+          await DataService.addItem(col, formData);
+          alert('新增成功！');
+        } else if (isEditing) {
+          await DataService.updateItem(col, isEditing, formData);
+          alert('更新成功！');
+        }
       }
+      
       setIsEditing(null);
       setFormData({});
       loadData();
-    } catch (err) {
-      alert('保存失败');
+    } catch (err: any) {
+      console.error('Save failed:', err);
+      const errorMessage = err.response?.data?.error || err.message || '未知错误';
+      alert(`保存失败: ${errorMessage}`);
     }
   };
 
@@ -105,7 +144,8 @@ export default function AdminPage() {
     { id: 'products', label: '产品管理', icon: Package },
     { id: 'cases', label: '案例管理', icon: Briefcase },
     { id: 'qualifications', label: '资质管理', icon: Award },
-    // { id: 'banners', label: 'Banner管理', icon: ImageIcon },
+    { id: 'messages', label: '在线留言', icon: MessageSquare },
+    { id: 'settings', label: '网站设置', icon: Settings },
   ];
 
   return (
@@ -143,7 +183,7 @@ export default function AdminPage() {
       <div className="flex-grow p-8 overflow-y-auto h-[calc(100vh-80px)]">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold text-slate-900">{tabs.find(t => t.id === activeTab)?.label}</h1>
-          {!isEditing && (
+          {!isEditing && activeTab !== 'settings' && activeTab !== 'messages' && (
             <button 
               onClick={() => { setIsEditing('new'); setFormData({}); }}
               className="flex items-center gap-2 bg-brand-blue text-white px-6 py-2.5 rounded-xl font-bold shadow-sm hover:shadow-md transition-all"
@@ -154,7 +194,143 @@ export default function AdminPage() {
           )}
         </div>
 
-        {isEditing ? (
+        {activeTab === 'settings' ? (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-2xl p-8 border shadow-sm max-w-4xl">
+            <h2 className="text-xl font-bold mb-8">网站全局配置</h2>
+            <form onSubmit={handleSave} className="space-y-8">
+              
+              <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
+                <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><LayoutDashboard className="text-brand-blue" /> 首页配置</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">主标题文字</label>
+                    <input type="text" value={formData.heroTitle || ''} onChange={e => setFormData({...formData, heroTitle: e.target.value})} className="w-full px-4 py-2 border rounded-lg" placeholder="支持HTML如 <br/> 或 <span>" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">副标题文字</label>
+                    <textarea value={formData.heroSubtitle || ''} onChange={e => setFormData({...formData, heroSubtitle: e.target.value})} className="w-full px-4 py-2 border rounded-lg h-20" />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">首页轮播图图片 (第一张)</label>
+                    <div className="flex gap-4">
+                      <input type="text" value={formData.heroBanners?.[0] || ''} onChange={e => { const newBanners = [...(formData.heroBanners||[])]; newBanners[0] = e.target.value; setFormData({...formData, heroBanners: newBanners}) }} className="flex-grow px-4 py-2 border rounded-lg text-sm" />
+                    </div>
+                    {formData.heroBanners?.[0] && <img src={formData.heroBanners[0]} className="h-32 object-cover rounded mt-2" alt="banner 1" />}
+                    <ImageUploader onUpload={(url) => setFormData((prev: any) => { const newBanners = [...(prev.heroBanners||[])]; newBanners[0] = url; return {...prev, heroBanners: newBanners} })} folder="banners" />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">首页轮播图图片 (第二张)</label>
+                    <div className="flex gap-4">
+                      <input type="text" value={formData.heroBanners?.[1] || ''} onChange={e => { const newBanners = [...(formData.heroBanners||[])]; newBanners[1] = e.target.value; setFormData({...formData, heroBanners: newBanners}) }} className="flex-grow px-4 py-2 border rounded-lg text-sm" />
+                    </div>
+                    {formData.heroBanners?.[1] && <img src={formData.heroBanners[1]} className="h-32 object-cover rounded mt-2" alt="banner 2" />}
+                    <ImageUploader onUpload={(url) => setFormData((prev: any) => { const newBanners = [...(prev.heroBanners||[])]; newBanners[1] = url; return {...prev, heroBanners: newBanners} })} folder="banners" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
+                <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><ImageIcon className="text-brand-blue" /> 子频道 Banner 配置</h3>
+                <div className="space-y-6">
+                  {(['products', 'cases', 'qualifications', 'news'] as const).map((page) => (
+                    <div key={page}>
+                      <label className="block text-sm font-bold text-slate-700 mb-2">{page === 'products' ? '产品中心' : page === 'cases' ? '工程案例' : page === 'qualifications' ? '资质荣誉' : '新闻中心'} Banner</label>
+                      <div className="flex gap-4">
+                        <input type="text" value={formData.pageBanners?.[page] || ''} onChange={e => { setFormData({...formData, pageBanners: {...(formData.pageBanners || {}), [page]: e.target.value}}) }} className="flex-grow px-4 py-2 border rounded-lg text-sm" />
+                      </div>
+                      {formData.pageBanners?.[page] && <img src={formData.pageBanners[page]} className="h-20 object-cover rounded mt-2 w-full max-w-md" alt={`${page} banner`} />}
+                      <ImageUploader 
+                        onUpload={(url) => setFormData((prev: any) => ({
+                          ...prev, 
+                          pageBanners: { ...(prev.pageBanners || {}), [page]: url }
+                        }))} 
+                        folder="banners" 
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
+                <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><LayoutDashboard className="text-brand-blue" /> 全局联系方式与底部信息</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">公司Logo</label>
+                    <input type="text" value={formData.global?.logo || ''} onChange={e => setFormData({...formData, global: {...(formData.global || {}), logo: e.target.value}})} className="w-full px-4 py-2 border rounded-lg text-sm" />
+                    {formData.global?.logo && <img src={formData.global.logo} className="h-16 object-contain rounded mt-2 bg-slate-800 p-2" alt="logo" />}
+                    <ImageUploader onUpload={(url) => setFormData((prev: any) => ({...prev, global: {...(prev.global || {}), logo: url}}))} folder="global" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-2">服务热线</label>
+                      <input type="text" value={formData.global?.phone || ''} onChange={e => setFormData({...formData, global: {...(formData.global || {}), phone: e.target.value}})} className="w-full px-4 py-2 border rounded-lg text-sm" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-2">联系邮箱</label>
+                      <input type="text" value={formData.global?.email || ''} onChange={e => setFormData({...formData, global: {...(formData.global || {}), email: e.target.value}})} className="w-full px-4 py-2 border rounded-lg text-sm" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">联系地址</label>
+                    <input type="text" value={formData.global?.address || ''} onChange={e => setFormData({...formData, global: {...(formData.global || {}), address: e.target.value}})} className="w-full px-4 py-2 border rounded-lg text-sm" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">备案号</label>
+                    <input type="text" value={formData.global?.icp || ''} onChange={e => setFormData({...formData, global: {...(formData.global || {}), icp: e.target.value}})} className="w-full px-4 py-2 border rounded-lg text-sm" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-2">微信二维码</label>
+                      <input type="text" value={formData.global?.qrCode1 || ''} onChange={e => setFormData({...formData, global: {...(formData.global || {}), qrCode1: e.target.value}})} className="w-full px-4 py-2 border rounded-lg text-sm" />
+                      {formData.global?.qrCode1 && <img src={formData.global.qrCode1} className="h-20 object-contain rounded mt-2 border" alt="wechat qr" />}
+                      <ImageUploader onUpload={(url) => setFormData((prev: any) => ({...prev, global: {...(prev.global || {}), qrCode1: url}}))} folder="global" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-2">抖音二维码</label>
+                      <input type="text" value={formData.global?.qrCode2 || ''} onChange={e => setFormData({...formData, global: {...(formData.global || {}), qrCode2: e.target.value}})} className="w-full px-4 py-2 border rounded-lg text-sm" />
+                      {formData.global?.qrCode2 && <img src={formData.global.qrCode2} className="h-20 object-contain rounded mt-2 border" alt="douyin qr" />}
+                      <ImageUploader onUpload={(url) => setFormData((prev: any) => ({...prev, global: {...(prev.global || {}), qrCode2: url}}))} folder="global" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
+                <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><LayoutDashboard className="text-brand-blue" /> 首页“关于我们”版块</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">标题</label>
+                    <input type="text" value={formData.about?.title || ''} onChange={e => setFormData({...formData, about: {...(formData.about || {}), title: e.target.value}})} className="w-full px-4 py-2 border rounded-lg text-sm" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">段落 1</label>
+                    <textarea value={formData.about?.content1 || ''} onChange={e => setFormData({...formData, about: {...(formData.about || {}), content1: e.target.value}})} className="w-full px-4 py-2 border rounded-lg h-24" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">段落 2</label>
+                    <textarea value={formData.about?.content2 || ''} onChange={e => setFormData({...formData, about: {...(formData.about || {}), content2: e.target.value}})} className="w-full px-4 py-2 border rounded-lg h-24" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">配图</label>
+                    <input type="text" value={formData.about?.image || ''} onChange={e => setFormData({...formData, about: {...(formData.about || {}), image: e.target.value}})} className="w-full px-4 py-2 border rounded-lg text-sm" />
+                    {formData.about?.image && <img src={formData.about.image} className="h-32 object-cover rounded mt-2 border" alt="about img" />}
+                    <ImageUploader onUpload={(url) => setFormData((prev: any) => ({...prev, about: {...(prev.about || {}), image: url}}))} folder="global" />
+                  </div>
+                </div>
+              </div>
+
+              <button 
+                type="submit"
+                className="w-full flex items-center justify-center gap-2 bg-brand-blue text-white py-4 rounded-xl font-bold shadow-lg hover:shadow-brand-blue/30 transition-all"
+              >
+                <Save size={20} />
+                保存网站设置
+              </button>
+            </form>
+          </motion.div>
+        ) : isEditing ? (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-2xl p-8 border shadow-sm max-w-2xl">
             <div className="mb-8 flex justify-between items-center">
               <h2 className="text-xl font-bold">{isEditing === 'new' ? '新建项目' : '编辑项目'}</h2>
@@ -183,9 +359,25 @@ export default function AdminPage() {
                     <label className="block text-sm font-bold text-slate-700 mb-2">简述</label>
                     <textarea value={formData.summary || ''} onChange={e => setFormData({...formData, summary: e.target.value})} className="w-full px-4 py-2 border rounded-lg h-24" />
                   </div>
-                  <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">内容</label>
-                    <textarea value={formData.content || ''} onChange={e => setFormData({...formData, content: e.target.value})} className="w-full px-4 py-2 border rounded-lg h-48" required placeholder="支持 Markdown 或 纯文本" />
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-bold text-slate-700 mb-2">内容 (富文本编辑器)</label>
+                    <div className="bg-white">
+                      <ReactQuill 
+                        theme="snow"
+                        value={formData.content || formData.richHTML || ''}
+                        onChange={(content) => setFormData({...formData, content: content, richHTML: content})}
+                        className="h-[400px] mb-12"
+                        modules={{
+                          toolbar: [
+                            [{ 'header': [1, 2, 3, false] }],
+                            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                            [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+                            ['link', 'image', 'video'],
+                            ['clean']
+                          ],
+                        }}
+                      />
+                    </div>
                   </div>
                 </>
               )}
@@ -205,8 +397,44 @@ export default function AdminPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">描述</label>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">主图 (产品展示用)</label>
+                    <div className="flex gap-4">
+                      <input type="text" value={formData.imageUrl || ''} onChange={e => setFormData({...formData, imageUrl: e.target.value})} className="flex-grow px-4 py-2 border rounded-lg text-sm bg-slate-50 relative z-10 font-mono text-slate-500" readOnly placeholder="上传后自动生成链接" />
+                    </div>
+                    {formData.imageUrl && <img src={formData.imageUrl} className="h-32 object-contain rounded mt-2 border" alt="产品主图" />}
+                    <ImageUploader onUpload={(url) => setFormData({...formData, imageUrl: url})} folder="products" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">详情页长图/详情内容</label>
+                    <div className="flex gap-4">
+                      <input type="text" value={formData.detailImageUrl || ''} onChange={e => setFormData({...formData, detailImageUrl: e.target.value})} className="flex-grow px-4 py-2 border rounded-lg text-sm bg-slate-50 relative z-10 font-mono text-slate-500" readOnly placeholder="上传后自动生成链接" />
+                    </div>
+                    {formData.detailImageUrl && <img src={formData.detailImageUrl} className="h-48 object-cover object-top rounded mt-2 border" alt="详情图" />}
+                    <ImageUploader onUpload={(url) => setFormData({...formData, detailImageUrl: url})} folder="products" />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-bold text-slate-700 mb-2">描述 (简述)</label>
                     <textarea value={formData.description || ''} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full px-4 py-2 border rounded-lg h-32" />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-bold text-slate-700 mb-2">富文本产品图文详情 (强烈推荐，所见即所得)</label>
+                    <div className="bg-white">
+                      <ReactQuill 
+                        theme="snow"
+                        value={formData.richHTML || ''}
+                        onChange={(content) => setFormData({...formData, richHTML: content})}
+                        className="h-[500px] mb-12"
+                        modules={{
+                          toolbar: [
+                            [{ 'header': [1, 2, 3, false] }],
+                            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                            [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+                            ['link', 'image', 'video'],
+                            ['clean']
+                          ],
+                        }}
+                      />
+                    </div>
                   </div>
                 </>
               )}
@@ -306,6 +534,65 @@ export default function AdminPage() {
               </button>
             </form>
           </motion.div>
+        ) : activeTab === 'messages' ? (
+          <div className="space-y-4">
+            <AnimatePresence>
+              {items.map(item => (
+                <motion.div 
+                  key={item.id}
+                  layout
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="bg-white rounded-2xl border p-6 shadow-sm relative overflow-hidden"
+                >
+                  {/* Decorative tag for type */}
+                  <div className="absolute top-0 right-0 bg-brand-blue text-white text-xs font-bold px-4 py-1.5 rounded-bl-xl">
+                    {item.type === 'purchase' ? '产品购买咨询' :
+                     item.type === 'cooperation' ? '工程项目合作' :
+                     item.type === 'technical' ? '技术支持服务' :
+                     item.type === 'complaint' ? '投诉与建议' : '其他问题'}
+                  </div>
+
+                  <div className="flex justify-between items-start mb-4 pr-32">
+                    <div>
+                      <h3 className="font-bold text-lg text-slate-900 mb-1">{item.name} <span className="text-sm font-normal text-slate-500 ml-2">{item.company || '个人客户'}</span></h3>
+                      <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-600">
+                        <span className="flex items-center gap-1.5"><span className="text-slate-400">电话:</span> {item.phone}</span>
+                        {item.email && <span className="flex items-center gap-1.5"><span className="text-slate-400">邮箱:</span> {item.email}</span>}
+                        {item.address && <span className="flex items-center gap-1.5"><span className="text-slate-400">地址:</span> {item.address}</span>}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {item.productName && (
+                     <div className="mb-4 text-sm font-medium text-brand-blue bg-brand-blue/5 p-3 rounded-xl border border-brand-blue/10 inline-block w-full">
+                       意向产品: {item.productName}
+                     </div>
+                  )}
+
+                  <div className="bg-slate-50 p-4 rounded-xl border text-sm text-slate-700 whitespace-pre-wrap">
+                    {item.message || item.content}
+                  </div>
+
+                  <div className="mt-4 flex justify-between items-center text-xs text-slate-400">
+                    <span>留言时间: {item.date ? new Date(item.date).toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : '刚刚'}</span>
+                    <button 
+                      onClick={() => handleDelete(item.id)}
+                      className="flex items-center gap-1.5 text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors font-medium"
+                    >
+                      <Trash2 size={14} /> 删除留言
+                    </button>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+            {items.length === 0 && (
+              <div className="py-20 text-center text-slate-400 border-2 border-dashed rounded-3xl">
+                暂无任何在线留言。
+              </div>
+            )}
+          </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <AnimatePresence>
@@ -318,12 +605,12 @@ export default function AdminPage() {
                   exit={{ opacity: 0, scale: 0.9 }}
                   className={cn(
                     "bg-white rounded-2xl border p-4 shadow-sm group hover:shadow-md transition-all",
-                    item.orientation === 'landscape' ? "md:col-span-2" : "col-span-1"
+                    (item.orientation === 'landscape' && activeTab !== 'qualifications') ? "md:col-span-2" : "col-span-1"
                   )}
                 >
                   <div className={cn(
                     "rounded-xl overflow-hidden mb-4 bg-slate-50 border relative",
-                    item.orientation === 'landscape' ? "aspect-video" : "aspect-[3/4]"
+                    (item.orientation === 'landscape' && activeTab !== 'qualifications') ? "aspect-video" : "aspect-[3/4]"
                   )}>
                     {item.imageUrl ? (
                       <img src={item.imageUrl} className="w-full h-full object-cover" alt="" />
@@ -333,11 +620,39 @@ export default function AdminPage() {
                       </div>
                     )}
                   </div>
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-bold text-lg text-slate-900 line-clamp-1">{item.title || item.name}</h3>
-                    <div className="flex gap-1">
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="flex flex-col gap-1">
+                        {item.isStatic && (
+                          <span className="text-[10px] bg-amber-100 text-amber-700 font-bold px-1.5 py-0.5 rounded w-fit">
+                            系统内置模板 (编辑将保存至后台)
+                          </span>
+                        )}
+                        <h3 className="font-bold text-lg text-slate-900 line-clamp-1">{item.name || item.title}</h3>
+                      </div>
+                      <div className="flex gap-1">
                       <button 
-                        onClick={() => { setIsEditing(item.id); setFormData(item); }} 
+                        onClick={() => { 
+                          const mappedItem = { ...item };
+                          if (item.isStatic) {
+                            if (!mappedItem.name && mappedItem.title) mappedItem.name = mappedItem.title;
+                            // Map 'image' from static data to 'imageUrl' for form
+                            if (!mappedItem.imageUrl && item.image) mappedItem.imageUrl = item.image;
+                            
+                            // Combine advantages and applications for description
+                            if (!mappedItem.description) {
+                              const descParts = [];
+                              if (item.advantages) descParts.push(`优势特点：\n${Array.isArray(item.advantages) ? item.advantages.join('\n') : item.advantages}`);
+                              if (item.applications) descParts.push(`应用范围：\n${item.applications}`);
+                              mappedItem.description = descParts.join('\n\n');
+                            }
+                            
+                            // Ensure richHTML and other details are carried over
+                            if (!mappedItem.richHTML && item.richHTML) mappedItem.richHTML = item.richHTML;
+                            if (!mappedItem.detailImageUrl && item.detailImageUrl) mappedItem.detailImageUrl = item.detailImageUrl;
+                          }
+                          setFormData(mappedItem); 
+                          setIsEditing(item.id); 
+                        }} 
                         className="p-2 text-slate-400 hover:text-brand-blue hover:bg-brand-blue/5 rounded-lg transition-all"
                         title="编辑"
                       >
