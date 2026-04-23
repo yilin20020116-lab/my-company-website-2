@@ -54,5 +54,11 @@ service cloud.firestore {
       allow read: if true;
       allow write: if isAdmin();
     }
+
+    // Messages rules
+    match /messages/{messageId} {
+      allow create: if true; // Allow anyone to send a message
+      allow read, delete: if isAdmin(); // Only admins can see/delete messages
+    }
   }
 }

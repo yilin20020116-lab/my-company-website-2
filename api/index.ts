@@ -1,5 +1,4 @@
 import express from "express";
-import { createServer as createViteServer } from "vite";
 import path from "path";
 import multer from "multer";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
@@ -16,13 +15,12 @@ import {
   doc, 
   getDoc,
   setDoc,
-  query,
-  orderBy
+  query
 } from "firebase/firestore";
 
 dotenv.config();
 
-// Load Firebase Config
+// Load Firebase Config (Vercel functions run in project root)
 const firebaseConfigFile = await fs.readFile(path.join(process.cwd(), "firebase-applet-config.json"), "utf-8");
 const firebaseConfig = JSON.parse(firebaseConfigFile);
 
@@ -31,7 +29,6 @@ const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp, firebaseConfig.firestoreDatabaseId);
 
 const app = express();
-const PORT = 3000;
 
 // Setup Multer for memory storage
 const upload = multer({ storage: multer.memoryStorage() });
@@ -46,35 +43,15 @@ const s3 = new S3Client({
   },
 });
 
-// Safe diagnostic for R2 config (only shows first/last chars)
-console.log("--- R2 Environment Check ---");
-const checkKey = (name: string, val: string | undefined) => {
-  if (!val) {
-    console.error(`❌ ${name} is MISSING!`);
-  } else {
-    const masked = val.length > 8 
-      ? `${val.substring(0, 4)}...${val.substring(val.length - 4)}`
-      : "****";
-    console.log(`✅ ${name} detected: ${masked} (Length: ${val.length})`);
-  }
-};
-
-checkKey("ENDPOINT", process.env.CLOUDFLARE_R2_ENDPOINT);
-checkKey("ACCESS_KEY_ID", process.env.CLOUDFLARE_R2_ACCESS_KEY_ID);
-checkKey("SECRET_ACCESS_KEY", process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY);
-checkKey("BUCKET_NAME", process.env.CLOUDFLARE_R2_BUCKET_NAME);
-console.log("----------------------------");
-
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// --- API ROUTES (Firebase Backed) ---
+// --- API ROUTES ---
 
-// Debug Route to check R2 configuration (Protected by secret)
 app.get("/api/debug-r2", (req, res) => {
   const secret = req.query.secret;
   if (secret !== process.env.ADMIN_SECRET && secret !== 'xingxin123') {
-    return res.status(401).send("Unauthorized: Please provide correct ?secret=your_secret");
+    return res.status(401).send("Unauthorized");
   }
 
   const mask = (val: string | undefined) => {
@@ -87,17 +64,16 @@ app.get("/api/debug-r2", (req, res) => {
     ACCESS_KEY_ID: mask(process.env.CLOUDFLARE_R2_ACCESS_KEY_ID),
     SECRET_ACCESS_KEY: mask(process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY),
     BUCKET_NAME: mask(process.env.CLOUDFLARE_R2_BUCKET_NAME),
-    PUBLIC_URL: mask(process.env.CLOUDFLARE_R2_PUBLIC_URL),
-    tips: "如果 SECRET_ACCESS_KEY 开头不是 4，说明您需要更新 Vercel 环境变量并重新部署。"
+    tips: "Vercel API Mode"
   });
 });
 
-const BUCKET_NAME = process.env.CLOUDFLARE_R2_BUCKET_NAME || "my-company-website-2";
-const PUBLIC_URL = process.env.CLOUDFLARE_R2_PUBLIC_URL || "https://pub-c37d421f19684d4abdb9ce2962d38654.r2.dev";
+const BUCKET_NAME = process.env.CLOUDFLARE_R2_BUCKET_NAME;
+const PUBLIC_URL = process.env.CLOUDFLARE_R2_PUBLIC_URL;
 
-// 1. Image Upload to Cloudflare R2
 app.post("/api/upload", upload.single("image"), async (req: any, res: any) => {
   if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+  if (!BUCKET_NAME) return res.status(500).json({ error: "R2 Bucket not configured" });
 
   try {
     const fileName = `${Date.now()}-${req.file.originalname}`;
@@ -109,35 +85,22 @@ app.post("/api/upload", upload.single("image"), async (req: any, res: any) => {
     });
 
     await s3.send(command);
-
     const imageUrl = `${PUBLIC_URL}/${fileName}`;
     res.json({ url: imageUrl });
   } catch (error: any) {
     console.error("R2 Upload Error:", error);
-    
-    // Check for specific AWS SDK authentication errors
-    if (error.name === "Unauthorized" || error.name === "InvalidAccessKeyId" || error.name === "SignatureDoesNotMatch") {
-      return res.status(500).json({ 
-        error: "R2 Authentication Failed", 
-        details: "Please check your R2 Credentials (Access Key and Secret Key) in environment variables." 
-      });
-    }
-    
     res.status(500).json({ error: "Upload failed", details: error.message });
   }
 });
 
-// 2. Firestore API Routes
 app.get("/api/data/:collectionName", async (req, res) => {
   try {
     const { collectionName } = req.params;
-    console.log(`[Firestore] Fetching collection: ${collectionName}`);
     const q = query(collection(db, collectionName));
     const snapshot = await getDocs(q);
     const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) || [];
     res.json(data);
   } catch (error: any) {
-    console.error(`[Firestore Error] Get ${req.params.collectionName}:`, error);
     res.json([]);
   }
 });
@@ -145,47 +108,37 @@ app.get("/api/data/:collectionName", async (req, res) => {
 app.post("/api/data/:collectionName", async (req, res) => {
   try {
     const { collectionName } = req.params;
-    console.log(`[Firestore] Adding to collection: ${collectionName}`);
     const docRef = await addDoc(collection(db, collectionName), {
       ...req.body,
       createdAt: new Date().toISOString()
     });
     res.json({ id: docRef.id, ...req.body });
   } catch (error: any) {
-    console.error(`[Firestore Error] Post ${req.params.collectionName}:`, error);
-    res.status(500).json({ error: "Failed to add data", message: error.message });
+    res.status(500).json({ error: "Failed to add data" });
   }
 });
 
 app.put("/api/data/:collectionName/:id", async (req, res) => {
   try {
     const { collectionName, id } = req.params;
-    console.log(`[Firestore] Updating doc: ${collectionName}/${id}`);
     const docRef = doc(db, collectionName, id);
-    await updateDoc(docRef, {
-      ...req.body,
-      updatedAt: new Date().toISOString()
-    });
+    await updateDoc(docRef, { ...req.body, updatedAt: new Date().toISOString() });
     res.json({ id, ...req.body });
   } catch (error: any) {
-    console.error(`[Firestore Error] Put ${req.params.collectionName}/${req.params.id}:`, error);
-    res.status(500).json({ error: "Failed to update data", message: error.message });
+    res.status(500).json({ error: "Failed to update data" });
   }
 });
 
 app.delete("/api/data/:collectionName/:id", async (req, res) => {
   try {
     const { collectionName, id } = req.params;
-    console.log(`[Firestore] Deleting doc: ${collectionName}/${id}`);
     await deleteDoc(doc(db, collectionName, id));
     res.status(204).send();
   } catch (error: any) {
-    console.error(`[Firestore Error] Delete ${req.params.collectionName}/${req.params.id}:`, error);
-    res.status(500).json({ error: "Failed to delete data", message: error.message });
+    res.status(500).json({ error: "Failed to delete data" });
   }
 });
 
-// 3. Settings API
 app.get("/api/settings", async (req, res) => {
   const defaults = {
     heroBanners: [
@@ -202,11 +155,9 @@ app.get("/api/settings", async (req, res) => {
       news: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E6%96%B0%E9%97%BBbanner.png"
     }
   };
-
   try {
     const docRef = doc(db, "settings", "global");
     const docSnap = await getDoc(docRef);
-    
     if (docSnap.exists()) {
       res.json({ ...defaults, ...docSnap.data() });
     } else {
@@ -226,57 +177,5 @@ app.put("/api/settings", async (req, res) => {
     res.status(500).json({ error: "Failed to update settings" });
   }
 });
-
-// --- VITE MIDDLEWARE / STATIC FILES ---
-
-async function startServer() {
-  const distPath = path.join(process.cwd(), "dist");
-  const isProd = process.env.NODE_ENV === "production";
-  
-  // Try to check if dist exists for production
-  let distExists = false;
-  try {
-    await fs.access(distPath);
-    distExists = true;
-  } catch (e) {
-    distExists = false;
-  }
-
-  if (isProd && distExists) {
-    console.log("Serving production build from /dist");
-    app.use(express.static(distPath));
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
-    });
-  } else {
-    console.log("Starting in development mode (or dist missing)...");
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "custom",
-    });
-    app.use(vite.middlewares);
-
-    app.all("*", async (req, res, next) => {
-      const url = req.originalUrl;
-      try {
-        let template = await fs.readFile(path.join(process.cwd(), "index.html"), "utf-8");
-        template = await vite.transformIndexHtml(url, template);
-        res.status(200).set({ "Content-Type": "text/html" }).end(template);
-      } catch (e) {
-        vite.ssrFixStacktrace(e as Error);
-        next(e);
-      }
-    });
-  }
-}
-
-startServer();
-
-// Export app for Vercel, but also listen locally
-if (!process.env.VERCEL) {
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
-}
 
 export default app;
