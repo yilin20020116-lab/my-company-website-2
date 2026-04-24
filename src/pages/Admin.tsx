@@ -17,13 +17,14 @@ import {
   Image as ImageIcon,
   Pencil,
   Settings,
-  MessageSquare
+  MessageSquare,
+  Users
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
 import { productData } from '../data/products';
 
-type AdminTab = 'news' | 'products' | 'cases' | 'qualifications' | 'settings' | 'messages';
+type AdminTab = 'news' | 'products' | 'cases' | 'qualifications' | 'settings' | 'messages' | 'partners';
 
 export default function AdminPage() {
   const { user, isAdmin, loading, login, logout } = useAuth();
@@ -56,6 +57,7 @@ export default function AdminPage() {
         break;
       case 'cases': data = await DataService.getProjectCases(); break;
       case 'qualifications': data = await DataService.getQualifications(); break;
+      case 'partners': data = await DataService.getPartners(); break;
       case 'messages': data = await DataService.getMessages(); break;
       case 'settings': 
         const settings = await DataService.getSettings();
@@ -113,19 +115,46 @@ export default function AdminPage() {
     }
   };
 
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError('');
+    const success = await login(password);
+    if (!success) {
+      setLoginError('密码错误，请重试');
+    }
+  };
+
   if (loading) return <div className="h-screen flex items-center justify-center">加载中...</div>;
 
-  if (!user) {
+  if (!user && !isAdmin) {
     return (
-      <div className="h-screen flex flex-col items-center justify-center pt-20">
-        <h1 className="text-2xl font-bold mb-6">管理后台登录</h1>
-        <button 
-          onClick={login}
-          className="bg-white border flex items-center gap-3 px-8 py-4 rounded-xl shadow-sm hover:shadow-md transition-all"
-        >
-          <img src="https://www.google.com/favicon.ico" className="w-5 h-5" alt="google" />
-          使用 Google 账号登录
-        </button>
+      <div className="h-screen flex flex-col items-center justify-center bg-slate-50">
+        <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 max-w-sm w-full">
+          <h1 className="text-2xl font-bold mb-6 text-center text-slate-800">管理后台</h1>
+          <form onSubmit={handleLogin} className="flex flex-col gap-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-600 mb-1">访问密码</label>
+              <input 
+                type="password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-brand-blue outline-none"
+                placeholder="请输入管理密码"
+                required
+              />
+            </div>
+            {loginError && <p className="text-red-500 text-sm">{loginError}</p>}
+            <button 
+              type="submit"
+              className="bg-brand-blue text-white font-medium px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+            >
+              登录
+            </button>
+          </form>
+        </div>
       </div>
     );
   }
@@ -139,11 +168,85 @@ export default function AdminPage() {
     );
   }
 
+  const renderItemCard = (item: any) => (
+    <motion.div 
+      key={item.id}
+      layout
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      className={cn(
+        "bg-white rounded-2xl border p-4 shadow-sm group hover:shadow-md transition-all",
+        (item.orientation === 'landscape' && activeTab !== 'qualifications') ? "md:col-span-2" : "col-span-1"
+      )}
+    >
+      <div className={cn(
+        "rounded-xl overflow-hidden mb-4 bg-slate-50 border relative",
+        (item.orientation === 'landscape' && activeTab !== 'qualifications') ? "aspect-video" : (activeTab === 'qualifications' || activeTab === 'partners' ? "aspect-square" : "aspect-[3/4]")
+      )}>
+        {(item.imageUrl || item.logo) ? (
+          <img src={item.imageUrl || item.logo} className={cn("w-full h-full", (activeTab === 'qualifications' || activeTab === 'partners') ? "object-contain p-4 bg-white" : "object-cover")} alt="" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-slate-300">
+            <ImageIcon size={48} />
+          </div>
+        )}
+      </div>
+        <div className="flex justify-between items-start mb-2">
+          <div className="flex flex-col gap-1 pr-2">
+            {item.isStatic && (
+              <span className="text-[10px] bg-amber-100 text-amber-700 font-bold px-1.5 py-0.5 rounded w-fit">
+                系统内置模板
+              </span>
+            )}
+            <h3 className="font-bold text-lg text-slate-900 line-clamp-1">{item.name || item.title}</h3>
+          </div>
+          <div className="flex gap-1 shrink-0">
+          <button 
+            onClick={() => { 
+              const mappedItem = { ...item };
+              if (item.isStatic) {
+                if (!mappedItem.name && mappedItem.title) mappedItem.name = mappedItem.title;
+                if (!mappedItem.imageUrl && item.image) mappedItem.imageUrl = item.image;
+                if (!mappedItem.description) {
+                  const descParts = [];
+                  if (item.advantages) descParts.push(`优势特点：\n${Array.isArray(item.advantages) ? item.advantages.join('\n') : item.advantages}`);
+                  if (item.applications) descParts.push(`应用范围：\n${item.applications}`);
+                  mappedItem.description = descParts.join('\n\n');
+                }
+                if (!mappedItem.richHTML && item.richHTML) mappedItem.richHTML = item.richHTML;
+                if (!mappedItem.detailImageUrl && item.detailImageUrl) mappedItem.detailImageUrl = item.detailImageUrl;
+              }
+              setFormData(mappedItem); 
+              setIsEditing(item.id); 
+            }} 
+            className="p-2 text-slate-400 hover:text-brand-blue hover:bg-brand-blue/5 rounded-lg transition-all"
+            title="编辑"
+          >
+            <Pencil size={18} />
+          </button>
+          <button 
+            onClick={() => handleDelete(item.id)} 
+            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+            title="删除"
+          >
+            <Trash2 size={18} />
+          </button>
+        </div>
+      </div>
+      <div className="text-xs text-slate-400 flex justify-between items-center uppercase tracking-widest mt-2 border-t pt-2">
+        <span>{item.category === 'honors' ? '荣誉奖项' : item.category === 'qualifications' ? '资质证书' : item.category === 'patents' ? '专利技术' : (item.category || item.date || '无分类')}</span>
+        <span>{item.year || ''}</span>
+      </div>
+    </motion.div>
+  );
+
   const tabs: { id: AdminTab; label: string; icon: any }[] = [
     { id: 'news', label: '新闻管理', icon: Newspaper },
     { id: 'products', label: '产品管理', icon: Package },
     { id: 'cases', label: '案例管理', icon: Briefcase },
     { id: 'qualifications', label: '资质管理', icon: Award },
+    { id: 'partners', label: '合作伙伴', icon: Users },
     { id: 'messages', label: '在线留言', icon: MessageSquare },
     { id: 'settings', label: '网站设置', icon: Settings },
   ];
@@ -151,7 +254,7 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-slate-50 flex pt-20">
       {/* Sidebar */}
-      <div className="w-64 bg-white border-r flex flex-col">
+      <div className="w-64 shrink-0 bg-white border-r flex flex-col">
         <div className="p-6">
           <h2 className="text-lg font-bold text-slate-900">内容管理系统</h2>
           <p className="text-xs text-slate-400 mt-1">{user.email}</p>
@@ -450,6 +553,15 @@ export default function AdminPage() {
                     <input type="text" value={formData.location || ''} onChange={e => setFormData({...formData, location: e.target.value})} className="w-full px-4 py-2 border rounded-lg" />
                   </div>
                   <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">分类</label>
+                    <select value={formData.category || '市政案例'} onChange={e => setFormData({...formData, category: e.target.value})} className="w-full px-4 py-2 border rounded-lg">
+                      <option value="市政案例">市政案例</option>
+                      <option value="农业案例">农业案例</option>
+                      <option value="工业案例">工业案例</option>
+                      <option value="矿山案例">矿山案例</option>
+                    </select>
+                  </div>
+                  <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">描述</label>
                     <textarea value={formData.description || ''} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full px-4 py-2 border rounded-lg h-32" />
                   </div>
@@ -476,9 +588,27 @@ export default function AdminPage() {
                   </div>
                 </>
               )}
+              
+              {activeTab === 'partners' && (
+                <>
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">排序 (数字越小越靠前)</label>
+                    <input type="number" value={formData.order || 0} onChange={e => setFormData({...formData, order: parseInt(e.target.value)})} className="w-full px-4 py-2 border rounded-lg" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">Logo</label>
+                    <div className="flex gap-4">
+                      <input type="text" value={formData.logo || ''} onChange={e => setFormData({...formData, logo: e.target.value})} className="flex-grow px-4 py-2 border rounded-lg text-sm" placeholder="上传后自动生成链接" />
+                    </div>
+                    {(formData.logo) && <img src={formData.logo} className="h-20 object-contain rounded mt-2 border bg-white p-2" alt="logo" />}
+                    <ImageUploader onUpload={(url) => setFormData({...formData, logo: url})} folder="partners" />
+                  </div>
+                </>
+              )}
 
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">图片 (上传或粘贴链接)</label>
+              {activeTab !== 'partners' && (
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-2">图片 (上传或粘贴链接)</label>
                 <div className="flex gap-4 mb-4">
                   <input 
                     type="text" 
@@ -524,6 +654,7 @@ export default function AdminPage() {
                 </div>
                 <p className="text-[10px] text-slate-400 mt-2">提示：上传图片会自动检测版式，您也可以手动切换。</p>
               </div>
+              )}
 
               <button 
                 type="submit"
@@ -593,86 +724,39 @@ export default function AdminPage() {
               </div>
             )}
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <AnimatePresence>
-              {items.map(item => (
-                <motion.div 
-                  key={item.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  className={cn(
-                    "bg-white rounded-2xl border p-4 shadow-sm group hover:shadow-md transition-all",
-                    (item.orientation === 'landscape' && activeTab !== 'qualifications') ? "md:col-span-2" : "col-span-1"
-                  )}
-                >
-                  <div className={cn(
-                    "rounded-xl overflow-hidden mb-4 bg-slate-50 border relative",
-                    (item.orientation === 'landscape' && activeTab !== 'qualifications') ? "aspect-video" : "aspect-[3/4]"
-                  )}>
-                    {item.imageUrl ? (
-                      <img src={item.imageUrl} className="w-full h-full object-cover" alt="" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-slate-300">
-                        <ImageIcon size={48} />
+        ) : activeTab === 'qualifications' ? (
+          <div className="space-y-12 pb-12">
+            {[
+              { id: 'honors', label: '荣誉奖项' },
+              { id: 'qualifications', label: '资质证书' },
+              { id: 'patents', label: '专利技术' },
+            ].map(cat => {
+              const catItems = items.filter(item => item.category === cat.id || (!item.category && cat.id === 'honors'));
+              return (
+                <div key={cat.id} className="bg-white rounded-2xl border p-6 shadow-sm">
+                  <h3 className="text-xl font-bold text-slate-800 mb-6 pb-4 border-b flex items-center gap-3">
+                    <span className="w-1.5 h-6 bg-brand-blue rounded-full"></span>
+                    {cat.label} 
+                    <span className="text-sm font-normal text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">共 {catItems.length} 项</span>
+                  </h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                    <AnimatePresence>
+                      {catItems.map(item => renderItemCard(item))}
+                    </AnimatePresence>
+                    {catItems.length === 0 && (
+                      <div className="col-span-full py-10 text-center text-slate-400 border-2 border-dashed rounded-xl bg-slate-50">
+                        此分类下还没有数据
                       </div>
                     )}
                   </div>
-                    <div className="flex justify-between items-start mb-2">
-                      <div className="flex flex-col gap-1">
-                        {item.isStatic && (
-                          <span className="text-[10px] bg-amber-100 text-amber-700 font-bold px-1.5 py-0.5 rounded w-fit">
-                            系统内置模板 (编辑将保存至后台)
-                          </span>
-                        )}
-                        <h3 className="font-bold text-lg text-slate-900 line-clamp-1">{item.name || item.title}</h3>
-                      </div>
-                      <div className="flex gap-1">
-                      <button 
-                        onClick={() => { 
-                          const mappedItem = { ...item };
-                          if (item.isStatic) {
-                            if (!mappedItem.name && mappedItem.title) mappedItem.name = mappedItem.title;
-                            // Map 'image' from static data to 'imageUrl' for form
-                            if (!mappedItem.imageUrl && item.image) mappedItem.imageUrl = item.image;
-                            
-                            // Combine advantages and applications for description
-                            if (!mappedItem.description) {
-                              const descParts = [];
-                              if (item.advantages) descParts.push(`优势特点：\n${Array.isArray(item.advantages) ? item.advantages.join('\n') : item.advantages}`);
-                              if (item.applications) descParts.push(`应用范围：\n${item.applications}`);
-                              mappedItem.description = descParts.join('\n\n');
-                            }
-                            
-                            // Ensure richHTML and other details are carried over
-                            if (!mappedItem.richHTML && item.richHTML) mappedItem.richHTML = item.richHTML;
-                            if (!mappedItem.detailImageUrl && item.detailImageUrl) mappedItem.detailImageUrl = item.detailImageUrl;
-                          }
-                          setFormData(mappedItem); 
-                          setIsEditing(item.id); 
-                        }} 
-                        className="p-2 text-slate-400 hover:text-brand-blue hover:bg-brand-blue/5 rounded-lg transition-all"
-                        title="编辑"
-                      >
-                        <Pencil size={18} />
-                      </button>
-                      <button 
-                        onClick={() => handleDelete(item.id)} 
-                        className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
-                        title="删除"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </div>
-                  <div className="text-xs text-slate-400 flex justify-between items-center uppercase tracking-widest">
-                    <span>{item.category || item.date || '无分类'}</span>
-                    <span>{item.year || ''}</span>
-                  </div>
-                </motion.div>
-              ))}
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <AnimatePresence>
+              {items.map(item => renderItemCard(item))}
             </AnimatePresence>
             {items.length === 0 && (
               <div className="col-span-full py-20 text-center text-slate-400 border-2 border-dashed rounded-3xl">

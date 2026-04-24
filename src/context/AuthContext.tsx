@@ -1,61 +1,57 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { 
-  onAuthStateChanged, 
-  signInWithPopup, 
-  signOut, 
-  User 
-} from 'firebase/auth';
-import { auth, googleProvider, db } from '../lib/firebase';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface AuthContextType {
-  user: User | null;
+  user: any | null;
   isAdmin: boolean;
   loading: boolean;
-  login: () => Promise<void>;
+  login: (password: string) => Promise<boolean>;
   logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      setUser(user);
-      if (user) {
-        // Check if user is admin
-        const adminDoc = await getDoc(doc(db, 'admins', user.uid));
-        setIsAdmin(adminDoc.exists());
-        
-        // Auto-bootstrap first user as admin (for development convenience)
-        // In production, you would remove this or restrict it
-        if (!adminDoc.exists() && user.email === 'yilin20020116@gmail.com') {
-          await setDoc(doc(db, 'admins', user.uid), { email: user.email, role: 'owner' });
-          setIsAdmin(true);
-        }
-      } else {
-        setIsAdmin(false);
-      }
-      setLoading(false);
-    });
-
-    return unsubscribe;
+    // Check local storage for token
+    const token = localStorage.getItem('admin_token');
+    if (token === 'admin-token-xyz') {
+      setIsAdmin(true);
+    }
+    setLoading(false);
   }, []);
 
-  const login = async () => {
-    await signInWithPopup(auth, googleProvider);
+  const login = async (password: string): Promise<boolean> => {
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          localStorage.setItem('admin_token', data.token);
+          setIsAdmin(true);
+          return true;
+        }
+      }
+      return false;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
   };
 
   const logout = async () => {
-    await signOut(auth);
+    localStorage.removeItem('admin_token');
+    setIsAdmin(false);
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAdmin, loading, login, logout }}>
+    <AuthContext.Provider value={{ user: isAdmin ? { email: 'admin' } : null, isAdmin, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

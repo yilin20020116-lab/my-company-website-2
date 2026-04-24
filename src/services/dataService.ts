@@ -1,84 +1,126 @@
-import axios from 'axios';
+import axios from "axios";
 
-// Interfaces remain same for compatibility
-export interface NewsItem { id: string; title: string; content: string; date: string; category: string; imageUrl?: string; summary?: string; orientation?: 'landscape' | 'portrait'; richHTML?: string; }
-export interface ProductItem { id: string; name: string; category: string; description: string; specifications?: string; imageUrl?: string; detailImageUrl?: string; features?: string[]; orientation?: 'landscape' | 'portrait'; richHTML?: string; }
-export interface ProjectCase { id: string; title: string; location?: string; date?: string; description?: string; imageUrl: string; category?: string; orientation?: 'landscape' | 'portrait'; }
-export interface QualificationItem { id: string; title: string; category: string; year: string; imageUrl: string; orientation?: 'landscape' | 'portrait'; }
+// Helper function for API calls
+const api = axios.create({
+  baseURL: "/api"
+});
+
+export interface NewsItem {
+  id?: string;
+  title: string;
+  category: string;
+  date: string;
+  summary: string;
+  imageUrl: string;
+  content: string;
+  views: number;
+}
+
+export interface ProductItem {
+  id: string;
+  name: string;
+  title?: string;
+  category: string;
+  imageUrl?: string;
+  richHTML?: string;
+  isStatic?: boolean;
+}
+
+export interface ProjectCase {
+  id?: string;
+  title: string;
+  category: string;
+  date: string;
+  details: string;
+  imageUrl: string;
+  content: string;
+}
+
+export interface QualificationItem {
+  id?: string;
+  title: string;
+  date?: string;
+  imageUrl: string;
+  category?: string;
+  year?: string;
+  orientation?: 'landscape' | 'portrait';
+}
+
+export interface PartnerItem {
+  id?: string;
+  name?: string;
+  logo: string;
+  order?: number;
+}
 
 export interface SiteSettings {
-  heroBanners: string[];
-  heroTitle: string;
-  heroSubtitle: string;
-  pageBanners: {
-    products: string;
-    cases: string;
-    qualifications: string;
-    news: string;
-  };
-  global?: {
-    logo: string;
-    phone: string;
-    address: string;
-    email: string;
-    qrCode1: string;
-    qrCode2: string;
-    icp: string;
-  };
-  about?: {
-    title: string;
-    content1: string;
-    content2: string;
-    image: string;
-  };
+  contactMobile?: string;
+  contactAddress?: string;
+  companyName?: string;
+  icp?: string;
 }
 
 export const DataService = {
-  async getSettings(): Promise<SiteSettings> {
-    const res = await axios.get('/api/settings');
-    return res.data;
+  getSettings: async () => {
+    try {
+      const { data } = await api.get('/settings');
+      return data;
+    } catch (e) {
+      console.error(e);
+      return {};
+    }
   },
-  async updateSettings(data: any): Promise<SiteSettings> {
-    const res = await axios.put('/api/settings', data);
-    return res.data;
+
+  updateSettings: async (settings: any) => {
+    const { data } = await api.post('/settings', settings);
+    return data;
   },
-  async getProductCategories(): Promise<any[]> {
-    const res = await axios.get('/api/data/productCategories');
-    return res.data;
+
+  getNews: async () => {
+    const { data } = await api.get('/news');
+    return data.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
   },
-  async getNews(): Promise<NewsItem[]> {
-    const res = await axios.get('/api/data/news');
-    return res.data;
+
+  getProducts: async () => {
+    const { data } = await api.get('/products');
+    return data;
   },
-  async getProducts(): Promise<ProductItem[]> {
-    const res = await axios.get('/api/data/products');
-    return res.data;
+
+  getProjectCases: async () => {
+    const { data } = await api.get('/cases');
+    return data;
   },
-  async getProjectCases(): Promise<ProjectCase[]> {
-    const res = await axios.get('/api/data/cases');
-    return res.data;
+
+  getQualifications: async () => {
+    const { data } = await api.get('/qualifications');
+    return data;
   },
-  async getQualifications(): Promise<QualificationItem[]> {
-    const res = await axios.get('/api/data/qualifications');
-    return res.data;
+  
+  getPartners: async () => {
+    const { data } = await api.get('/partners');
+    return data.sort((a: any, b: any) => (a.order || 0) - (b.order || 0));
   },
-  async getMessages(): Promise<any[]> {
-    const res = await axios.get('/api/data/messages');
-    return res.data;
+  
+  getMessages: async () => {
+    const { data } = await api.get('/messages');
+    return data.sort((a: any, b: any) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime());
   },
-  async addItem(col: string, data: any) {
-    const collection = col === 'projectCases' ? 'cases' : col;
-    const res = await axios.post(`/api/data/${collection}`, data);
-    return res.data;
+
+  addItem: async (collectionName: string, item: any) => {
+    // If the collectionName is cases, we need it to point to cases
+    if (collectionName === 'projectCases') collectionName = 'cases';
+    const { data } = await api.post(`/${collectionName}`, item);
+    return data;
   },
-  async updateItem(col: string, id: string, data: any) {
-    const collection = col === 'projectCases' ? 'cases' : col;
-    const res = await axios.put(`/api/data/${collection}/${id}`, data);
-    return res.data;
+
+  updateItem: async (collectionName: string, id: string, item: any) => {
+    if (collectionName === 'projectCases') collectionName = 'cases';
+    const { data } = await api.put(`/${collectionName}/${id}`, item);
+    return data;
   },
-  async deleteItem(col: string, id: string) {
-    const collection = col === 'projectCases' ? 'cases' : col;
-    const res = await axios.delete(`/api/data/${collection}/${id}`);
-    return res.data;
+
+  deleteItem: async (collectionName: string, id: string) => {
+    if (collectionName === 'projectCases') collectionName = 'cases';
+    await api.delete(`/${collectionName}/${id}`);
   }
 };

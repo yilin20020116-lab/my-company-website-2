@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import imageCompression from 'browser-image-compression';
 import { Upload, CheckCircle2, AlertCircle } from 'lucide-react';
 import { cn } from '../../lib/utils';
@@ -39,33 +38,39 @@ export default function ImageUploader({ onUpload, folder = 'general' }: ImageUpl
       // 0. Detect orientation
       const orientation = await getImageOrientation(file);
 
-      // 1. 压缩图片 (最大 1MB)
+      // 1. Compress image
       const options = {
         maxSizeMB: 1,
-        maxWidthOrHeight: 1920,
-        useWebWorker: true
+        maxWidthOrHeight: 1600,
+        useWebWorker: true,
+        initialQuality: 0.8,
+        onProgress: (p: number) => setProgress(Math.floor(p * 0.5)) // Compression is 50% of progress
       };
       const compressedFile = await imageCompression(file, options);
 
-      // 2. 使用我们的后端接口上传
+      // 2. Upload via API
       const formData = new FormData();
-      formData.append('image', compressedFile);
-
-      const res = await axios.post('/api/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        onUploadProgress: (progressEvent) => {
-          const p = Math.round((progressEvent.loaded * 100) / (progressEvent.total || progressEvent.loaded));
-          setProgress(p);
-        }
+      formData.append('file', compressedFile, file.name);
+      
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
       });
 
-      onUpload(res.data.url, orientation);
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || '上传失败，服务器错误');
+      }
+
+      const data = await response.json();
+      
+      setProgress(100);
+      onUpload(data.url, orientation);
       setDone(true);
-    } catch (err) {
-      console.error('Upload failed:', err);
-      setError('上传失败，请确保 Cloudflare 环境变量已配置');
-      alert('上传出错，请检查后台环境变量配置。');
-    } finally {
+      setUploading(false);
+    } catch (err: any) {
+      console.error('Upload handling failed:', err);
+      setError(err.message || '处理图片时出错');
       setUploading(false);
     }
   };

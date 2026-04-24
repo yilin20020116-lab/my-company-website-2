@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Play, MapPin, ExternalLink, Loader2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import { DataService, ProjectCase } from '../services/dataService';
 
-const categories = ['全部', '市政工程', '工业特种', '燃气热力', '海外项目'];
+const categories = ['全部', '市政案例', '农业案例', '工业案例', '矿山案例'];
 
 export default function Cases() {
   const [activeTab, setActiveTab] = useState('全部');
@@ -27,7 +28,7 @@ export default function Cases() {
 
   const filteredProjects = activeTab === '全部' 
     ? projects
-    : projects.filter(p => (p.category || '市政工程') === activeTab);
+    : projects.filter(p => (p.category || '市政案例') === activeTab);
 
   if (loading) {
     return (
@@ -144,9 +145,12 @@ export default function Cases() {
         )}
 
         <div className="mt-16 text-center">
-          <button className="px-10 py-4 rounded-full border-2 border-slate-200 font-bold text-slate-600 hover:bg-slate-50 hover:border-brand-blue hover:text-brand-blue transition-all">
+          <Link 
+            to="/cases" 
+            className="inline-block px-10 py-4 rounded-full border-2 border-slate-200 font-bold text-slate-600 hover:bg-slate-50 hover:border-brand-blue hover:text-brand-blue transition-all"
+          >
             查看更多工程案例
-          </button>
+          </Link>
         </div>
       </div>
     </section>

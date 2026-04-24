@@ -1,43 +1,72 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-
-const partners = [
-  { name: '中国建筑', logo: 'https://picsum.photos/seed/cscec/200/100?grayscale' },
-  { name: '中国中铁', logo: 'https://picsum.photos/seed/crec/200/100?grayscale' },
-  { name: '中国交建', logo: 'https://picsum.photos/seed/cccc/200/100?grayscale' },
-  { name: '中国电建', logo: 'https://picsum.photos/seed/powerchina/200/100?grayscale' },
-  { name: '万科集团', logo: 'https://picsum.photos/seed/vanke/200/100?grayscale' },
-  { name: '保利地产', logo: 'https://picsum.photos/seed/poly/200/100?grayscale' },
-];
+import { DataService, PartnerItem } from '../services/dataService';
 
 export default function Partners() {
+  const [partners, setPartners] = useState<PartnerItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPartners = async () => {
+      try {
+        const data = await DataService.getPartners();
+        setPartners(data);
+      } catch (e) {
+        console.error('Failed to fetch partners:', e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPartners();
+  }, []);
+
+  if (loading || partners.length === 0) {
+    return null;
+  }
+
+  // Double the partners array for seamless infinite scroll
+  const scrollingPartners = [...partners, ...partners, ...partners];
+
   return (
-    <section className="py-20 bg-white border-t border-slate-50">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-24">
-        <div className="text-center mb-12">
+    <section className="py-20 bg-white border-t border-slate-50 overflow-hidden">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-24 mb-12">
+        <div className="text-center">
           <h4 className="text-sm font-bold text-slate-400 uppercase tracking-[0.3em]">
             合作伙伴 / PARTNERS
           </h4>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center opacity-50 hover:opacity-100 transition-opacity duration-500">
-          {partners.map((partner, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="flex justify-center bg-slate-50 p-4 rounded-lg hover:bg-white hover:shadow-sm transition-all"
+      </div>
+
+      <div className="relative">
+        {/* Gradients to fade out the edges */}
+        <div className="absolute top-0 left-0 w-32 h-full bg-gradient-to-r from-white to-transparent z-10"></div>
+        <div className="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-white to-transparent z-10"></div>
+
+        <motion.div 
+          className="flex gap-12 items-center"
+          animate={{
+            x: [0, - partners.length * 248] // Adjusted based on item width + gap
+          }}
+          transition={{
+            duration: partners.length * 5, // Responsive duration
+            ease: "linear",
+            repeat: Infinity
+          }}
+        >
+          {scrollingPartners.map((partner, i) => (
+            <div
+              key={`${partner.id}-${i}`}
+              className="flex-shrink-0 flex justify-center items-center w-[200px] h-[96px] bg-slate-50 p-2 rounded-xl hover:bg-white hover:shadow-sm transition-all group"
             >
               <img 
                 src={partner.logo} 
                 alt={partner.name} 
-                className="h-10 object-contain filter grayscale hover:grayscale-0 transition-all"
+                className="h-full w-full object-contain opacity-50 group-hover:opacity-100 transition-all duration-500"
                 referrerPolicy="no-referrer"
               />
-            </motion.div>
+            </div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

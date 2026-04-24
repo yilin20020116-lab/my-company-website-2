@@ -19,37 +19,42 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
-    // Admins collection - allow the owner to bootstrap themselves
     match /admins/{userId} {
       allow read: if isSignedIn();
       allow write: if isAdmin() || (request.auth.uid == userId && request.auth.token.email == 'yilin20020116@gmail.com');
     }
 
-    // News rules
-    match /news/{newsId} {
-      allow read: if true; // Publicly readable
+    match /system/{docId} {
+      allow read: if true;
       allow write: if isAdmin();
     }
 
-    // Products rules
+    match /messages/{messageId} {
+      // Allow anyone to create a message, but only admins can read or delete them
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /news/{newsId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     match /products/{productId} {
       allow read: if true;
       allow write: if isAdmin();
     }
 
-    // Project Cases rules
-    match /projectCases/{caseId} {
+    match /cases/{caseId} {
       allow read: if true;
       allow write: if isAdmin();
     }
 
-    // Qualifications rules
     match /qualifications/{qualId} {
       allow read: if true;
       allow write: if isAdmin();
     }
 
-    // Banners rules
     match /banners/{bannerId} {
       allow read: if true;
       allow write: if isAdmin();

@@ -67,29 +67,16 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-[#0f4e8b] text-white pt-16 pb-8 px-6 md:px-12 lg:px-24 font-sans">
+    <footer className="bg-[#0f4e8b] text-white pt-10 pb-6 px-6 md:px-12 lg:px-24 font-sans">
       <div className="max-w-[1400px] mx-auto relative">
         {/* Top row with Logo/Contacts and Sitemap */}
-        <div className="flex flex-col lg:flex-row justify-between mb-16 gap-16">
+        <div className="flex flex-col lg:flex-row justify-between mb-0 gap-12">
           
           {/* Left Column (Contact & Social & Search) */}
-          <div className="lg:w-[35%]">
-            {/* Brand Logo */}
-            <div className="flex items-center gap-6 mb-10">
-              <img 
-                src={settings?.global?.logo || "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E5%85%B4%E6%AC%A3logo%E6%A0%87.png?t=1"}
-                alt="兴欣科技" 
-                className="h-[200px] w-auto object-contain drop-shadow-lg" 
-                referrerPolicy="no-referrer"
-              />
-              <div className="flex flex-col">
-                <span className="font-display font-bold text-[32px] leading-none tracking-wider">兴欣科技</span>
-                <span className="text-[12px] uppercase tracking-[0.1em] opacity-80 mt-1 font-medium">Xingxin Pipes</span>
-              </div>
-            </div>
-
+          <div className="lg:w-[30%]">
+            
             {/* Social Media Links */}
-            <div className="flex items-center gap-3 mb-8">
+            <div className="flex items-center gap-3 mb-6">
               <span className="text-white/90 text-[15px] font-medium mr-2">关于我们:</span>
               
               <div className="flex gap-4">
@@ -121,7 +108,7 @@ export default function Footer() {
             </div>
 
             {/* Contact Details Text */}
-            <div className="space-y-4 text-[15px] font-medium tracking-wide leading-relaxed mb-8">
+            <div className="space-y-4 text-[15px] font-medium tracking-wide leading-relaxed mb-6">
               <div className="flex items-end gap-3 pb-2 pt-2">
                 <div className="flex justify-between w-[64px] opacity-90">服务热线</div>
                 <span>:</span>
@@ -130,7 +117,7 @@ export default function Footer() {
               <div className="flex items-start gap-3">
                 <div className="flex justify-between w-[64px] opacity-90 shrink-0"><span>地</span><span>址</span></div>
                 <span>:</span>
-                <span className="opacity-90 max-w-[280px]">{settings?.global?.address || '湖北省鄂州市鄂城区四海大道58号'}</span>
+                <span className="opacity-90 max-w-[280px] leading-snug">{settings?.global?.address || '湖北省鄂州市鄂城区四海大道58号'}</span>
               </div>
               <div className="flex items-start gap-3">
                 <div className="flex justify-between w-[64px] opacity-90 shrink-0"><span>邮</span><span>箱</span></div>
@@ -138,29 +125,17 @@ export default function Footer() {
                 <span className="opacity-90">{settings?.global?.email || 'ezxxjc@163.com'}</span>
               </div>
             </div>
-
-            {/* Search Bar in Footer */}
-            <div className="relative max-w-sm">
-              <input 
-                type="text" 
-                placeholder="搜索感兴趣的内容..." 
-                className="w-full bg-white/10 text-white placeholder-white/50 border border-white/20 rounded-lg py-3 px-4 outline-none focus:bg-white/20 focus:border-white/40 transition-all text-sm"
-              />
-              <button className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-[#e58a44] transition-colors p-1">
-                <Search size={18} />
-              </button>
-            </div>
           </div>
 
           {/* Right Column (Sitemap Grid) */}
-          <div className="lg:w-[62%] grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-y-12 gap-x-4 pt-4">
+          <div className="lg:flex-grow grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-y-8 gap-x-4 pt-2">
             {sitemap.map((section, idx) => (
-              <div key={idx} className="flex flex-col">
+              <div key={idx} className="flex flex-col items-end">
                 <Link to={section.href} className="text-[16px] font-medium text-white mb-2 tracking-wide hover:text-[#e58a44] transition-colors">
                   {section.title}
                 </Link>
-                <div className="w-[30px] h-[1px] bg-white/50 mb-5"></div>
-                <ul className="space-y-3">
+                <div className="w-[20px] h-[1px] bg-white/50 mb-4"></div>
+                <ul className="space-y-2 text-right">
                   {section.links.map((link, linkIdx) => (
                     <li key={linkIdx}>
                       {link.href.startsWith('#') ? (
@@ -181,12 +156,36 @@ export default function Footer() {
 
         </div>
 
+        {/* Search Bar and Brand Logo Row */}
+        <div className="flex flex-col md:flex-row justify-between items-end mb-10 mt-[-40px] relative z-0 pointer-events-none">
+          <div className="relative w-full max-w-sm pointer-events-auto">
+            <input 
+              type="text" 
+              placeholder="搜索感兴趣的内容..." 
+              className="w-full bg-white/10 text-white placeholder-white/50 border border-white/20 rounded-lg py-3 px-4 outline-none focus:bg-white/20 focus:border-white/40 transition-all text-sm"
+            />
+            <button className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-[#e58a44] transition-colors p-1">
+              <Search size={18} />
+            </button>
+          </div>
+ 
+          <div className="hidden md:flex flex-col items-end gap-2 pointer-events-auto">
+            <img 
+              src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E5%A4%A9%E5%81%A5%E6%A0%87.png"
+              alt="天健" 
+              className="h-[140px] w-auto object-contain brightness-0 invert opacity-90" 
+              referrerPolicy="no-referrer"
+            />
+            <span className="text-[18px] tracking-[0.2em] text-white/80 font-medium mt-1">中国埋地管道十大品牌之一</span>
+          </div>
+        </div>
+
         {/* Bottom Bar */}
-        <div className="pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 relative">
+        <div className="pt-4 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 relative">
           <p className="text-[12px] text-white/50 tracking-wider">
             © {new Date().getFullYear()} 湖北兴欣科技股份有限公司 版权所有. {settings?.global?.icp || '鄂ICP备XXXXXXXX号'}
           </p>
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-10">
             <button 
               onClick={scrollToTop}
               title="回到顶部"
