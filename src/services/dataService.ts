@@ -99,33 +99,45 @@ export const DataService = {
   },
 
   getNews: async () => {
-    const { data } = await api.get('/news');
-    return data.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    try {
+      const { data } = await api.get('/news');
+      return data.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    } catch (e) { return []; }
   },
 
   getProducts: async () => {
-    const { data } = await api.get('/products');
-    return data;
+    try {
+      const { data } = await api.get('/products');
+      return data;
+    } catch (e) { return []; }
   },
 
   getProjectCases: async () => {
-    const { data } = await api.get('/cases');
-    return data;
+    try {
+      const { data } = await api.get('/cases');
+      return data;
+    } catch (e) { return []; }
   },
 
   getQualifications: async () => {
-    const { data } = await api.get('/qualifications');
-    return data;
+    try {
+      const { data } = await api.get('/qualifications');
+      return data;
+    } catch (e) { return []; }
   },
   
   getPartners: async () => {
-    const { data } = await api.get('/partners');
-    return data.sort((a: any, b: any) => (a.order || 0) - (b.order || 0));
+    try {
+      const { data } = await api.get('/partners');
+      return data.sort((a: any, b: any) => (a.order || 0) - (b.order || 0));
+    } catch (e) { return []; }
   },
   
   getMessages: async () => {
-    const { data } = await api.get('/messages');
-    return data.sort((a: any, b: any) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime());
+    try {
+      const { data } = await api.get('/messages');
+      return data.sort((a: any, b: any) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime());
+    } catch (e) { return []; }
   },
 
   addItem: async (collectionName: string, item: any) => {
