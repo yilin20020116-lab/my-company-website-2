@@ -44,10 +44,10 @@ const stats = [
     sub: 'Production Lines'
   },
   {
-    target: 500000,
+    target: 100000,
     suffix: '',
-    label: '吨/年产量',
-    sub: 'Annual Output (Tons)'
+    label: '吨/年产能',
+    sub: 'Annual Capacity'
   },
   {
     target: 1000,

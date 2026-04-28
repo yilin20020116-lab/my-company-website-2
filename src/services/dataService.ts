@@ -58,6 +58,28 @@ export interface SiteSettings {
   contactAddress?: string;
   companyName?: string;
   icp?: string;
+  heroBanners?: string[];
+  pageBanners?: {
+    qualifications?: string;
+    news?: string;
+    products?: string;
+    cases?: string;
+  };
+  global?: {
+    logo?: string;
+    phone?: string;
+    address?: string;
+    email?: string;
+    icp?: string;
+    qrCode1?: string;
+    qrCode2?: string;
+  };
+  about?: {
+    title?: string;
+    content1?: string;
+    content2?: string;
+    image?: string;
+  };
 }
 
 export const DataService = {

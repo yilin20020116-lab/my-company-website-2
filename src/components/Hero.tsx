@@ -37,8 +37,11 @@ export default function Hero() {
             alt={`湖北兴欣科技展示 ${index + 1}`}
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
               currentSlide === index ? 'opacity-100 animate-slow-zoom z-10' : 'opacity-0 z-0'
-            }`}
+            } will-change-transform`}
             referrerPolicy="no-referrer"
+            loading={index === 0 ? "eager" : "lazy"}
+            fetchPriority={index === 0 ? "high" : "auto"}
+            decoding="async"
           />
         ))}
         <div className="absolute inset-0 bg-slate-900/40 z-20" />
@@ -99,17 +102,17 @@ export default function Hero() {
               <div className="w-px h-16 bg-slate-200 hidden md:block" />
               
               <div className="flex flex-col">
-                <div className="text-brand-orange font-display font-bold text-4xl md:text-5xl mb-2">5w</div>
+                <div className="text-brand-orange font-display font-bold text-4xl md:text-5xl mb-2">10w</div>
                 <div className="text-slate-900 font-bold mb-1">年产能</div>
-                <div className="text-slate-600 text-xs line-clamp-1">可达5万吨以上</div>
+                <div className="text-slate-600 text-xs line-clamp-1">可达10万吨以上</div>
               </div>
               
               <div className="w-px h-16 bg-slate-200 hidden md:block" />
               
               <div className="flex flex-col">
-                <div className="text-brand-orange font-display font-bold text-4xl md:text-5xl mb-2">4</div>
-                <div className="text-slate-900 font-bold mb-1">研发平台</div>
-                <div className="text-slate-600 text-xs line-clamp-1">省级特新研发中心</div>
+                <div className="text-brand-orange font-display font-bold text-4xl md:text-5xl mb-2">50+</div>
+                <div className="text-slate-900 font-bold mb-1">生产线</div>
+                <div className="text-slate-600 text-xs text-nowrap">50余条复合管材、管件生产线</div>
               </div>
             </div>
           </motion.div>

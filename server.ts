@@ -27,7 +27,98 @@ async function readDB() {
     return JSON.parse(data);
   } catch (error) {
     if ((error as any).code === "ENOENT") {
-      const defaultDb = { news: [], products: [], cases: [], qualifications: [], messages: [], settings: {} };
+      const defaultDb = { 
+        news: [], 
+        products: [], 
+        cases: [], 
+        qualifications: [
+          {
+            id: "1776848160252",
+            imageUrl: "https://pub-c37d421f19684d4abdb9ce2962d38654.r2.dev/1776848136326-blob",
+            title: "高新技术企业证书",
+            year: "2021",
+            category: "honors",
+            orientation: "landscape"
+          },
+          {
+            id: "1776910564625-3hv9z",
+            imageUrl: "https://pub-c37d421f19684d4abdb9ce2962d38654.r2.dev/1776910514377-blob",
+            orientation: "landscape",
+            title: "管道联盟-鄂州研发培训中心",
+            category: "honors"
+          },
+          {
+            id: "1776910798598-5mk7z",
+            imageUrl: "https://pub-c37d421f19684d4abdb9ce2962d38654.r2.dev/1776910754130-blob",
+            orientation: "landscape",
+            title: "国家知识产权优势企业202311-202610",
+            category: "honors"
+          }
+        ],
+        partners: [
+          { id: "p1", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-11-19.png", order: 1 },
+          { id: "p2", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-11-35.png", order: 2 },
+          { id: "p3", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-11-42.png", order: 3 },
+          { id: "p4", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-11-55.png", order: 4 },
+          { id: "p5", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-12-12.png", order: 5 },
+          { id: "p6", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-12-17.png", order: 6 },
+          { id: "p7", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-12-22.png", order: 7 },
+          { id: "p8", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-12-37.png", order: 8 },
+          { id: "p9", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-12-43.png", order: 9 },
+          { id: "p10", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-12-49.png", order: 10 },
+          { id: "p11", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-13-01.png", order: 11 },
+          { id: "p12", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-13-10.png", order: 12 },
+          { id: "p13", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-14-00.png", order: 13 },
+          { id: "p14", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-14-07.png", order: 14 },
+          { id: "p15", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-14-18.png", order: 15 },
+          { id: "p16", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-14-24.png", order: 16 },
+          { id: "p17", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-14-29.png", order: 17 },
+          { id: "p18", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-14-35.png", order: 18 },
+          { id: "p19", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-14-43.png", order: 19 },
+          { id: "p20", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-14-48.png", order: 20 },
+          { id: "p21", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-14-53.png", order: 21 },
+          { id: "p22", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-15-00.png", order: 22 },
+          { id: "p23", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-15-07.png", order: 23 },
+          { id: "p24", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-15-12.png", order: 24 },
+          { id: "p25", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-15-21.png", order: 25 },
+          { id: "p26", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-15-26.png", order: 26 },
+          { id: "p27", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-15-32.png", order: 27 },
+          { id: "p28", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-15-38.png", order: 28 },
+          { id: "p29", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-15-51.png", order: 29 },
+          { id: "p30", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-16-03.png", order: 30 },
+          { id: "p31", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/Snipaste_2026-04-24_11-17-00.png", order: 31 },
+          { id: "p32", logo: "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E5%A4%A9%E5%81%A5%E6%A0%87.png", order: 32 }
+        ],
+        messages: [], 
+        settings: {
+          "heroBanners": [
+            "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E9%A6%96%E9%A1%B5%E5%9B%BE/%E5%85%B4%E6%AC%A3%E9%97%A8%E5%A4%B4%E8%B6%85%E9%AB%98%E6%B8%85%E4%BF%AE%E5%A4%8D.png",
+            "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E9%A6%96%E9%A1%B5%E5%9B%BE/1920x1080%E5%9B%BE%E7%89%87%20(1).png",
+            "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E9%A6%96%E9%A1%B5%E5%9B%BE/1920x1080%E5%9B%BE%E7%89%87.png"
+          ],
+          "pageBanners": {
+            "qualifications": "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E8%8D%A3%E8%AA%89%E8%B5%84%E8%B4%A8banner.jpg",
+            "news": "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81banner.jpg",
+            "products": "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E4%BA%A7%E5%93%81%E4%B8%AD%E5%BF%83banner.jpg",
+            "cases": "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E5%B7%A5%E7%A8%8B%E6%A1%88%E4%BE%8Bbanner.jpg"
+          },
+          "global": {
+            "logo": "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E5%85%B4%E6%AC%A3logo%E6%A0%87.png",
+            "phone": "027-53018822",
+            "address": "湖北省鄂州市鄂城区四海大道58号",
+            "email": "ezxxjc@163.com",
+            "qrCode1": "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7.jpg",
+            "qrCode2": "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E6%8A%96%E9%9F%B3.png",
+            "icp": "鄂ICP备XXXXXXXX号"
+          },
+          "about": {
+            "title": "立足湖北鄂州，<br />打造全球领先的管道系统。",
+            "content1": "湖北兴欣科技股份有限公司（股票代码：839675）是一家专注于高端复合管道研发、制造、安装设计、销售的高新技术企业。",
+            "content2": "作为国家级高新技术企业，我们不仅提供高品质的管材及管件，更致力于为市政给排水、石油、化工等领域提供“产品+服务”的全生命周期解决方案。",
+            "image": "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E5%85%B4%E6%AC%A3%E9%97%A8%E5%A4%B4%E8%B6%85%E9%AB%98%E6%B8%85%E4%BF%AE%E5%A4%8D.png"
+          }
+        } 
+      };
       await fs.writeFile(DB_FILE, JSON.stringify(defaultDb, null, 2));
       return defaultDb;
     }

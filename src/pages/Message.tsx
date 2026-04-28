@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useLocation } from 'react-router-dom';
 import { MessageSquarePlus, Send, CheckCircle2 } from 'lucide-react';
 import { DataService } from '../services/dataService';
 
 export default function MessagePage() {
+  const location = useLocation();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -14,6 +16,14 @@ export default function MessagePage() {
     address: '',
     message: ''
   });
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const product = params.get('product');
+    if (product) {
+      setFormData(prev => ({ ...prev, productName: product }));
+    }
+  }, [location]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

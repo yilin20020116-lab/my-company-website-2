@@ -16,14 +16,12 @@ export default function QualificationsPage() {
       {/* Hero Section */}
       <section className="relative h-[600px] flex items-center pt-32 overflow-hidden bg-slate-900">
         <div className="absolute inset-0">
-          {settings?.pageBanners?.qualifications && (
-            <img 
-              src={settings.pageBanners.qualifications} 
-              alt="荣誉资质" 
-              className="w-full h-full object-cover object-bottom"
-              referrerPolicy="no-referrer"
-            />
-          )}
+          <img 
+            src={settings?.pageBanners?.qualifications || "https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E8%8D%A3%E8%AA%89%E8%B5%84%E8%B4%A8banner.jpg"} 
+            alt="荣誉资质" 
+            className="w-full h-full object-cover object-bottom"
+            referrerPolicy="no-referrer"
+          />
         </div>
         
         <div className="relative z-10 max-w-[1600px] mx-auto w-full px-6 md:px-12 lg:px-16">

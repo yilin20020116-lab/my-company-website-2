@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { MapPin, Award, TrendingUp, Users, ChevronRight } from 'lucide-react';
+import { MapPin, Award, TrendingUp, Package, ChevronRight } from 'lucide-react';
 import { DataService, SiteSettings } from '../services/dataService';
 
 const stats = [
   { icon: Award, label: '行业地位', value: '国内前五', detail: '复合管道领军企业' },
   { icon: TrendingUp, label: '成立时间', value: '1994年', detail: '30年深耕管道行业' },
-  { icon: Users, label: '研发实力', value: '4个省级', detail: '省级研发平台支持' },
+  { icon: Package, label: '产品矩阵', value: '管材最全', detail: '提供最全复合管材及管件' },
   { icon: MapPin, label: '生产基地', value: '湖北鄂州', detail: '两大管道研发基地' },
 ];
 

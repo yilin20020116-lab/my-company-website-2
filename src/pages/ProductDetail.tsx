@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ChevronRight, Home, ArrowLeft, CheckCircle2, Layers, ShieldCheck, Box, Settings, Loader2 } from 'lucide-react';
+import { ChevronRight, Home, ArrowLeft, CheckCircle2, Layers, ShieldCheck, Box, Settings, Loader2, ChevronLeft, Newspaper } from 'lucide-react';
 import { productData as staticProductData } from '../data/products';
-import { DataService, ProductItem } from '../services/dataService';
+import { DataService, ProductItem, ProjectCase, NewsItem } from '../services/dataService';
 
 export default function ProductDetailPage() {
   const { productTitle } = useParams<{ productTitle: string }>();
@@ -12,6 +12,8 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState<any>(null);
   const [category, setCategory] = useState<any>(null);
   const [remoteProducts, setRemoteProducts] = useState<ProductItem[]>([]);
+  const [projectCases, setProjectCases] = useState<ProjectCase[]>([]);
+  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   // Determine where the user came from
@@ -19,8 +21,14 @@ export default function ProductDetailPage() {
   const isFromProducts = location.state?.fromProducts;
 
   useEffect(() => {
-    DataService.getProducts().then(rp => {
+    Promise.all([
+      DataService.getProducts(),
+      DataService.getProjectCases(),
+      DataService.getNews()
+    ]).then(([rp, cases, news]) => {
       setRemoteProducts(rp);
+      setProjectCases(cases);
+      setNewsItems(news);
       setIsLoading(false);
     });
   }, []);
@@ -79,6 +87,19 @@ export default function ProductDetailPage() {
     
     window.scrollTo(0, 0);
   }, [productTitle, navigate, mergedProductData, isLoading]);
+
+  const allProductsFlat = useMemo(() => {
+    return mergedProductData.flatMap((cat: any) => cat.items);
+  }, [mergedProductData]);
+
+  const { prevProduct, nextProduct } = useMemo(() => {
+    if (!product || allProductsFlat.length === 0) return { prevProduct: null, nextProduct: null };
+    const currentIndex = allProductsFlat.findIndex((p: any) => p.title === product.title);
+    return {
+      prevProduct: currentIndex > 0 ? allProductsFlat[currentIndex - 1] : null,
+      nextProduct: currentIndex < allProductsFlat.length - 1 ? allProductsFlat[currentIndex + 1] : null,
+    };
+  }, [product, allProductsFlat]);
 
   if (!product || !category) return <div className="min-h-screen pt-20 flex items-center justify-center"><Loader2 className="w-8 h-8 text-brand-blue animate-spin" /></div>;
 
@@ -189,7 +210,7 @@ export default function ProductDetailPage() {
 
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
               <Link 
-                to="/message" 
+                to={`/message?product=${encodeURIComponent(product.title)}`} 
                 className="bg-brand-blue text-white px-8 py-4 rounded-xl font-bold text-center hover:bg-[#0c4075] transition-all shadow-lg focus:ring-4 focus:ring-brand-blue/30"
               >
                 在线询价
@@ -279,11 +300,141 @@ export default function ProductDetailPage() {
           )}
 
           <div className="mt-12 text-center pt-8 border-t border-slate-100">
+             <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-8">
+               {prevProduct ? (
+                 <Link 
+                   to={`/product/${encodeURIComponent(prevProduct.title)}`}
+                   className="flex items-center gap-4 group text-left max-w-[45%]"
+                 >
+                   <div className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 group-hover:border-brand-blue group-hover:text-brand-blue transition-colors">
+                     <ChevronLeft size={20} />
+                   </div>
+                   <div>
+                     <span className="block text-xs text-slate-400 uppercase tracking-widest mb-1">上一个产品</span>
+                     <span className="block font-bold text-slate-700 group-hover:text-brand-blue transition-colors line-clamp-1">{prevProduct.title}</span>
+                   </div>
+                 </Link>
+               ) : <div className="hidden sm:block w-[45%]" />}
+
+               {nextProduct ? (
+                 <Link 
+                   to={`/product/${encodeURIComponent(nextProduct.title)}`}
+                   className="flex items-center gap-4 group text-right justify-end max-w-[45%]"
+                 >
+                   <div>
+                     <span className="block text-xs text-slate-400 uppercase tracking-widest mb-1">下一个产品</span>
+                     <span className="block font-bold text-slate-700 group-hover:text-brand-blue transition-colors line-clamp-1">{nextProduct.title}</span>
+                   </div>
+                   <div className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 group-hover:border-brand-blue group-hover:text-brand-blue transition-colors">
+                     <ChevronRight size={20} />
+                   </div>
+                 </Link>
+               ) : <div className="hidden sm:block w-[45%]" />}
+             </div>
+
              <button onClick={() => navigate(-1)} className="inline-flex items-center gap-2 text-brand-blue font-bold px-6 py-3 rounded-full hover:bg-brand-blue/5 transition-colors">
                <ArrowLeft size={18} /> 返回产品列表
              </button>
           </div>
 
+        </div>
+
+        {/* Related Cases Section */}
+        <div className="mt-16">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-4">
+              <div className="w-2 h-8 bg-brand-orange rounded-full" />
+              <h2 className="text-2xl font-bold text-slate-800 tracking-tight">工程案例</h2>
+            </div>
+            <Link to="/cases" className="text-brand-blue hover:text-[#0c4075] font-bold flex items-center gap-2 transition-colors group">
+              查看全部 <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {projectCases.slice(0, 3).map((item, idx) => (
+              <motion.div
+                key={item.id || idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="group bg-white rounded-2xl overflow-hidden shadow-xl shadow-brand-blue/5 border border-slate-100 hover:border-brand-blue/30 transition-all hover:shadow-2xl hover:shadow-brand-blue/10"
+              >
+                <Link to="/cases" className="block relative aspect-[16/10] overflow-hidden">
+                  <img 
+                    src={item.imageUrl} 
+                    alt={item.title} 
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-brand-blue text-[10px] font-bold uppercase tracking-widest rounded-full shadow-sm">
+                      {item.category}
+                    </span>
+                  </div>
+                </Link>
+                <div className="p-6">
+                  <h3 className="text-lg font-bold text-slate-800 mb-3 group-hover:text-brand-blue transition-colors line-clamp-1">
+                    {item.title}
+                  </h3>
+                  <p className="text-slate-500 text-sm line-clamp-2 leading-relaxed mb-4">
+                    {item.details}
+                  </p>
+                  <div className="flex items-center justify-between pt-4 border-t border-slate-50">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{item.date}</span>
+                    <Link to="/cases" className="text-brand-blue text-xs font-bold flex items-center gap-1 group/btn">
+                      详情 <ChevronRight size={14} className="group-hover/btn:translate-x-0.5 transition-transform" />
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Related News Section */}
+        <div className="mt-16">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-4">
+              <div className="w-2 h-8 bg-[#559bd9] rounded-full" />
+              <h2 className="text-2xl font-bold text-slate-800 tracking-tight">企业动态</h2>
+            </div>
+            <Link to="/news" className="text-brand-blue hover:text-[#0c4075] font-bold flex items-center gap-2 transition-colors group">
+              更多新闻 <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {newsItems.slice(0, 3).map((item, idx) => (
+              <motion.div
+                key={item.id || idx}
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="bg-white p-5 rounded-2xl border border-slate-100 hover:border-brand-blue/20 hover:shadow-lg transition-all group flex gap-4"
+              >
+                <div className="w-20 h-20 rounded-lg overflow-hidden shrink-0">
+                  <img 
+                    src={item.imageUrl} 
+                    alt={item.title} 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+                <div className="flex flex-col justify-center overflow-hidden">
+                  <h4 className="text-sm font-bold text-slate-800 line-clamp-2 group-hover:text-brand-blue transition-colors mb-1">
+                    {item.title}
+                  </h4>
+                  <div className="flex items-center gap-2 text-[10px] text-slate-400 font-medium">
+                    <Newspaper size={12} />
+                    <span>{item.date}</span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

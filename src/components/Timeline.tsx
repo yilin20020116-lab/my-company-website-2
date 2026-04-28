@@ -24,8 +24,8 @@ const timelineData = [
   },
   {
     year: '2016',
-    title: '产品创新',
-    content: '引进华中地区第一条多重增强钢塑复合管生产线。',
+    title: '挂牌上市',
+    content: '成功在新三板上市。',
   },
   {
     year: '2018',

@@ -54,7 +54,7 @@ export default function Strength() {
               className="relative h-[400px] md:h-[500px] rounded-2xl lg:rounded-none lg:rounded-tr-[80px] lg:rounded-br-[80px] overflow-hidden group"
             >
               <img 
-                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1600" 
+                src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E8%80%81%E5%8E%82%E4%BF%AF%E7%9E%B0%E5%9B%BE.png" 
                 alt="一号生产基地" 
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 referrerPolicy="no-referrer"
@@ -76,7 +76,7 @@ export default function Strength() {
               className="relative h-[400px] md:h-[500px] rounded-2xl lg:rounded-none lg:rounded-tl-[80px] lg:rounded-bl-[80px] overflow-hidden group lg:mt-24"
             >
               <img 
-                src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&q=80&w=1600" 
+                src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E6%96%B0%E5%8E%82%E4%BF%AF%E7%9E%B0%E5%9B%BE.png" 
                 alt="二号生产基地" 
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 referrerPolicy="no-referrer"
@@ -124,7 +124,7 @@ export default function Strength() {
             >
               <div className="aspect-[16/10] overflow-hidden rounded-2xl shadow-2xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&q=80&w=1600" 
+                  src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E7%A0%94%E5%8F%91%E5%9B%BE%E7%89%87%E7%85%A7%E7%89%87.png" 
                   alt="研发实力" 
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000"
                   referrerPolicy="no-referrer"

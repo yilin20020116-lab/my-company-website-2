@@ -24,7 +24,7 @@ export const productData = [
               </figure>
             </div>
             <div>
-              <p>“天健”牌多重增强钢塑复合压力管是在已有的钢骨架塑料复合管道和钢带增强塑料排水管道技术的基础上，利用金属塑料复合成型、钢塑复合结构设计及带材缠绕焊接成型等技术研发的新型钢塑复合压力输送管道。该管道将结构壁技术、多层壁技术及钢塑复合技术综合运用，既有效地提高了管材的径向强度和环刚度，又降低了塑料的使用量，从而节约了生产成本。</p>
+              <p>“天健”牌多重增强钢塑复合压力管是在已有的钢骨架塑料复合管道和钢带增强塑料排水管道技术的基础上，利用金属塑料复合成型、钢塑复合结构设计及带材缠绕焊接成型等技术研发的新型钢塑复合压力输送管道。该管道将结构壁技术、多层壁技术及钢塑复合技术综合运用，既有效地提高了管材的径向强度 and 环刚度，又降低了塑料的使用量，从而节约了生产成本。</p>
             </div>
           </div>
 
@@ -91,34 +91,14 @@ export const productData = [
           <h3>管道特性及优点</h3>
           <ul>
             <li><strong>管材抗内外压能力兼优，长期强度稳定：</strong>采用在管壁中设计钢带和钢网二种骨架增强相，分别提高塑料管道抗外压的环刚度和抗内压的环应力而大幅度提高钢管寿命。</li>
-            <li><strong>电热熔焊连接技术简便可靠，100%无泄漏：</strong>完全隔绝了管道内液体向外界的泄露。</li>
-            <li><strong>抗内外腐蚀，使用寿命长：</strong>不存在蠕变问题故其使用寿命远高于纯塑料管道，耐磨损、抗腐蚀使得其使用寿命可达100年以上。</li>
-            <li><strong>极强的耐磨性：</strong>实验证明，在等同流速条件下，其耐磨性要优于普通钢管3至5倍。</li>
-            <li><strong>内壁光滑，输送阻力小：</strong>粗糙率很小，不结垢而且塑料材料具有很强的抗附着性。采用直径较小的多重增强管就可以达到同等流量要求。</li>
-            <li><strong>柔性系统避灾：</strong>高密度聚乙烯和钢带均具有良好的柔韧性，即使发生土壤沉降甚至地震，管道也不会断裂。</li>
-            <li><strong>原材消耗低于纯塑或其他管材：</strong>由于使用了增强钢带和钢网骨架，管材壁厚可以大大减薄，从而大幅度节省原材料成本，性价比极高。</li>
-            <li><strong>绿色节能环保：</strong>生产制造过程没有废气废水产生，零排放，废旧材料可100%粉碎回收回炉使用。</li>
+            <li><strong>电热熔焊连接技术简便可靠，100%无泄漏：</strong>完全隔绝了管道内液体向外界的泄漏。</li>
           </ul>
-
-          <h3>管材连接结构</h3>
-          <p>多重增强钢塑复合压力管主要有 <strong>电熔直接连接</strong> 和 <strong>钢塑复合管电热熔带连接</strong> 这两种方式。</p>
-          <div class="flex flex-col sm:flex-row gap-6 mt-6 mb-4">
-            <figure class="m-0 flex-1">
-              <img src="https://picsum.photos/seed/connect1/500/300" alt="电熔直接连接" class="w-full rounded-xl shadow-md border border-slate-100" />
-              <figcaption class="text-center text-sm text-slate-500 mt-2 font-medium">电熔直接连接</figcaption>
-            </figure>
-            <figure class="m-0 flex-1">
-              <img src="https://picsum.photos/seed/connect2/500/300" alt="钢塑复合电热熔带连接" class="w-full rounded-xl shadow-md border border-slate-100" />
-              <figcaption class="text-center text-sm text-slate-500 mt-2 font-medium">钢塑复合电热熔带连接</figcaption>
-            </figure>
-          </div>
-          <p>钢塑复合电热熔带连接可以适用于所有规格的管材连接，其是一种典型的多层结构，塑料带中间有多层增强钢丝网夹层，表层下设置有加热金属网，其表面覆盖有用以提高连接水密性防止氧气渗入并保护加热网的塑料膜保护层。</p>
         `
       },
       {
         title: '内定径钢骨架增强聚乙烯复合管',
-        advantages: '抗蠕变性能好，持久机械强度高，耐冲击性能好、轴向具有适当柔性，管壁不结垢、不结蜡，无毒性、不分解、无微生物累积，耐温性能好，内壁光滑、流阻低，容易定位跟踪，环向具有足够刚度，热膨胀系数小、重量轻，抗候性、抗紫外线性能好，内表面耐高腐蚀性介质、外表面适应强腐蚀使用环境，系列化管材、管件与连接结构构成完善安全的管道系统。',
-        applications: '化工、油田、市政建设、船舶、矿山、农业、海水输送。',
+        advantages: '抗蠕变性能好，持久机械强度高，不会发生快速开裂，耐冲击性能好，轴向具有适当柔性，管壁不结垢、不结蜡，无毒性、不分解、无微生物累积，耐温性能好，内壁光滑、流阻低，容易定位跟踪，环向具有足够刚度，热膨胀系数小，重量轻，抗候性、抗紫外线性能好，内表面耐高腐蚀性介质、外表面适应强腐蚀使用环境，系列化管材、管件与连接结构构成完善安全的管道系统。',
+        applications: '化工：腐蚀性介质输送；油田：含硫油气水输送；市政建设：给排水、天然气输送；船舶：生活及结构管系；矿山：矿浆输送；农业：深井滤水灌溉；海水输送：淡化及电厂。',
         image: 'https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E5%86%85%E5%AE%9A%E5%BE%84%E9%92%A2%E9%AA%A8%E6%9E%B6%E5%A2%9E%E5%BC%BA%E8%81%9A%E4%B9%99%E7%83%AF%E5%A4%8D%E5%90%88%E7%AE%A1.png',
         richHTML: `
           <h3>产品简介</h3>
@@ -127,17 +107,6 @@ export const productData = [
               <p class="text-base md:text-lg leading-[2] text-justify indent-8 tracking-wide font-medium text-slate-700">
                 钢骨架塑料复合管是一种以缠绕并焊接成型的<span class="text-brand-blue font-bold">钢丝网作为加强骨架</span>，以聚乙烯等热塑性塑料为基体，并将两者均匀地复合在一起，在生产线上连续生产的复合结构管道。
               </p>
-              <div class="mt-8 flex gap-4 pt-6 border-t border-slate-200/60">
-                <div class="flex-1">
-                  <div class="text-xs text-slate-400 uppercase tracking-widest mb-1">核心相质</div>
-                  <div class="font-bold text-slate-800">热塑性塑料基体</div>
-                </div>
-                <div class="w-px bg-slate-200"></div>
-                <div class="flex-1">
-                  <div class="text-xs text-slate-400 uppercase tracking-widest mb-1">关键骨架</div>
-                  <div class="font-bold text-slate-800">缠绕焊接钢丝网</div>
-                </div>
-              </div>
             </div>
             <div class="flex-1 flex items-center justify-center">
               <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E5%86%85%E5%AE%9A%E5%BE%84%E9%92%A2%E9%AA%A8%E6%9E%B6%E5%A2%9E%E5%BC%BA%E8%81%9A%E4%B9%99%E7%83%AF%E5%A4%8D%E5%90%88%E7%AE%A1%E8%AF%A6%E6%83%85%E9%A1%B5%E5%9B%BE%E7%89%87.jpg" alt="内定径钢骨架复合管结构图" class="w-full h-full min-h-[300px] object-cover rounded-2xl shadow-lg border border-slate-100 bg-white p-8 hover:scale-[1.02] transition-transform duration-500" />
@@ -146,89 +115,140 @@ export const productData = [
           
           <h3>产品特点</h3>
           <ul>
-            <li><strong>抗蠕变性能好，持久机械强度高：</strong>具有很好的抗蠕变特性，机械强度非常持久稳固。</li>
-            <li><strong>不会发生快速开裂：</strong>结构兼具刚性与柔性，防止管材开裂。</li>
-            <li><strong>耐冲击性能好：</strong>可以承受高强度的冲击和碰撞。</li>
+            <li><strong>抗蠕变性能好，持久机械强度高：</strong>由于钢丝网骨架的加强作用，克服了塑料材质的持久变形缺陷。</li>
+            <li><strong>不会发生快速开裂：</strong>钢丝网结构有效阻断裂纹扩展。</li>
+            <li><strong>耐冲击性能好：</strong>可以承受高强度的冲击 and 碰撞。</li>
             <li><strong>轴向具有适当柔性：</strong>面对不规则地质有很好的适应能力。</li>
-            <li><strong>管壁不结垢、不结蜡：</strong>流体运行畅通，大幅减少维护需求。</li>
-            <li><strong>无毒性、不分解、无微生物累积：</strong>环保且保证水质安全。</li>
-            <li><strong>耐温性能好：</strong>适应各类冷热环境，稳定性高。</li>
-            <li><strong>内壁光滑、流阻低：</strong>提升水力输送效率，节约能耗。</li>
-            <li><strong>容易定位跟踪：</strong>内部含有钢丝网骨架，可用磁性探测器进行定位寻踪。</li>
-            <li><strong>环向具有足够刚度：</strong>有效抵抗巨大的外部压力。</li>
-            <li><strong>热膨胀系数小：</strong>温度变化依然保持尺寸的稳定。</li>
-            <li><strong>重量轻：</strong>便于施工、安装以及长途运输。</li>
-            <li><strong>抗候性、抗紫外线性能好：</strong>不受外部恶劣条件影响。</li>
-            <li><strong>双重防腐防侵蚀：</strong>内表面耐高腐蚀性介质、外表面适应强腐蚀使用环境。</li>
-            <li><strong>系统完善：</strong>系列化管材、管件与连接结构构成完善安全的管道系统。</li>
+            <li><strong>管壁不结垢、不结蜡：</strong>内壁光滑，流体运行畅通。</li>
+            <li><strong>寿命长：</strong>系统寿命长达50年。</li>
           </ul>
-
-          <h3>产品应用范围</h3>
-          <div class="overflow-x-auto my-6">
-            <table class="w-full text-left border-collapse border border-slate-200">
-              <thead>
-                <tr class="bg-brand-blue/5">
-                  <th class="border border-slate-200 p-3 text-brand-blue font-bold min-w-[120px]">应用领域</th>
-                  <th class="border border-slate-200 p-3 text-brand-blue font-bold">具体用途细分</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="border border-slate-200 p-3 text-slate-800 font-medium">化工</td>
-                  <td class="border border-slate-200 p-3 text-slate-600">用于酸碱盐制造业、石油化工、化肥、农药、制药等行业中腐蚀性介质输送的工业配管和排放管道。</td>
-                </tr>
-                <tr class="bg-slate-50/50">
-                  <td class="border border-slate-200 p-3 text-slate-800 font-medium">油田</td>
-                  <td class="border border-slate-200 p-3 text-slate-600">油田集输管、污水管，原油、成品油输送管，油井注入聚合物管道，卤水处理管等。特别适用于含硫的油、气、水等介质输送。</td>
-                </tr>
-                <tr>
-                  <td class="border border-slate-200 p-3 text-slate-800 font-medium">市政建设</td>
-                  <td class="border border-slate-200 p-3 text-slate-600">城市给排水，天然气和煤气输送。</td>
-                </tr>
-                <tr class="bg-slate-50/50">
-                  <td class="border border-slate-200 p-3 text-slate-800 font-medium">船舶</td>
-                  <td class="border border-slate-200 p-3 text-slate-600">船上污水管、给排水管、压舱水管等生活管系和结构管系。</td>
-                </tr>
-                <tr>
-                  <td class="border border-slate-200 p-3 text-slate-800 font-medium">矿山</td>
-                  <td class="border border-slate-200 p-3 text-slate-600">矿浆输送管、工程用井管、泵送用管。</td>
-                </tr>
-                <tr class="bg-slate-50/50">
-                  <td class="border border-slate-200 p-3 text-slate-800 font-medium">农业</td>
-                  <td class="border border-slate-200 p-3 text-slate-600">用于深井管、滤水管、旱地灌溉用管、暗渠排水管等。</td>
-                </tr>
-                <tr>
-                  <td class="border border-slate-200 p-3 text-slate-800 font-medium">海水输送</td>
-                  <td class="border border-slate-200 p-3 text-slate-600">用于海水淡化厂、海边电厂、海港城市的海水输送。</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
         `
       },
       {
         title: '外定径钢骨架增强聚乙烯复合管',
-        advantages: '抗蠕变性能好，持久机械强度高，耐冲击性能好、轴向具有适当柔性，管壁不结垢、不结蜡，无毒性、不分解、无微生物累积，耐温性能好，内壁光滑、流阻低，容易定位跟踪，环向具有足够刚度，热膨胀系数小、重量轻，抗候性、抗紫外线性能好，内表面耐高腐蚀性介质、外表面适应强腐蚀使用环境，系列化管材、管件与连接结构构成完善安全的管道系统。',
+        advantages: '抗蠕变性能好，持久机械强度高，不会发生快速开裂，耐冲击性能好，轴向具有适当柔性，管壁不结垢、不结蜡，无毒性、不分解、无微生物累积，耐温性能好，内壁光滑、流阻低，容易定位跟踪，环向具有足够刚度，热膨胀系数小，重量轻，抗候性、抗紫外线性能好，内表面耐高腐蚀性介质、外表面适应强腐蚀使用环境，系列化管材、管件与连接结构构成完善安全的管道系统。',
         applications: '化工、油田、市政建设、船舶、矿山、农业、海水输送。',
-        image: 'https://picsum.photos/seed/pipe3/800/600',
+        image: 'https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E4%BE%9B%E6%B0%B4%E4%BA%A7%E5%93%81/%E5%A4%96%E5%AE%9A%E5%BE%84%E9%92%A2%E9%AA%A8%E6%9E%B6%E5%A2%9E%E5%BC%BA%E8%81%9A%E4%B9%99%E7%83%AF%E5%A4%8D%E5%90%88%E7%AE%A1.png',
+        richHTML: `
+          <h3>产品简介</h3>
+          <div class="flex flex-col md:flex-row gap-10 items-stretch mb-12">
+            <div class="flex-1 text-slate-600 bg-slate-50/50 p-6 md:p-8 rounded-2xl border border-slate-100 flex flex-col justify-center">
+              <p class="text-base md:text-lg leading-[2] text-justify indent-8 tracking-wide font-medium text-slate-700">
+                钢骨架塑料复合管是一种以缠绕并焊接成型的钢丝网作为加强骨架，以聚乙烯等热塑性塑料为基体，并将两者均匀地复合在一起，在生产线上连续生产的复合结构管道。其<span class="text-brand-blue font-bold">外定径</span>设计符合相关标准。
+              </p>
+            </div>
+            <div class="flex-1 flex items-center justify-center">
+              <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E4%BE%9B%E6%B0%B4%E4%BA%A7%E5%93%81/%E5%A4%96%E5%AE%9A%E5%BE%84%E9%92%A2%E9%AA%A8%E6%9E%B6%E5%A2%9E%E5%BC%BA%E8%81%9A%E4%B9%99%E7%83%AF%E5%A4%8D%E5%90%88%E7%AE%A1%E8%AF%A6%E6%83%85%E9%A1%B5%E5%9B%BE%E7%89%87.jpg" alt="外定径钢骨架复合管" class="w-full h-full min-h-[300px] object-cover rounded-2xl shadow-lg border border-slate-100 bg-white p-4 hover:scale-[1.02] transition-transform duration-500" />
+            </div>
+          </div>
+          
+          <h3>产品特点</h3>
+          <ul>
+            <li><strong>抗蠕变性能：</strong>钢丝网骨架的加强作用克服了塑料的持久变形。</li>
+            <li><strong>耐冲击性：</strong>可以承受高强度的冲击 and 碰撞。</li>
+            <li><strong>轴向柔性：</strong>面对不规则地质有很好的适应能力。</li>
+          </ul>
+        `
       },
       {
         title: '钢丝网增强聚乙烯复合耐磨管',
-        advantages: '是以聚烯烃热塑性弹性体为内层与钢丝网增强聚乙烯复合管的内层共挤出成型的复合管道，这种管道既保持了钢丝网增强聚乙烯复合管优良的物化力学性能，又具有很好的耐磨性能。',
-        applications: '化工、电力、冶金、水泥、粮食。',
-        image: 'https://picsum.photos/seed/pipe4/800/600',
+        advantages: '具有极高的抗磨损能力、耐腐蚀、耐冲击、自润滑性，适用于受磨损严重的介质输送。',
+        applications: '矿山尾矿输送、洗煤厂、电厂粉煤灰输送、疏浚工程、化工浆体输送。',
+        image: 'https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E4%BE%9B%E6%B0%B4%E4%BA%A7%E5%93%81/%E9%92%A2%E4%B8%9D%E7%BD%91%E5%A2%9E%E5%BC%BA%E8%81%9A%E4%B9%99%E7%83%AF%E5%A4%8D%E5%90%88%E8%80%90%E7%A3%A8%E7%AE%A1.png',
+        richHTML: `
+          <h3>产品简介</h3>
+          <p class="text-slate-600 mb-6">钢丝网增强聚乙烯复合耐磨管是以高强度钢丝网为增强骨架，以耐磨改性聚乙烯为基体，通过热熔粘接树脂将骨架与内外层塑料紧密结合而成的一种新型复合管材。</p>
+
+          <h3>性能特点</h3>
+          <ul class="text-sm space-y-2 mb-8">
+            <li><strong>卓越耐磨性：</strong>采用耐磨改性PE材料，耐磨性是普通钢管的4-7倍。</li>
+            <li><strong>高机械强度：</strong>钢丝网骨架提供了优异的承压能力 and 抗冲击性能。</li>
+            <li><strong>耐腐蚀性：</strong>对多种化学介质具有极佳的耐腐蚀性能。</li>
+            <li><strong>自润滑性：</strong>摩阻系数小，不易结垢。</li>
+          </ul>
+        `
       },
       {
         title: '钢丝网骨架塑料（聚乙烯）复合管',
-        advantages: '分为双层钢丝网增强聚乙烯复合管、四层钢丝网增强聚乙烯复合管。具有超过普通塑料管的强度、刚性、抗冲击性，类似于钢管的低线膨胀系数和抗蠕变性等特点。钢丝网增强聚乙烯复合耐磨管具有优良的耐磨性能，同市场上广泛使用的耐磨管如超高分子量聚乙烯管、内衬钢管等比较，耐磨性能更为优异。',
-        applications: '市政工程、工业领域、油田矿山、煤矿、海水输送、高速公路、电力工程、农业喷灌等。',
-        image: 'https://picsum.photos/seed/pipe5/800/600',
+        advantages: '具有超过普通塑料管的强度、刚性、抗冲击性。双面防腐，内壁光滑不结垢，流阻小，寿命长达50年。',
+        applications: '市政工程、工业领域、油田矿山、煤矿、电力工程等任务。',
+        image: 'https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E4%BE%9B%E6%B0%B4%E4%BA%A7%E5%93%81/%E9%92%A2%E4%B8%9D%E7%BD%91%E9%AA%A8%E6%9E%B6%E5%A1%91%E6%96%99%EF%BC%88%E8%81%9A%E4%B9%99%E7%83%AF%EF%BC%89%E5%A4%8D%E5%90%88%E7%AE%A1.png',
+        richHTML: `
+          <h3>产品简介</h3>
+          <div class="flex flex-col md:flex-row gap-8 items-stretch mb-10">
+            <div class="flex-1 text-slate-600 bg-slate-50 p-6 rounded-2xl flex flex-col justify-center border border-slate-100">
+              <p class="text-sm leading-relaxed text-justify indent-8">
+                钢丝网骨架塑料复合管是以<span class="text-brand-blue font-bold">高强度钢丝左右螺旋成型的网状骨架</span>为增强体。以高密度聚乙烯（HDPE）为基体。
+              </p>
+            </div>
+            <div class="flex-1 flex flex-col items-center justify-center">
+              <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E4%BE%9B%E6%B0%B4%E4%BA%A7%E5%93%81/%E9%92%A2%E4%B8%9D%E7%BD%91%E9%AA%A8%E6%9E%B6%E5%A1%91%E6%96%99%EF%BC%88%E8%81%9A%E4%B9%99%E7%83%AF%EF%BC%89%E5%A4%8D%E5%90%88%E7%AE%A1%E7%BB%93%E6%9E%84%E5%9B%BE_files/1547520948256061.jpg" alt="复合管结构图" class="w-full rounded-xl shadow-sm bg-white p-2 border border-slate-100" />
+            </div>
+          </div>
+
+          <h3>管材特点</h3>
+          <ul class="text-sm space-y-2 mb-8">
+            <li><strong>物理性能：</strong>具有超过普通塑料管的强度、刚性、抗冲击性，低线膨胀系数。</li>
+            <li><strong>防腐性能：</strong>双面防腐，使用温度高，导热系数低。</li>
+            <li><strong>结构整体：</strong>管材增强骨架与内外层塑料互相包容成为一个整体。</li>
+            <li><strong>内壁光滑：</strong>不结垢，流阻小。</li>
+            <li><strong>连接可靠：</strong>管道连接采用电热熔接头，抗轴向拉伸能力强，连接技术成熟可靠。</li>
+            <li><strong>高可靠性：</strong>正常使用下寿命可达50年，综合性价比优，且卫生无毒。</li>
+          </ul>
+
+          <h3>技术要求</h3>
+          <p><strong>外观颜色：</strong>一般为黑色，也可根据供需方协商决定。</p>
+          <p><strong>表面质量：</strong>管材内、外表面应光泽平顺，不允许有气泡、裂口、分解变色线及明显的创伤。</p>
+
+          <div class="bg-slate-100 p-6 rounded-2xl mb-8 border border-slate-200">
+            <h3 class="mt-0">煤矿井下用复合管</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+              <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E4%BE%9B%E6%B0%B4%E4%BA%A7%E5%93%81/%E9%92%A2%E4%B8%9D%E7%BD%91%E9%AA%A8%E6%9E%B6%E5%A1%91%E6%96%99%EF%BC%88%E8%81%9A%E4%B9%99%E7%83%AF%EF%BC%89%E5%A4%8D%E5%90%88%E7%AE%A1%E7%BB%93%E6%9E%84%E5%9B%BE_files/1547522087946431.jpg" alt="煤矿规格1" class="w-full rounded-lg" />
+              <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E4%BE%9B%E6%B0%B4%E4%BA%A7%E5%93%81/%E9%92%A2%E4%B8%9D%E7%BD%91%E9%AA%A8%E6%9E%B6%E5%A1%91%E6%96%99%EF%BC%88%E8%81%9A%E4%B9%99%E7%83%AF%EF%BC%89%E5%A4%8D%E5%90%88%E7%AE%A1%E7%BB%93%E6%9E%84%E5%9B%BE_files/1547522095417289.jpg" alt="煤矿规格2" class="w-full rounded-lg" />
+            </div>
+          </div>
+
+          <h3>技术参数与性能指标</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E4%BE%9B%E6%B0%B4%E4%BA%A7%E5%93%81/%E9%92%A2%E4%B8%9D%E7%BD%91%E9%AA%A8%E6%9E%B6%E5%A1%91%E6%96%99%EF%BC%88%E8%81%9A%E4%B9%99%E7%83%AF%EF%BC%89%E5%A4%8D%E5%90%88%E7%AE%A1%E7%BB%93%E6%9E%84%E5%9B%BE_files/1547522061231967.jpg" alt="修正系数" class="w-full rounded-xl" />
+            <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E4%BE%9B%E6%B0%B4%E4%BA%A7%E5%93%81/%E9%92%A2%E4%B8%9D%E7%BD%91%E9%AA%A8%E6%9E%B6%E5%A1%91%E6%96%99%EF%BC%88%E8%81%9A%E4%B9%99%E7%83%AF%EF%BC%89%E5%A4%8D%E5%90%88%E7%AE%A1%E7%BB%93%E6%9E%84%E5%9B%BE_files/1547522036791695.jpg" alt="主要技术性能" class="w-full rounded-xl" />
+          </div>
+
+          <div class="mt-8 p-6 rounded-2xl border border-brand-blue/20 bg-brand-blue/[0.02]">
+            <h3 class="mt-0 text-brand-blue">双层双色复合管</h3>
+            <p>采用纯原生料制造，其内壁为白色，外壁为黑色。具有更优良的复合效果 and 卫生性能。</p>
+          </div>
+        `
       },
       {
         title: '聚乙烯（PE）管',
         advantages: '良好的卫生性能、良好的耐腐蚀性能、长久的使用寿命、较好的耐冲击性。',
-        applications: 'PE管有中密度聚乙烯管和高密度聚乙烯管。根据壁厚分为SDR11和SDR17.6系列。前者适用于输送气态的人工煤气、天然气、液化石油气，后者主要用于输送天然气。',
-        image: 'https://picsum.photos/seed/pipe6/800/600',
+        applications: '主要用于供水、城镇燃气及工业领域。它是传统钢铁管材、聚氯乙烯饮用水管的换代产品。',
+        image: 'https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E4%BE%9B%E6%B0%B4%E4%BA%A7%E5%93%81/%E8%81%9A%E4%B9%99%E7%83%AF%EF%BC%88PE%EF%BC%89%E7%AE%A1.png',
+        richHTML: `
+          <h3>产品简介</h3>
+          <p class="text-slate-600 mb-6">PE是聚乙烯塑料，最基础的一种塑料。HDPE是一种结晶度高、非极性的热塑性树脂。给水用PE管材是传统的钢铁管材、聚氯乙烯饮用水管的换代产品。</p>
+
+          <h3>连接与施工</h3>
+          <div class="flex flex-col gap-6 mb-8">
+            <div>
+              <p class="text-sm leading-relaxed text-slate-600 mb-4"><strong>焊接方式：</strong>PE管道对接焊缝法具有极高的可靠性。通常通过加热管子端部迅速接触并在压力下冷却，使端部熔融为一体。</p>
+              <p class="text-sm leading-relaxed text-slate-600"><strong>施工优势：</strong>相比钢管，施工工艺简单，具有一定的柔韧性且无需作防腐处理。</p>
+            </div>
+            <div class="w-full">
+               <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E4%BE%9B%E6%B0%B4%E4%BA%A7%E5%93%81/%E8%81%9A%E4%B9%99%E7%83%AF%EF%BC%88PE%EF%BC%89%E7%AE%A1%E5%9B%BE1.jpg" alt="PE管焊接施工" class="w-full max-w-3xl mx-auto block rounded-xl shadow border border-slate-100" />
+            </div>
+          </div>
+
+          <h3>分类与应用</h3>
+          <p class="text-sm text-slate-600 mb-4">PE管有中密度 and 高密度之分。根据壁厚可分为SDR11 and SDR17.6系列。</p>
+
+          <h3>规格参数</h3>
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 mb-6">
+            <p class="text-sm"><strong>压力等级：</strong>主要分为 0.6MPa (6kg), 0.8MPa, 1.0MPa, 1.25MPa, 1.6MPa。</p>
+          </div>
+          <img src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E4%BE%9B%E6%B0%B4%E4%BA%A7%E5%93%81/%E8%81%9A%E4%B9%99%E7%83%AF%EF%BC%88PE%EF%BC%89%E7%AE%A1%E8%A7%84%E6%A0%BC.jpg" alt="PE管规格表" class="w-full rounded-xl shadow border border-slate-100 bg-white p-2" />
+        `
       }
     ]
   },
@@ -238,33 +258,59 @@ export const productData = [
     items: [
       {
         title: '低压排水用多重增强复合管',
-        advantages: '管材结构特殊设计，有效分散外部承载力。整体抗压能力强且重量轻，大口径下依然保持优异的环刚度。内外双面防腐体系，确保苛刻水土环境下的长久使用；内壁极致光滑，不易附着水垢和淤泥，实现高流量通水能力，从而降低整体运营维护成本。',
-        applications: '重载市政道路雨水排放、工业园区污水排放主干管网络、海绵城市建设及老旧小区地下排水系统改造。',
+        advantages: '管材抗内外压能力兼优，长期强度稳定，连接简便可靠，抗内外腐蚀，耐磨性强，工程造价低，性价比高。',
+        applications: '市政管网、农业水利、工厂矿山供水、排水排污、综合管廊。',
         image: 'https://picsum.photos/seed/drainage1/800/600',
+        richHTML: `
+          <h3>产品简介</h3>
+          <p>低压排水用多重增强复合管是在多重增强钢塑复合压力管技术基础上，专为低压排水、排污工况设计的管材。</p>
+          <h3>产品特点</h3>
+          <ul>
+            <li>抗压强：复合增强结构，环刚度高。</li>
+            <li>耐腐蚀：双面防腐，寿命长。</li>
+            <li>施工快：重量轻，多种灵活连接方式。</li>
+          </ul>
+        `
       },
       {
         title: '内肋增强聚乙烯（PE）螺旋波纹管',
-        advantages: '独特的管壁三层结构，并在中间部位增加了高强度内肋，大幅度提升了管材的环刚度和抗冲击性能。相比普通双壁波纹管，它在抗土壤不均匀沉降方面表现更为出色，耐化学腐蚀性能极佳，电热熔连接严密安全，100%防止地下排水泄漏。',
-        applications: '城市地下排污排涝系统、高速公路与高架桥墩排水、垃圾填埋场渗滤液收集、以及大型农业水利灌溉工程。',
+        advantages: '拥有优秀的耐腐蚀性，康载荷能力强，韧性好，抗地基不均匀沉降能力强，连接方便可靠。',
+        applications: '市政排水、建筑工程、工业排污、农业灌溉。',
         image: 'https://picsum.photos/seed/drainage2/800/600',
+        richHTML: `
+          <h3>产品简介</h3>
+          <p>内肋增强聚乙烯（PE）螺旋波纹管是一种纯塑料结构壁管。其独特的内肋结构大大增强了管材的径向抗压能力。</p>
+        `
       },
       {
         title: '高强度聚丙烯（PP-HM）双壁波纹管',
-        advantages: '采用高模量聚丙烯材料(PP-HM)精密挤出成型，自带极高的环刚度（轻易满足SN8~SN16 标准），且具备出众的抗沉降和耐冲击能力。兼具耐磨损结构设计，比重轻于传统管材，能使现场搬运、铺设、安装更加便捷，有效缩短施工周期。',
-        applications: '适用于车流量密集的市政重交通道路排水、深埋苛刻条件下的雨污分流工程、化学工业区腐蚀性废水排污管道。',
+        advantages: '高强度改性 PP-HM 材质，显著提高产品的冲击性、刚性、耐候性，无压埋地排污管系统。',
+        applications: '市政雨污水排放、道路排水、居民区污水网、工业废水。',
         image: 'https://picsum.photos/seed/drainage3/800/600',
+        richHTML: `
+          <h3>产品简介</h3>
+          <p>由高模量聚丙烯（PP-HM）制成，具有极其平滑的内壁 and 异型外壁。</p>
+        `
       },
       {
         title: 'HDPE双壁波纹管',
-        advantages: '内壁平滑能最大化降低流体摩擦阻力，波纹状外壁则提供了优越的抗压刚性。良好的化学稳定性能隔绝绝大多数酸碱盐的腐蚀；弹性密封圈连接安全防渗漏，能在低温环境下正常施工，综合施工成本低，设计使用寿命可达50年以上。',
-        applications: '广泛用于大规模市政建设地下排污排水网络、新城开发厂区与住宅小区排水系统、高尔夫球场及大面积农田灌溉排水网络。',
+        advantages: '抗冲抗压，耐地基不均匀沉降，摩阻低，流量大。使用寿命长达 50 年以上。',
+        applications: '市政工程雨污水排放、生活区、工业园区排污。',
         image: 'https://picsum.photos/seed/drainage4/800/600',
+        richHTML: `
+          <h3>产品简介</h3>
+          <p>HDPE双壁波纹管是以高密度聚乙烯为主要原料，内壁光滑平整，外壁呈梯形波纹状。</p>
+        `
       },
       {
         title: '钢带增强聚乙烯（PE）螺旋波纹管',
-        advantages: '将高强度防腐钢带的高物理刚性与聚乙烯塑料的耐腐蚀、柔韧特性完美结合。它不仅能承受超大的外部土壤压力与交通动载，还能随轻微的地壳变形而不破裂。安全无毒，提供挤出焊接、热缩帯、电热熔带等多种牢靠的连接方式。',
-        applications: '用于长距离、大口径的地埋排污管道系统，超大型市政水利枢纽工程，隧道排水以及跨河倒虹吸引水排污设施。',
+        advantages: '以高密度聚乙烯为基质，钢带成型为“U”型加强筋并螺旋缠绕。兼具金属的刚性与塑料的柔性。',
+        applications: '市政、工业大口径排水管线，深埋排水工程。',
         image: 'https://picsum.photos/seed/drainage5/800/600',
+        richHTML: `
+          <h3>产品简介</h3>
+          <p>钢带增强聚乙烯（PE）螺旋波纹管将钢带的刚度与塑料的耐腐蚀性完美结合。</p>
+        `
       }
     ]
   },
@@ -273,16 +319,56 @@ export const productData = [
     id: 'accessories',
     items: [
       {
-        title: '标准电熔管件系列 (直接/三通/弯头/法兰)',
-        advantages: '专门为钢丝网骨架、钢塑复合管道及各类 PE 管道定制设计的高功能连接件。选用高纯度聚乙烯原材料并预埋高品质发热电阻丝，通电后能快速均匀加热，熔融渗透效果完美。焊接完成后，管材与管件融为一体，能承受与管材同等的系统压力，完美避免节点松动或渗漏问题，寿命可观。',
-        applications: '给水、排水、消防系统、燃气及天然气输配管网等各种复杂管道网络体系中的线路分支、转角、延长与阀门对接连结。',
+        title: '电熔直接',
+        advantages: '规格参数（mm）：de50-de800。专门为钢丝网骨架、钢塑复合管道及各类 PE 管道定制设计。选用高纯度聚乙烯原材料并预埋高品质发热电阻丝。',
+        applications: '给水、排水、消防系统、燃气及天然气输配管网。',
         image: 'https://picsum.photos/seed/fitting1/800/600',
+        richHTML: `
+          <h3>产品简介</h3>
+          <p>“兴欣”牌电熔直接管件是管道系统连接的核心部件，采用优质高密度聚乙烯（HDPE）材料。</p>
+        `
+      },
+      {
+        title: '电熔异径直接',
+        advantages: '规格参数（mm）：de63-de500。提供不同口径管材间的安全连接。',
+        applications: '管道线路分支与延长。',
+        image: 'https://picsum.photos/seed/fitting2/800/600',
+      },
+      {
+        title: '电熔等径三通',
+        advantages: '规格参数（mm）：de50-de630。',
+        applications: '管道系统中的分支连接。',
+        image: 'https://picsum.photos/seed/fitting3/800/600',
+      },
+      {
+        title: '电熔异径三通',
+        advantages: '规格参数（mm）：de63-de630。',
+        applications: '管道转接与流量分配。',
+        image: 'https://picsum.photos/seed/fitting4/800/600',
+      },
+      {
+        title: '电熔法兰',
+        advantages: '规格参数（mm）：de50-de800。',
+        applications: '阀门对接连结及工业配管。',
+        image: 'https://picsum.photos/seed/fitting5/800/600',
+      },
+      {
+        title: '电熔45°弯头',
+        advantages: '规格参数（mm）：de50-de630。',
+        applications: '管道线路转角连接。',
+        image: 'https://picsum.photos/seed/fitting6/800/600',
+      },
+      {
+        title: '电熔90°弯头',
+        advantages: '规格参数（mm）：de50-de630。',
+        applications: '管道线路转角连接。',
+        image: 'https://picsum.photos/seed/fitting7/800/600',
       },
       {
         title: '专业电热熔带',
-        advantages: '主要用于大口径波纹管、钢带增强管的外壁连接加密。施工灵活性极强，不受现场地形和管材口径局限，缠绕焊接后冷却固化，具有绝佳的封水防渗效果和显著的结构拉伸强度。兼顾抗紫外线、抗老化能力。',
-        applications: '超大口径市政排污管道对接、长距离雨污分流工程快速拼装、波纹管破损抢修补漏。',
-        image: 'https://picsum.photos/seed/fitting2/800/600',
+        advantages: '主要用于大口径波纹管、钢带增强管的外壁连接加密。',
+        applications: 'PE实壁管、钢丝网骨架增强、大口径缠绕结构管壁。',
+        image: 'https://picsum.photos/seed/fitting8/800/600',
       }
     ]
   }

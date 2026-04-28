@@ -88,21 +88,29 @@ export default function Navbar() {
       <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-4">
-          <img 
-            src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E5%85%B4%E6%AC%A3logo%E6%A0%872.png" 
-            alt="湖北兴欣科技" 
-            className="h-[130px] w-auto object-contain" 
-          />
-          <div className="flex flex-col mt-2.5">
+          <div className="flex flex-col items-center">
+            <img 
+              src="https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E5%85%B4%E6%AC%A3logo%E6%A0%872.png" 
+              alt="湖北兴欣科技" 
+              className="h-[100px] w-auto object-contain" 
+            />
             <span className={cn(
-              "font-display font-bold text-xl leading-none transition-colors", 
+              "text-xs font-bold tracking-widest transition-colors -mt-2",
+              isScrolled || location.pathname !== '/' ? "text-brand-blue" : "text-white/90"
+            )}>
+              股票代码：839675
+            </span>
+          </div>
+          <div className="flex flex-col mt-[14px]">
+            <span className={cn(
+              "font-display font-bold text-2xl leading-none transition-colors", 
               isScrolled || location.pathname !== '/' ? "text-brand-blue" : "text-white"
             )}>
               湖北兴欣科技股份有限公司
             </span>
             <span className={cn(
-              "text-[10px] tracking-widest opacity-70 transition-colors mt-0.5",
-              isScrolled || location.pathname !== '/' ? "text-slate-500" : "text-white/70"
+              "text-[12px] tracking-widest opacity-80 transition-colors mt-1.5",
+              isScrolled || location.pathname !== '/' ? "text-slate-500" : "text-white/80"
             )}>
               HUBEI XINGXIN TECHNOLOGY CO.,LTD
             </span>

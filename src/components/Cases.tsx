@@ -143,15 +143,6 @@ export default function Cases() {
             暂无相关案例
           </div>
         )}
-
-        <div className="mt-16 text-center">
-          <Link 
-            to="/cases" 
-            className="inline-block px-10 py-4 rounded-full border-2 border-slate-200 font-bold text-slate-600 hover:bg-slate-50 hover:border-brand-blue hover:text-brand-blue transition-all"
-          >
-            查看更多工程案例
-          </Link>
-        </div>
       </div>
     </section>
   );

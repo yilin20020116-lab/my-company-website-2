@@ -16,7 +16,7 @@ const categories = [
         title: '多重增强钢塑复合压力管',
         description: '兴欣科技自主研发的高端给水管道。通过多层复合结构设计，完美融合了钢带的高环刚度与聚乙烯的卓越化学稳定性，在承受极高内压的同时保持优异的柔韧性。管材抗内外压能力兼优，长期强度稳定，电热熔焊接连接技术简便可靠，不会造成输送液体资源的浪费。抗内外腐蚀，使用寿命长，极强的耐磨性，安全无毒，柔性系统，良好地避免灾害，重量轻，施工安装费用低，原材料消耗成本低于纯塑或其他结构壁塑料压力管材，工程总体造价低，性价比高，具有很强的市场竞争力，管材结构稳定性好，节能环保。',
         features: ['多层复合增强结构', '承压能力显著提升', '卓越的抗蠕变性能', '卫生无毒，确保饮水安全'],
-        image: pipeImg
+        image: 'https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E5%A4%9A%E9%87%8D%E5%A2%9E%E5%BC%BA%E9%92%A2%E5%A1%91%E5%A4%8D%E5%90%88%E5%8E%8B%E5%8A%9B%E7%AE%A1.png'
       },
       {
         title: '内定径钢骨架增强聚乙烯复合管',
@@ -25,10 +25,10 @@ const categories = [
         image: 'https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/main/%E5%86%85%E5%AE%9A%E5%BE%84%E9%92%A2%E9%AA%A8%E6%9E%B6%E5%A2%9E%E5%BC%BA%E8%81%9A%E4%B9%99%E7%83%AF%E5%A4%8D%E5%90%88%E7%AE%A1.png'
       },
       {
-        title: '孔网钢带聚乙烯复合管',
-        description: '以冷轧钢带焊接而成的网状钢管为增强相，具有极佳的尺寸稳定性和抗冲击性能，适用于高压供水环境。',
-        features: ['尺寸稳定性好', '抗冲击强度高', '双面防腐'],
-        image: 'https://picsum.photos/seed/water-3/1200/800'
+        title: '钢丝网增强聚乙烯复合耐磨管',
+        description: '是以聚烯烃热塑性弹性体为内层与钢丝网增强聚乙烯复合管的内层共挤出成型的复合管道，这种管道既保持了钢丝网增强聚乙烯复合管优良的物化力学性能，又具有很好的耐磨性能。',
+        features: ['极高的抗磨损能力', '优良的物化力学性能', '保持复合管道特性'],
+        image: 'https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E4%BE%9B%E6%B0%B4%E4%BA%A7%E5%93%81/%E9%92%A2%E4%B8%9D%E7%BD%91%E5%A2%9E%E5%BC%BA%E8%81%9A%E4%B9%99%E7%83%AF%E5%A4%8D%E5%90%88%E8%80%90%E7%A3%A8%E7%AE%A1.png'
       }
     ]
   },
@@ -67,16 +67,16 @@ const categories = [
     bgColor: 'bg-brand-orange',
     items: [
       {
-        title: '全系列电熔管件',
+        title: '电熔直接连接',
         description: '采用进口原料及先进工艺生产，布线均匀，焊接可靠，确保管道系统连接处与管材同寿命。',
         features: ['焊接强度高', '规格齐全', '操作简便'],
-        image: 'https://picsum.photos/seed/fit-1/1200/800'
+        image: 'https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E7%94%B5%E7%86%94%E7%9B%B4%E6%8E%A5%E8%BF%9E%E6%8E%A5.jpg'
       },
       {
-        title: '热熔对接管件',
+        title: '钢塑复合电热熔带连接',
         description: '适用于大口径管道连接，通过热熔对接工艺实现分子级融合，确保系统长期运行的安全稳定。',
         features: ['连接成本低', '密封性极佳', '耐压性能好'],
-        image: 'https://picsum.photos/seed/fit-2/1200/800'
+        image: 'https://raw.githubusercontent.com/yilin20020116-lab/companyweb-images/refs/heads/main/%E9%92%A2%E5%A1%91%E5%A4%8D%E5%90%88%E7%94%B5%E7%83%AD%E7%86%94%E5%B8%A6%E8%BF%9E%E6%8E%A5.jpg'
       },
       {
         title: '钢塑转换及抢修节',
