@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ChevronRight, Home, ArrowLeft, CheckCircle2, Layers, ShieldCheck, Box, Settings, Loader2, ChevronLeft, Newspaper } from 'lucide-react';
 import { productData as staticProductData } from '../data/products';
-import { DataService, ProductItem, ProjectCase, NewsItem } from '../services/dataService';
+import { DataService, ProjectCase, NewsItem } from '../services/dataService';
 
 export default function ProductDetailPage() {
   const { productTitle } = useParams<{ productTitle: string }>();
@@ -11,7 +11,6 @@ export default function ProductDetailPage() {
   const location = useLocation();
   const [product, setProduct] = useState<any>(null);
   const [category, setCategory] = useState<any>(null);
-  const [remoteProducts, setRemoteProducts] = useState<ProductItem[]>([]);
   const [projectCases, setProjectCases] = useState<ProjectCase[]>([]);
   const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -22,41 +21,16 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     Promise.all([
-      DataService.getProducts(),
       DataService.getProjectCases(),
       DataService.getNews()
-    ]).then(([rp, cases, news]) => {
-      setRemoteProducts(rp);
+    ]).then(([cases, news]) => {
       setProjectCases(cases);
       setNewsItems(news);
       setIsLoading(false);
     });
   }, []);
 
-  const mergedProductData = useMemo(() => {
-    const data = JSON.parse(JSON.stringify(staticProductData)); // deep clone
-    remoteProducts.forEach(rp => {
-      const cat = data.find((c: any) => c.id === rp.category);
-      if (cat) {
-        const existingIdx = cat.items.findIndex((item: any) => item.title === rp.name);
-        const newItem = {
-          title: rp.name,
-          advantages: rp.description,
-          applications: (rp as any).applications || '',
-          image: rp.imageUrl || 'https://picsum.photos/600/400',
-          richHTML: (rp as any).richHTML,
-          detailImageUrl: (rp as any).detailImageUrl
-        };
-
-        if (existingIdx !== -1) {
-          cat.items[existingIdx] = { ...cat.items[existingIdx], ...newItem };
-        } else {
-          cat.items.push(newItem);
-        }
-      }
-    });
-    return data;
-  }, [remoteProducts]);
+  const mergedProductData = staticProductData;
 
   useEffect(() => {
     if (isLoading) return;

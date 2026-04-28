@@ -3,45 +3,19 @@ import ProductGrid from '../components/ProductGrid';
 import { motion, AnimatePresence } from 'motion/react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { productData as staticProductData } from '../data/products';
-import { DataService, SiteSettings, ProductItem } from '../services/dataService';
+import { DataService, SiteSettings } from '../services/dataService';
 
 export default function ProductsPage() {
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
   const location = useLocation();
   const [settings, setSettings] = useState<SiteSettings | null>(null);
-  const [remoteProducts, setRemoteProducts] = useState<ProductItem[]>([]);
 
   useEffect(() => {
     DataService.getSettings().then(setSettings);
-    DataService.getProducts().then(setRemoteProducts);
   }, []);
 
-  const mergedProductData = useMemo(() => {
-    const data = JSON.parse(JSON.stringify(staticProductData)); // deep clone
-    remoteProducts.forEach(rp => {
-      const cat = data.find((c: any) => c.id === rp.category);
-      if (cat) {
-        // Check if item with same title exists, if so replace it, else push
-        const existingIdx = cat.items.findIndex((item: any) => item.title === rp.name);
-        const newItem = {
-          title: rp.name,
-          advantages: rp.description,
-          applications: (rp as any).applications || '', // Support applications field from DB
-          image: rp.imageUrl || 'https://picsum.photos/600/400',
-          richHTML: (rp as any).richHTML,
-          detailImageUrl: (rp as any).detailImageUrl
-        };
-
-        if (existingIdx !== -1) {
-          cat.items[existingIdx] = { ...cat.items[existingIdx], ...newItem };
-        } else {
-          cat.items.push(newItem);
-        }
-      }
-    });
-    return data;
-  }, [remoteProducts]);
+  const mergedProductData = staticProductData;
 
   const currentCategoryData = mergedProductData.find((c: any) => c.id === categoryId) || mergedProductData[0];
   
